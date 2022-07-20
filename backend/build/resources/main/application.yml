@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ShareMind?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 1234
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    open-in-view: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show-sql: true
+        format_sql: true
+
+  # put mapping
+  #  mvc:
+  #    hiddenmethod:
+  #      filter:
+  #        enabled: true
+  # 이메일 인증
+
+  #Failed to start bean 'documentationPluginsBootstrapper'; error
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ANT_PATH_MATCHER
+#  jwt:
+#    secretKey: "asjknvo213"
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace
