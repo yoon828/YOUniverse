@@ -5,16 +5,46 @@ import MainPage from './MainPage';
 import MyPage from './MyPage';
 import QnA from './QnA';
 import ActivateRoom from './ActivateRoom';
+import Login from './Login';
+import Guest from './Guest';
+import Invite from './Invite';
 
 const App = () => {
   return (
     <div className="App">
+      <header className="MainHeader">
+        <div className="MainLogo">
+          <a href="/">
+            <img
+              src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
+              alt="logo"
+            />
+          </a>
+        </div>
+        <div className="MainMenu">
+          <div>
+            <a href="/activateroom">쉐어룸</a>
+          </div>
+          <div>
+            <a href="/question">1:1문의</a>
+          </div>
+          <div>
+            <a href="/:userId">마이페이지</a>
+          </div>
+          <div>
+            <a href="/login">로그아웃은 아직</a>
+          </div>
+        </div>
+      </header>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/question" element={<QnA />} />
           <Route path="/:userId" element={<MyPage />} />
           <Route path="/activateroom" element={<ActivateRoom />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/invite" element={<Invite />} />
+          <Route path="/guest" element={<Guest />} />
         </Routes>
       </BrowserRouter>
     </div>
