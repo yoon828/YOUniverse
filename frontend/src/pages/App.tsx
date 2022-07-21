@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './common/style/App.scss';
+import '../common/style/App.scss';
 import MainPage from './MainPage';
 
 const App = () => {
