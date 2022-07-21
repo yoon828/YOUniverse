@@ -1,20 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const MainPage = () => {
   return (
-    <header className="App-header">
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
+    <div>
+      메인페이지 화면
+      <Link to="/activateroom">room 활성화</Link>
+      <Link to="/question">1:1문의하기</Link>
+      <Link to="/:userId">마이페이지</Link>
+    </div>
   );
 };
 
