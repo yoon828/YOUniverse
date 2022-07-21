@@ -5,6 +5,7 @@ import '../common/style/App.scss';
 import MainPage from './MainPage';
 import MyPage from './MyPage';
 import QnA from './QnA';
+import ActivateRoom from './ActivateRoom';
 
 const App = () => {
   return (
@@ -12,8 +13,9 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/:userId" element={<MyPage />} />
           <Route path="/question" element={<QnA />} />
+          <Route path="/:userId" element={<MyPage />} />
+          <Route path="/activateroom" element={<ActivateRoom />} />
         </Routes>
       </BrowserRouter>
     </div>
