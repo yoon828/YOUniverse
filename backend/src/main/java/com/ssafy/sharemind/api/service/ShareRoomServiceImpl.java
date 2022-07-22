@@ -1,8 +1,9 @@
 package com.ssafy.sharemind.api.service;
 
+import com.ssafy.sharemind.api.request.ShareRoomDetailDto;
 import com.ssafy.sharemind.api.request.ShareRoomInsertDto;
-import com.ssafy.sharemind.api.response.ShareRoomHistoryListResponseDto;
 import com.ssafy.sharemind.api.response.ShareRoomHistoryResponseDto;
+import com.ssafy.sharemind.common.exception.NotFindShareRoomException;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import com.ssafy.sharemind.db.entity.ShareRoomHistory;
 import com.ssafy.sharemind.db.entity.User;
@@ -51,7 +52,7 @@ public class ShareRoomServiceImpl implements ShareRoomService {
 
     }
 
-    public List<ShareRoomHistoryResponseDto> getShareRoomHistory(String uuid){
+    public List<ShareRoomHistoryResponseDto> getShareRoomHistoryByUuid(String uuid){
         User user = userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
         List<ShareRoomHistoryResponseDto> roomList=user.getShareRoomHistoryList().stream().map(shareRoomHistory
                 -> ShareRoomHistoryResponseDto.builder().roomName(shareRoomHistory.getRoomName())
@@ -64,6 +65,22 @@ public class ShareRoomServiceImpl implements ShareRoomService {
                 .build()).collect(Collectors.toList());
         Collections.sort(roomList,(o1, o2)->o2.getDate().compareTo(o1.getDate()));
         return roomList;
+    }
+
+    public ShareRoomHistoryResponseDto getShareRoomHistoryById(ShareRoomDetailDto shareRoomDetailDto){
+
+        ShareRoomHistory shareRoomHistory=shareRoomHistoryRepository.findById(shareRoomDetailDto.getId())
+                .orElseThrow(NotFindShareRoomException::new);
+        ShareRoomHistoryResponseDto shareRoomHistoryResponseDto= new ShareRoomHistoryResponseDto().builder()
+                .uuid(shareRoomDetailDto.getUuid())
+                .roomName(shareRoomHistory.getRoomName())
+                .participants(shareRoomHistory.getParticipants())
+                .hostName(shareRoomHistory.getHostName())
+                .filePath(shareRoomHistory.getFilePath())
+                .date(shareRoomHistory.getDate())
+                .id(shareRoomHistory.getId()).build();
+
+        return shareRoomHistoryResponseDto;
     }
 
 }
