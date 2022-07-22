@@ -28,7 +28,7 @@ const App = () => {
             <a href="/activateroom">쉐어룸</a>
           </div>
           <div>
-            <a href="/question">1:1문의없어지나요</a>
+            <a href="/question">1:1문의</a>
           </div>
           <div>
             <a href="/:userId">마이페이지</a>
