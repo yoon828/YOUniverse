@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .imagePath(user.getImagePath())
                 .url(user.getUrl())
-                .qnAList(user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
+                .qnAList(user.getQnAList().stream().limit(5).map(qnA -> QnAResponseDto.builder()
                         .answer(qnA.getAnswer())
                         .id(qnA.getId())
                         .answer_date(qnA.getAnswerDate())
