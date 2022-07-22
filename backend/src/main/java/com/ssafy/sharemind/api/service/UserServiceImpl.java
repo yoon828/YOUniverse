@@ -1,6 +1,7 @@
 package com.ssafy.sharemind.api.service;
 
 import com.ssafy.sharemind.api.response.QnAResponseDto;
+import com.ssafy.sharemind.api.response.ShareRoomHistoryResponseDto;
 import com.ssafy.sharemind.api.response.UserMypageResponseDto;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import com.ssafy.sharemind.db.entity.QnA;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserMypageResponseDto findUser(String uuid) {
         User user =userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
-        List<QnAResponseDto> list=user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
+        List<QnAResponseDto> qnAList=user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
                 .answer(qnA.getAnswer())
                 .id(qnA.getId())
                 .answer_date(qnA.getAnswerDate())
@@ -56,20 +57,46 @@ public class UserServiceImpl implements UserService {
                 .uuid(qnA.getUser().getUuid())
                 .isAnswered(qnA.getIsAnswered())
                 .build()).collect(Collectors.toList());
-        Collections.sort(list, (o1,o2)->o2.getQuestion_date().compareTo(o1.getQuestion_date()));
+        Collections.sort(qnAList, (o1,o2)->o2.getQuestion_date().compareTo(o1.getQuestion_date()));
 
-        List<QnAResponseDto> list5 = new ArrayList<QnAResponseDto>();
-        for(int i=0;i<5;i++){
-            list5.add(list.get(i));
+        List<QnAResponseDto> qnAResponseList = new ArrayList<>();
+        for(int i=0;i<qnAList.size();i++){
+            if(i==5){
+                break;
+            }
+            qnAResponseList.add(qnAList.get(i));
         }
+
+
+        List<ShareRoomHistoryResponseDto> roomList=user.getShareRoomHistoryList().stream().map(shareRoomHistory
+        -> ShareRoomHistoryResponseDto.builder().roomName(shareRoomHistory.getRoomName())
+                .date(shareRoomHistory.getDate())
+                .filePath(shareRoomHistory.getFilePath())
+                .hostName(shareRoomHistory.getHostName())
+                .id(shareRoomHistory.getId())
+                .participants(shareRoomHistory.getParticipants())
+                .uuid(shareRoomHistory.getUser().getUuid())
+                .build()).collect(Collectors.toList());
+        Collections.sort(roomList,(o1,o2)->o2.getDate().compareTo(o1.getDate()));
+
+        List<ShareRoomHistoryResponseDto> roomResponseList=new ArrayList<>();
+        for(int i=0;i<roomList.size();i++){
+            if(i==5){
+                break;
+            }
+            roomResponseList.add(roomList.get(i));
+        }
+
+
+
 
         UserMypageResponseDto userMypageResponseDto =new UserMypageResponseDto().builder()
                 .email(user.getEmail())
                 .name(user.getName())
                 .imagePath(user.getImagePath())
                 .url(user.getUrl())
-                .qnAList(list5)
-//                .shareRoomHistoryList(user.getShareRoomHistoryList())
+                .qnAList(qnAResponseList)
+                .shareRoomHistoryList(roomResponseList)
                 .uuid(user.getUuid()).build();
 
         return userMypageResponseDto;
@@ -77,10 +104,7 @@ public class UserServiceImpl implements UserService {
 
     public void deleteUser(String uuid) {
 
-        if (userRepository.findByUuid(uuid) == null) {
-            throw new NotFindUuidException(uuid + " 회원이 존재하지 않습니다.");
-        }
-
+        userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
         userRepository.deleteByUuid(uuid);
 
 
