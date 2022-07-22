@@ -20,6 +20,6 @@ public class UserMypageResponseDto {
     private String imagePath;
     private String name;
     private String url;
-//    private List<ShareRoomHistory> shareRoomHistoryList = new ArrayList<>();
+    private List<ShareRoomHistoryResponseDto> shareRoomHistoryList = new ArrayList<>();
     private List<QnAResponseDto> qnAList = new ArrayList<>();
 }

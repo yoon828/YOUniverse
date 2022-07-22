@@ -1,6 +1,7 @@
 package com.ssafy.sharemind.common.exception.handler;
 
 import com.ssafy.sharemind.common.exception.NotFindQuestionException;
+import com.ssafy.sharemind.common.exception.NotFindShareRoomException;
 import com.ssafy.sharemind.common.model.Response;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,13 @@ public class ExceptionAdvice {
     @ExceptionHandler(NotFindQuestionException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response<?> notFindQuestionException(NotFindQuestionException e){
+        return new Response<>("false", e.getMessage(), null);
+
+    }
+
+    @ExceptionHandler(NotFindShareRoomException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<?> NotFindShareRoomException(NotFindShareRoomException e){
         return new Response<>("false", e.getMessage(), null);
 
     }

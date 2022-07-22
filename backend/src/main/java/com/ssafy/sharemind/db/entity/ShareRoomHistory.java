@@ -34,4 +34,6 @@ public class ShareRoomHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uuid")
     private User user;
+
+
 }
