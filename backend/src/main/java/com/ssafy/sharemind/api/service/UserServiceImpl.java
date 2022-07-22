@@ -4,8 +4,14 @@ import com.ssafy.sharemind.api.response.QnAResponseDto;
 import com.ssafy.sharemind.api.response.ShareRoomHistoryResponseDto;
 import com.ssafy.sharemind.api.response.UserMypageResponseDto;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
-import com.ssafy.sharemind.db.entity.QnA;
 import com.ssafy.sharemind.db.entity.User;
+import com.ssafy.sharemind.api.response.TokenResponseDto;
+import com.ssafy.sharemind.api.response.UserDetailResponseDto;
+import com.ssafy.sharemind.common.exception.TokenNotFoundException;
+import com.ssafy.sharemind.common.exception.UserNotFoundException;
+import com.ssafy.sharemind.common.util.TokenProvider;
+import com.ssafy.sharemind.db.entity.Token;
+import com.ssafy.sharemind.db.repository.TokenRepository;
 import com.ssafy.sharemind.db.repository.UserRepository;
 import com.ssafy.sharemind.api.request.UserRegisterDto;
 import com.ssafy.sharemind.api.response.UserRegistResponseDto;
@@ -15,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +30,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
+    private final TokenProvider tokenProvider;
 
     public UserRegistResponseDto register(UserRegisterDto userRegisterDto) {
 
@@ -110,5 +117,34 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
+    @Transactional(readOnly = true)
+    public TokenResponseDto reIssue(String refreshToken){
+
+        Token token = tokenRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(TokenNotFoundException::new);
+
+        User user = token.getUser();
+
+        return TokenResponseDto.builder()
+                .accessToken(tokenProvider.createAccessToken(user.getEmail(), user.getName()))
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public UserDetailResponseDto userInfoByToken(String accessToken) {
+        String email = tokenProvider.getMemberEmail(accessToken);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+
+        return UserDetailResponseDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .imagePath(user.getImagePath())
+                .uuid(user.getUuid())
+                .url(user.getUrl())
+                .build();
+    }
 
 }

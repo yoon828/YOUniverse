@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -39,22 +38,18 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
         String nickname = (String) properties.get("nickname");
 
-        List<User> users = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElse(null);
 
-        if (users.isEmpty()) {
-            User user = User.builder()
+        if (user == null) {
+            log.info("가입되지 않은 사용자입니다. DB에 저장합니다.");
+            userRepository.save(User.builder()
                     .email(email)
                     .uuid(uuid)
                     .name(nickname)
                     .url("test URL")
-                    .build();
-            userRepository.save(user);
-        } else {
-            System.out.println(email + " 가입된 사용자입니다.");
+                    .build());
         }
 
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_MEMBER")), attributes, "id");
     }
-
-
 }

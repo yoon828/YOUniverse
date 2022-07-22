@@ -1,5 +1,6 @@
 package com.ssafy.sharemind.db.repository;
 
+import com.ssafy.sharemind.db.entity.Token;
 import com.ssafy.sharemind.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -7,11 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface TokenRepository extends JpaRepository<Token, Long> {
 
-    Optional<User> findByUuid(String uuid);
+    Optional<Token> findByUser(User user);
 
-    void deleteByUuid(String uuid);
+    Optional<Token> findByRefreshToken(String refreshToken);
 
-    Optional<User> findByEmail(String email);
 }
