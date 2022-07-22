@@ -3,6 +3,7 @@ package com.ssafy.sharemind.api.service;
 import com.ssafy.sharemind.api.response.QnAResponseDto;
 import com.ssafy.sharemind.api.response.UserMypageResponseDto;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
+import com.ssafy.sharemind.db.entity.QnA;
 import com.ssafy.sharemind.db.entity.User;
 import com.ssafy.sharemind.db.repository.UserRepository;
 import com.ssafy.sharemind.api.request.UserRegisterDto;
@@ -11,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,23 +45,30 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     public UserMypageResponseDto findUser(String uuid) {
-
         User user =userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
+        List<QnAResponseDto> list=user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
+                .answer(qnA.getAnswer())
+                .id(qnA.getId())
+                .answer_date(qnA.getAnswerDate())
+                .content(qnA.getContent())
+                .question_date(qnA.getQuestionDate())
+                .title(qnA.getTitle())
+                .uuid(qnA.getUser().getUuid())
+                .isAnswered(qnA.getIsAnswered())
+                .build()).collect(Collectors.toList());
+        Collections.sort(list, (o1,o2)->o2.getQuestion_date().compareTo(o1.getQuestion_date()));
+
+        List<QnAResponseDto> list5 = new ArrayList<QnAResponseDto>();
+        for(int i=0;i<5;i++){
+            list5.add(list.get(i));
+        }
+
         UserMypageResponseDto userMypageResponseDto =new UserMypageResponseDto().builder()
                 .email(user.getEmail())
                 .name(user.getName())
                 .imagePath(user.getImagePath())
                 .url(user.getUrl())
-                .qnAList(user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
-                        .answer(qnA.getAnswer())
-                        .id(qnA.getId())
-                        .answer_date(qnA.getAnswerDate())
-                        .content(qnA.getContent())
-                        .question_date(qnA.getQuestionDate())
-                        .title(qnA.getTitle())
-                        .uuid(qnA.getUser().getUuid())
-                        .isAnswered(qnA.getIsAnswered())
-                        .build()).collect(Collectors.toList()))
+                .qnAList(list5)
 //                .shareRoomHistoryList(user.getShareRoomHistoryList())
                 .uuid(user.getUuid()).build();
 
