@@ -1,9 +1,8 @@
 package com.ssafy.sharemind.common.exception.handler;
 
-import com.ssafy.sharemind.api.response.Response;
+import com.ssafy.sharemind.common.model.Response;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

@@ -1,4 +1,4 @@
-package com.ssafy.sharemind.api.response;
+package com.ssafy.sharemind.common.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
