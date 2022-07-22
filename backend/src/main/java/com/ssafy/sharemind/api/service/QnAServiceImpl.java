@@ -1,5 +1,7 @@
 package com.ssafy.sharemind.api.service;
 
+import com.ssafy.sharemind.api.response.QnAListForUser;
+import com.ssafy.sharemind.common.exception.NotFindQuestionException;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import com.ssafy.sharemind.db.entity.QnA;
 import com.ssafy.sharemind.db.entity.User;
@@ -9,6 +11,11 @@ import com.ssafy.sharemind.api.request.QnARegisterDto;
 import com.ssafy.sharemind.api.response.QnAResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,4 +49,28 @@ public class QnAServiceImpl implements QnAService{
         return qnAResponseDto;
     }
 
+    public List<QnAResponseDto> getQnAList(String uuid){
+        User user =userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
+
+        List<QnAResponseDto> list= user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
+                .answer(qnA.getAnswer())
+                .id(qnA.getId())
+                .answer_date(qnA.getAnswerDate())
+                .content(qnA.getContent())
+                .question_date(qnA.getQuestionDate())
+                .title(qnA.getTitle())
+                .uuid(qnA.getUser().getUuid())
+                .isAnswered(qnA.getIsAnswered())
+                .build()).collect(Collectors.toList());
+        Collections.sort(list, (o1, o2)->o2.getQuestion_date().compareTo(o1.getQuestion_date()));
+
+        return list;
+    }
+
+    @Transactional
+    public boolean deleteQnA(long id){
+        qnARepository.findById(id).orElseThrow(NotFindQuestionException::new);
+        qnARepository.deleteById(id);
+        return true;
+    }
 }
