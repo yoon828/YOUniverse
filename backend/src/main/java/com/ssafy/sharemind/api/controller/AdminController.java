@@ -1,8 +1,8 @@
 package com.ssafy.sharemind.api.controller;
 
+import com.ssafy.sharemind.api.request.AnswerRegisterDto;
+import com.ssafy.sharemind.api.service.AdminService;
 import com.ssafy.sharemind.common.model.Response;
-import com.ssafy.sharemind.api.service.QnAService;
-import com.ssafy.sharemind.api.request.QnARegisterDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/qna")
-public class QnAController {
+@RequestMapping("/admin")
+public class AdminController {
 
-    private final QnAService qnAService;
+    private final AdminService adminService;
 
-    @PostMapping
-    public ResponseEntity<?> writeQnA(@RequestBody QnARegisterDto qnARegisterDto){
+    @PostMapping("/answer")
+    public ResponseEntity<?> writeAanswer(@RequestBody AnswerRegisterDto answerRegisterDto){
 
-        return new ResponseEntity<>(new Response<>("true", "글 등록 성공",
-                qnAService.writeQnA(qnARegisterDto)), HttpStatus.CREATED);
+        return new ResponseEntity<>(new Response<>("true","답변 등록 성공",
+                adminService.writeAnswer(answerRegisterDto)), HttpStatus.CREATED);
     }
 }
