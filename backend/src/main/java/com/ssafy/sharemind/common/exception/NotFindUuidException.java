@@ -2,7 +2,7 @@ package com.ssafy.sharemind.common.exception;
 
 public class NotFindUuidException extends RuntimeException{
     public NotFindUuidException() {
-        super();
+        super("uuid에 해당하는 아이디를 찾지 못했습니다.");
     }
 
     public NotFindUuidException(String message) {
