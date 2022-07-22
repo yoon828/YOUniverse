@@ -6,10 +6,7 @@ import com.ssafy.sharemind.common.model.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,9 +16,15 @@ public class ShareRoomController {
     private final ShareRoomService shareRoomService;
 
     @PostMapping
-    public ResponseEntity insert(@RequestBody ShareRoomInsertDto shareRoomInsertDto){
+    public ResponseEntity<?> insert(@RequestBody ShareRoomInsertDto shareRoomInsertDto){
         return new ResponseEntity<>(new Response<>("true","쉐어룸히스토리 정보 등룍 완료",
                 shareRoomService.insertShareRoomHistory(shareRoomInsertDto)), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/list/{uuid}")
+    public ResponseEntity<?> getRoomList(@PathVariable String uuid){
+        return new ResponseEntity<>(new Response<>("true","쉐어룸히스토리 리스트 조회 완료",
+                shareRoomService.getShareRoomHistory(uuid)),HttpStatus.OK);
     }
 
 
