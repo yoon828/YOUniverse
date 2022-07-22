@@ -15,6 +15,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsUtils;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -34,7 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+        httpSecurity.cors().configurationSource(request ->{
+            CorsConfiguration cors = new CorsConfiguration();
+            cors.setAllowedOrigins(Collections.singletonList("*"));
+            cors.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+            cors.setAllowedHeaders(Collections.singletonList("*"));
+            return cors;
+        });
 
         httpSecurity.csrf().disable() // token 을 사용하는 방식이기 때문에 csrf를 disable합니다.
 
@@ -53,14 +63,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/oauth2/authorization/kakao").permitAll()
                 .antMatchers("/test").permitAll()
+                .antMatchers("/health_check").permitAll()
                 .antMatchers("/logout").permitAll()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 
                 .anyRequest().authenticated()  // 나머지 요청들은 인증 필요
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider))
 
-
+                // 로그아웃 설정
+                .and()
+                .logout()
+                .logoutSuccessUrl("/logout-success")
+                .logoutSuccessHandler(oAuth2LogoutSuccessHandler)
 
                 // oauth 로그인 설정
                 .and()

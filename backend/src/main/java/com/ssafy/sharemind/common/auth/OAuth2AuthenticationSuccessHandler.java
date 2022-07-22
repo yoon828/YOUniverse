@@ -13,6 +13,8 @@ import com.ssafy.sharemind.db.entity.User;
 import com.ssafy.sharemind.db.repository.TokenRepository;
 import com.ssafy.sharemind.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -27,6 +29,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final TokenProvider tokenProvider;
     private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
+    private final Environment env;
 
     @Override
     @Transactional
@@ -71,7 +74,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private String makeRedirectUrl(String accessToken, String refreshToken) {
-        return UriComponentsBuilder.fromUriString("http://localhost:8080/test")
+
+        return UriComponentsBuilder.fromUriString(env.getProperty("front.url"))
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)
                 .build().toUriString();

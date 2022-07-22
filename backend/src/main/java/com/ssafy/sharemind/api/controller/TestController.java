@@ -20,9 +20,19 @@ public class TestController {
         return new ResponseEntity<>(accessToken + "\n" + refreshToken, HttpStatus.OK);
     }
 
-    @GetMapping("/test2")
-    public String test2() {
-        return "test2";
+    @GetMapping("/logout-success")
+    public ResponseEntity<String> logout(){
+        return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+    }
+
+    @GetMapping("/health_check")
+    public String health_check() {
+        return "health_check";
+    }
+
+    @GetMapping("/token_check")
+    public String token_check() {
+        return "token_check";
     }
 
     @GetMapping("/token/reissuance/{refreshToken}")
@@ -35,6 +45,4 @@ public class TestController {
         return new ResponseEntity<>(userService.userInfoByToken(authorization.replace("Bearer ", "")),
                 HttpStatus.CREATED);
     }
-
-
 }
