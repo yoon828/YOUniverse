@@ -1,30 +1,66 @@
 package com.ssafy.sharemind.api.service;
 
-import com.ssafy.sharemind.api.response.Response;
+import com.ssafy.sharemind.api.response.QnAResponseDto;
+import com.ssafy.sharemind.api.response.UserMypageResponseDto;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import com.ssafy.sharemind.db.entity.User;
 import com.ssafy.sharemind.db.repository.UserRepository;
-import com.ssafy.sharemind.dto.UserRegisterDto;
+import com.ssafy.sharemind.api.request.UserRegisterDto;
+import com.ssafy.sharemind.api.response.UserRegistResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public User register(UserRegisterDto userRegisterDto) {
+    public UserRegistResponseDto register(UserRegisterDto userRegisterDto) {
+
         User user = User.builder().uuid(userRegisterDto.getUuid())
                 .name(userRegisterDto.getName())
                 .email(userRegisterDto.getEmail())
                 .url(userRegisterDto.getUrl())
                 .imagePath(userRegisterDto.getImagePath()).build();
-        return userRepository.save(user);
+        userRepository.save(user);
+        UserRegistResponseDto userRegistResponseDto =new UserRegistResponseDto().builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .imagePath(user.getImagePath())
+                .url(user.getUrl())
+                .uuid(user.getUuid()).build();
+        return userRegistResponseDto;
     }
 
-    public User findUser(String uuid) {
-        return userRepository.findByUuid(uuid);
+
+    @Transactional(readOnly = true)
+    public UserMypageResponseDto findUser(String uuid) {
+
+        User user =userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
+        UserMypageResponseDto userMypageResponseDto =new UserMypageResponseDto().builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .imagePath(user.getImagePath())
+                .url(user.getUrl())
+                .qnAList(user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
+                        .answer(qnA.getAnswer())
+                        .id(qnA.getId())
+                        .answer_date(qnA.getAnswerDate())
+                        .content(qnA.getContent())
+                        .question_date(qnA.getQuestionDate())
+                        .title(qnA.getTitle())
+                        .uuid(qnA.getUser().getUuid())
+                        .isAnswered(qnA.getIsAnswered())
+                        .build()).collect(Collectors.toList()))
+//                .shareRoomHistoryList(user.getShareRoomHistoryList())
+                .uuid(user.getUuid()).build();
+
+        return userMypageResponseDto;
     }
 
     public void deleteUser(String uuid) {

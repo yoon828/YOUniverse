@@ -1,12 +1,13 @@
 package com.ssafy.sharemind.api.controller;
 
 import com.ssafy.sharemind.api.service.UserService;
-import com.ssafy.sharemind.dto.UserRegisterDto;
+import com.ssafy.sharemind.api.request.UserRegisterDto;
+import com.ssafy.sharemind.api.response.UserRegistResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.ssafy.sharemind.api.response.Response;
+import com.ssafy.sharemind.common.model.Response;
 
 @RequiredArgsConstructor
 @RestController
@@ -15,14 +16,10 @@ public class UserController {
 
     private final UserService userService;
 
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping("/auth")
-//    public Response<?> register(@RequestBody UserRegisterDto userRegisterDto) {
-//        return new Response<>("true", "가입 성공", userService.register(userRegisterDto));
-//    }
 
     @PostMapping("/auth")
     public ResponseEntity<?> register(@RequestBody UserRegisterDto userRegisterDto) {
+
         return new ResponseEntity<>(new Response<>("true", "가입 성공",
                 userService.register(userRegisterDto)), HttpStatus.CREATED);
     }
@@ -30,13 +27,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{uuid}")
     public Response<?> myPage(@PathVariable String uuid) {
+        return new Response<>("true", "조회 성공", userService.findUser(uuid));
 
-        if (userService.findUser(uuid) != null) {
-            return new Response<>("true", "조회 성공", userService.findUser(uuid));
-        } else {
-            return new Response<>("false", uuid + "에 해당하는 아이디를 찾지 못했습니다.",
-                    userService.findUser(uuid));
-        }
     }
 
 

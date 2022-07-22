@@ -8,13 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.beans.Transient;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByUuid(String uuid);
+    Optional<User> findByUuid(String uuid);
 
-    @Transactional
+
     void deleteByUuid(String uuid);
 
 
