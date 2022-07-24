@@ -2,6 +2,7 @@ package com.ssafy.sharemind.api.service;
 
 import com.ssafy.sharemind.api.request.AnswerRegisterDto;
 import com.ssafy.sharemind.api.response.AnswerResponseDto;
+import com.ssafy.sharemind.api.response.QnAResponseDto;
 import com.ssafy.sharemind.common.exception.NotFindQuestionException;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import com.ssafy.sharemind.db.entity.QnA;
@@ -11,7 +12,10 @@ import com.ssafy.sharemind.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +43,24 @@ public class AdminServiceImpl implements AdminService{
 
 
         return answerResponseDto;
+    }
+
+
+    public List<QnAResponseDto> getQnAList(){
+
+        List<QnAResponseDto> list= qnARepository.findAll().stream().map(qnA -> QnAResponseDto.builder()
+                .answer(qnA.getAnswer())
+                .id(qnA.getId())
+                .answer_date(qnA.getAnswerDate())
+                .content(qnA.getContent())
+                .question_date(qnA.getQuestionDate())
+                .title(qnA.getTitle())
+                .uuid(qnA.getUser().getUuid())
+                .isAnswered(qnA.getIsAnswered())
+                .build()).collect(Collectors.toList());
+        Collections.sort(list, (o1, o2)->o2.getQuestion_date().compareTo(o1.getQuestion_date()));
+
+        return list;
     }
 
 

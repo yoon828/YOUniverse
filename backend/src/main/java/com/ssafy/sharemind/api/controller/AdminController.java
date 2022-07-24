@@ -29,4 +29,10 @@ public class AdminController {
                 adminService.writeAnswer(answerRegisterDto)), HttpStatus.CREATED);
 
     }
+
+    @GetMapping("/qna")
+    public ResponseEntity<?> getQnAList(){
+       return new ResponseEntity<>(new Response<>("true","문의 전체 조회 성공",
+               adminService.getQnAList()),HttpStatus.OK);
+    }
 }
