@@ -14,4 +14,5 @@ public interface AdminService {
     AnswerResponseDto writeAnswer(AnswerRegisterDto answerRegisterDto);
     List<QnAResponseDto> getQnAList();
     List<UserRegistResponseDto> getUserList();
+
 }
