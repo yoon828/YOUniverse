@@ -1,5 +1,6 @@
 package com.ssafy.sharemind.api.service;
 
+import com.ssafy.sharemind.api.request.AnswerDeleteDto;
 import com.ssafy.sharemind.api.request.AnswerRegisterDto;
 import com.ssafy.sharemind.api.response.AnswerResponseDto;
 import com.ssafy.sharemind.api.response.QnAResponseDto;
@@ -76,5 +77,20 @@ public class AdminServiceImpl implements AdminService{
         return list;
     }
 
+    public void deleteAnswer(AnswerDeleteDto answerDeleteDto){
+        QnA fQnA=qnARepository.findById(answerDeleteDto.getId()).orElseThrow(NotFindQuestionException::new);
+        User user=userRepository.findByUuid(answerDeleteDto.getUuid()).orElseThrow(NotFindUuidException::new);
+        QnA qnA= QnA.builder().title(fQnA.getTitle())
+                .id(fQnA.getId())
+                .answerDate(null)
+                .answer(null)
+                .content(fQnA.getContent())
+                .isAnswered(false)
+                .questionDate(fQnA.getQuestionDate())
+                .title(fQnA.getTitle())
+                .user(user).build();
+        qnARepository.save(qnA);
+
+    }
 
 }

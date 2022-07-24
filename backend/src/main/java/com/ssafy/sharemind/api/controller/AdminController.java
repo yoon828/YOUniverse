@@ -1,5 +1,6 @@
 package com.ssafy.sharemind.api.controller;
 
+import com.ssafy.sharemind.api.request.AnswerDeleteDto;
 import com.ssafy.sharemind.api.request.AnswerRegisterDto;
 import com.ssafy.sharemind.api.service.AdminService;
 import com.ssafy.sharemind.api.service.UserService;
@@ -48,5 +49,17 @@ public class AdminController {
     public Response<?> deleteUser(@PathVariable String uuid){
         userService.deleteUser(uuid);
         return new Response<>("true", uuid + " 회원을 탈퇴시켰습니다.", true);
+    }
+
+    @DeleteMapping("/answer")
+    public Response<?> deleteAnswer(@RequestBody AnswerDeleteDto answerDeleteDto){
+        System.out.println("sssss");
+        System.out.println("sssss");
+        System.out.println("sssss");
+        System.out.println("sssss");
+        System.out.println("sssss");
+        adminService.deleteAnswer(answerDeleteDto);
+        return new Response<>("true", answerDeleteDto.getId() + " 답변을 삭제시켰습니다.", true);
+
     }
 }

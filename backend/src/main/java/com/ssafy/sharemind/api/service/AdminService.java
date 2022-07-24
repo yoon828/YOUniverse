@@ -1,5 +1,6 @@
 package com.ssafy.sharemind.api.service;
 
+import com.ssafy.sharemind.api.request.AnswerDeleteDto;
 import com.ssafy.sharemind.api.request.AnswerRegisterDto;
 import com.ssafy.sharemind.api.response.AnswerResponseDto;
 import com.ssafy.sharemind.api.response.QnAResponseDto;
@@ -14,5 +15,7 @@ public interface AdminService {
     AnswerResponseDto writeAnswer(AnswerRegisterDto answerRegisterDto);
     List<QnAResponseDto> getQnAList();
     List<UserRegistResponseDto> getUserList();
+
+    void deleteAnswer(AnswerDeleteDto answerDeleteDto);
 
 }
