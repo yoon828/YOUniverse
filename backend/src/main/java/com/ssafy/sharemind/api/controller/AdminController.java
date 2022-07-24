@@ -35,4 +35,10 @@ public class AdminController {
        return new ResponseEntity<>(new Response<>("true","문의 전체 조회 성공",
                adminService.getQnAList()),HttpStatus.OK);
     }
+
+    @GetMapping("/user")
+    public ResponseEntity<?> getUserList(){
+        return new ResponseEntity<>(new Response<>("true","유저 리스트 조회 성공",
+                adminService.getUserList()),HttpStatus.OK);
+    }
 }

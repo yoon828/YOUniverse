@@ -3,6 +3,8 @@ package com.ssafy.sharemind.api.service;
 import com.ssafy.sharemind.api.request.AnswerRegisterDto;
 import com.ssafy.sharemind.api.response.AnswerResponseDto;
 import com.ssafy.sharemind.api.response.QnAResponseDto;
+import com.ssafy.sharemind.api.response.UserMypageResponseDto;
+import com.ssafy.sharemind.api.response.UserRegistResponseDto;
 import com.ssafy.sharemind.common.exception.NotFindQuestionException;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import com.ssafy.sharemind.db.entity.QnA;
@@ -60,6 +62,17 @@ public class AdminServiceImpl implements AdminService{
                 .build()).collect(Collectors.toList());
         Collections.sort(list, (o1, o2)->o2.getQuestion_date().compareTo(o1.getQuestion_date()));
 
+        return list;
+    }
+
+    public List<UserRegistResponseDto> getUserList(){
+        List<UserRegistResponseDto> list=userRepository.findAll().stream().map(user -> UserRegistResponseDto.builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .imagePath(user.getImagePath())
+                .url(user.getUrl())
+                .uuid(user.getUuid())
+                .build()).collect(Collectors.toList());
         return list;
     }
 
