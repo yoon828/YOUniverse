@@ -35,6 +35,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2LogoutSuccessHandler oAuth2LogoutSuccessHandler;
 
+    private static final String[] PERMIT_URL_ARRAY = {
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            /* swagger v3 */
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            /* custom oauth api */
+            "/oauth2/authorization/kakao",
+            "/test",
+            "/health_check",
+            "/logout",
+            "/token/reissuance/*"
+    };
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -61,10 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/oauth2/authorization/kakao").permitAll()
-                .antMatchers("/test").permitAll()
-                .antMatchers("/health_check").permitAll()
-                .antMatchers("/logout").permitAll()
+                .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 
                 .anyRequest().authenticated()  // 나머지 요청들은 인증 필요
