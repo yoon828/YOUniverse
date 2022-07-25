@@ -44,8 +44,6 @@ jwt:
 front:
   url: http://localhost:8080/test
 
-jwt:
-  secret: jwtpassword
 
 logging:
   level:

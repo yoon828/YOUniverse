@@ -64,6 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             cors.setAllowedHeaders(Collections.singletonList("*"));
             return cors;
         });
+//        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+
 
         httpSecurity.csrf().disable() // token 을 사용하는 방식이기 때문에 csrf를 disable합니다.
 

@@ -45,4 +45,5 @@ public class TestController {
         return new ResponseEntity<>(userService.userInfoByToken(authorization.replace("Bearer ", "")),
                 HttpStatus.CREATED);
     }
+
 }

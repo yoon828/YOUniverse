@@ -94,9 +94,6 @@ public class UserServiceImpl implements UserService {
             roomResponseList.add(roomList.get(i));
         }
 
-
-
-
         UserMypageResponseDto userMypageResponseDto =new UserMypageResponseDto().builder()
                 .email(user.getEmail())
                 .name(user.getName())
