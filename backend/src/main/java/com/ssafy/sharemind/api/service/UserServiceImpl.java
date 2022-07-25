@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
     public TokenResponseDto reIssue(String accessToken, String refreshToken) {
         tokenProvider.validateToken(refreshToken);
 
-        String email = tokenProvider.getMemberEmail(accessToken);
+        String email = tokenProvider.getUserUuid(accessToken);
 
         Token token = tokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(TokenNotFoundException::new);
@@ -131,15 +131,15 @@ public class UserServiceImpl implements UserService {
         }
 
         return TokenResponseDto.builder()
-                .accessToken(tokenProvider.createAccessToken(user.getEmail(), user.getName()))
+                .accessToken(tokenProvider.createAccessToken(user.getUuid(), user.getEmail(), user.getName()))
                 .build();
     }
 
     @Transactional(readOnly = true)
     public UserDetailResponseDto userInfoByToken(String accessToken) {
-        String email = tokenProvider.getMemberEmail(accessToken);
+        String uuid = tokenProvider.getUserUuid(accessToken);
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
         return UserDetailResponseDto.builder()
@@ -152,9 +152,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public void logout(String accessToken) {
-        String email = tokenProvider.getMemberEmail(accessToken);
+        String uuid = tokenProvider.getUserUuid(accessToken);
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
         tokenRepository.deleteByUser(user);

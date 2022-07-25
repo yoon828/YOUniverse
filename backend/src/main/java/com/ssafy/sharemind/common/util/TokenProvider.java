@@ -46,14 +46,15 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createAccessToken(String email, String nickname) {
+    public String createAccessToken(String uuid, String email, String nickname) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + this.accessTokenValidityInSeconds);
 
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(uuid)
                 .setIssuedAt(now)
                 .claim("nickname", nickname)
+                .claim("email", email)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
@@ -72,12 +73,12 @@ public class TokenProvider implements InitializingBean {
 
     // 토큰으로 인증 객체를 얻기 위한 메서드
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getMemberEmail(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getUserUuid(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // 토큰에서 회원 정보 추출
-    public String getMemberEmail(String token) {
+    public String getUserUuid(String token) {
         try {
             if (token == null || token.isEmpty()) {
                 throw new TokenNotFoundException();

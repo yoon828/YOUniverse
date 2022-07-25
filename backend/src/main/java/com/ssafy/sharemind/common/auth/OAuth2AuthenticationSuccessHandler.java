@@ -45,7 +45,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String email = (String) kakao_account.get("email");
         Map<String, Object> properties = (Map<String, Object>) oAuth2User.getAttributes().get("properties");
         String nickname = (String) properties.get("nickname");
-        String accessToken = tokenProvider.createAccessToken(email, nickname);
+        String uuid =  oAuth2User.getAttributes().get("id").toString();
+
+        String accessToken = tokenProvider.createAccessToken(uuid, email, nickname);
         String refreshToken = tokenProvider.createRefreshToken();
 
         User user = userRepository.findByEmail(email)

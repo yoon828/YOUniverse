@@ -31,7 +31,14 @@ public class ExceptionAdvice {
         return new Response<>("false", e.getMessage(), null);
 
     }
-
+// io.jsonwebtoken.security.SecurityException
+// MalformedJwtException
+// ExpiredJwtException
+// UnsupportedJwtException
+// IllegalArgumentException
+// TokenNotFoundException
+// UserNotFoundException
+// SignatureException
 
 
 
