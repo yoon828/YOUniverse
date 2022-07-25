@@ -116,12 +116,19 @@ public class UserServiceImpl implements UserService {
 
 
     @Transactional(readOnly = true)
-    public TokenResponseDto reIssue(String refreshToken){
+    public TokenResponseDto reIssue(String accessToken, String refreshToken) {
+        tokenProvider.validateToken(refreshToken);
+
+        String email = tokenProvider.getMemberEmail(accessToken);
 
         Token token = tokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(TokenNotFoundException::new);
 
         User user = token.getUser();
+
+        if (!email.equals(user.getEmail())) {
+            throw new UserNotFoundException("사용자를 찾을 수 없습니다.");
+        }
 
         return TokenResponseDto.builder()
                 .accessToken(tokenProvider.createAccessToken(user.getEmail(), user.getName()))
