@@ -24,8 +24,8 @@ spring:
         registration:
           kakao:
             client-id: 9a207ca169983309ce2fe15d2c1831da
-#            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
-            redirect-uri: http://i7c204.p.ssafy.io:8080/login/oauth2/code/kakao
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+#            redirect-uri: http://i7c204.p.ssafy.io:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: POST
             client-name: Kakao
@@ -46,8 +46,8 @@ jwt:
   refresh-token-validity-in-seconds: 86400
 
 front:
-#  url: http://localhost:8080/test
-  url: http://i7c204.p.ssafy.io:8080/test
+  url: http://localhost:8080/test
+#  url: http://i7c204.p.ssafy.io:8080/test
 
 
 logging:
