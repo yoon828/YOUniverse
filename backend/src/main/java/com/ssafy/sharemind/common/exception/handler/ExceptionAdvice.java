@@ -1,9 +1,11 @@
 package com.ssafy.sharemind.common.exception.handler;
 
-import com.ssafy.sharemind.common.exception.NotFindQuestionException;
-import com.ssafy.sharemind.common.exception.NotFindShareRoomException;
+import com.ssafy.sharemind.common.exception.*;
 import com.ssafy.sharemind.common.model.Response;
-import com.ssafy.sharemind.common.exception.NotFindUuidException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -27,19 +29,65 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(NotFindShareRoomException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response<?> NotFindShareRoomException(NotFindShareRoomException e){
+    public Response<?> notFindShareRoomException(NotFindShareRoomException e){
         return new Response<>("false", e.getMessage(), null);
 
     }
-// io.jsonwebtoken.security.SecurityException
-// MalformedJwtException
-// ExpiredJwtException
-// UnsupportedJwtException
-// IllegalArgumentException
-// TokenNotFoundException
-// UserNotFoundException
-// SignatureException
 
 
+    @ExceptionHandler(SecurityException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<?> securityException(SecurityException e){
+        return new Response<>("false", "잘못된 JWT 서명입니다.", null);
 
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<?> malformedJwtException(MalformedJwtException e){
+        return new Response<>("false", "잘못된 JWT 서명입니다.", null);
+
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<?> expiredJwtException(ExpiredJwtException e){
+        return new Response<>("false", "만료된 JWT 토큰입니다.", null);
+
+    }
+
+    @ExceptionHandler(UnsupportedJwtException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<?> unsupportedJwtException(UnsupportedJwtException e){
+        return new Response<>("false", "지원되지 않는 JWT 토큰입니다.", null);
+
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<?> illegalArgumentException(IllegalArgumentException e){
+        return new Response<>("false", "JWT 토큰이 잘못되었습니다.", null);
+
+    }
+
+    @ExceptionHandler(TokenNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<?> tokenNotFoundException(TokenNotFoundException e){
+        return new Response<>("false", e.getMessage(), null);
+
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<?> userNotFoundException(UserNotFoundException e){
+        return new Response<>("false", e.getMessage(), null);
+
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response<?> SignatureException(SignatureException e){
+        return new Response<>("false", e.getMessage(), null);
+
+    }
 }
