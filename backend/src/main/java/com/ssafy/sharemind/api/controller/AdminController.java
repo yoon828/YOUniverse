@@ -45,19 +45,14 @@ public class AdminController {
                 adminService.getUserList()),HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/{uuid}")
-    public Response<?> deleteUser(@PathVariable String uuid){
-        userService.deleteUser(uuid);
-        return new Response<>("true", uuid + " 회원을 탈퇴시켰습니다.", true);
+    @DeleteMapping("/user")
+    public Response<?> deleteUser(@RequestHeader("authorization") String authorization){
+        userService.deleteUser(authorization.replace("Bearer ", ""));
+        return new Response<>("true", " 회원을 탈퇴시켰습니다.", true);
     }
 
     @DeleteMapping("/answer")
     public Response<?> deleteAnswer(@RequestBody AnswerDeleteDto answerDeleteDto){
-        System.out.println("sssss");
-        System.out.println("sssss");
-        System.out.println("sssss");
-        System.out.println("sssss");
-        System.out.println("sssss");
         adminService.deleteAnswer(answerDeleteDto);
         return new Response<>("true", answerDeleteDto.getId() + " 답변을 삭제시켰습니다.", true);
 

@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Transactional(readOnly = true)
-    public UserMypageResponseDto findUser(String uuid) {
+    public UserMypageResponseDto findUser(String accessToken) {
+        String uuid = tokenProvider.getUserUuid(accessToken);
         User user =userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
         List<QnAResponseDto> qnAList=user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
                 .answer(qnA.getAnswer())
@@ -106,8 +107,11 @@ public class UserServiceImpl implements UserService {
         return userMypageResponseDto;
     }
 
-    public void deleteUser(String uuid) {
 
+    @Transactional
+    public void deleteUser(String accessToken) {
+        String uuid = tokenProvider.getUserUuid(accessToken);
+        tokenRepository.deleteByUuid(uuid);
         userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
         userRepository.deleteByUuid(uuid);
 

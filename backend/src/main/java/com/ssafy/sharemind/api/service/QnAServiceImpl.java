@@ -1,6 +1,5 @@
 package com.ssafy.sharemind.api.service;
 
-import com.ssafy.sharemind.api.response.QnAListForUser;
 import com.ssafy.sharemind.common.exception.NotFindQuestionException;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import com.ssafy.sharemind.db.entity.QnA;
@@ -9,6 +8,7 @@ import com.ssafy.sharemind.db.repository.QnARepository;
 import com.ssafy.sharemind.db.repository.UserRepository;
 import com.ssafy.sharemind.api.request.QnARegisterDto;
 import com.ssafy.sharemind.api.response.QnAResponseDto;
+import com.ssafy.sharemind.common.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +24,8 @@ public class QnAServiceImpl implements QnAService{
     private final QnARepository qnARepository;
 
     private final UserRepository userRepository;
+
+    private final TokenProvider tokenProvider;
 
 
     public QnAResponseDto writeQnA(QnARegisterDto qnARegisterDto){
@@ -49,7 +51,8 @@ public class QnAServiceImpl implements QnAService{
         return qnAResponseDto;
     }
 
-    public List<QnAResponseDto> getQnAList(String uuid){
+    public List<QnAResponseDto> getQnAList(String accessToken){
+        String uuid = tokenProvider.getUserUuid(accessToken);
         User user =userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
 
         List<QnAResponseDto> list= user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()

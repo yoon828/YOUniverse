@@ -22,10 +22,10 @@ public class QnAController {
                 qnAService.writeQnA(qnARegisterDto)), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<?> getQnAList(@PathVariable String uuid){
+    @GetMapping("/list")
+    public ResponseEntity<?> getQnAList(@RequestHeader("authorization") String authorization){
         return new ResponseEntity<>(new Response<>("true","회원 QnA 조회 성공",
-                qnAService.getQnAList(uuid)),HttpStatus.OK);
+                qnAService.getQnAList(authorization.replace("Bearer ", ""))),HttpStatus.OK);
     }
     //    @ResponseStatus(HttpStatus.OK)
 //    @DeleteMapping("/{uuid}")

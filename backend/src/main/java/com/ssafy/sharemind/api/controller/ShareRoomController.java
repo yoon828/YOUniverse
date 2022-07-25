@@ -22,10 +22,10 @@ public class ShareRoomController {
                 shareRoomService.insertShareRoomHistory(shareRoomInsertDto)), HttpStatus.CREATED);
     }
 
-    @GetMapping("/list/{uuid}")
-    public ResponseEntity<?> getRoomList(@PathVariable String uuid){
+    @GetMapping("/list")
+    public ResponseEntity<?> getRoomList(@RequestHeader("authorization") String authorization){
         return new ResponseEntity<>(new Response<>("true","쉐어룸히스토리 리스트 조회 완료",
-                shareRoomService.getShareRoomHistoryByUuid(uuid)),HttpStatus.OK);
+                shareRoomService.getShareRoomHistoryByUuid(authorization.replace("Bearer ", ""))),HttpStatus.OK);
     }
 
     @GetMapping

@@ -9,6 +9,7 @@ import com.ssafy.sharemind.db.entity.ShareRoomHistory;
 import com.ssafy.sharemind.db.entity.User;
 import com.ssafy.sharemind.db.repository.ShareRoomHistoryRepository;
 import com.ssafy.sharemind.db.repository.UserRepository;
+import com.ssafy.sharemind.common.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,11 +28,13 @@ public class ShareRoomServiceImpl implements ShareRoomService {
 
     private final ShareRoomHistoryRepository shareRoomHistoryRepository;
 
+    private final TokenProvider tokenProvider;
 
-    public ShareRoomHistoryResponseDto insertShareRoomHistory(ShareRoomInsertDto shareRoomInsertDto){
-        User user=userRepository.findByUuid(shareRoomInsertDto.getUuid()).orElseThrow(NotFindUuidException::new);
 
-        ShareRoomHistory shareRoomHistory= ShareRoomHistory.builder()
+    public ShareRoomHistoryResponseDto insertShareRoomHistory(ShareRoomInsertDto shareRoomInsertDto) {
+        User user = userRepository.findByUuid(shareRoomInsertDto.getUuid()).orElseThrow(NotFindUuidException::new);
+
+        ShareRoomHistory shareRoomHistory = ShareRoomHistory.builder()
                 .roomName(shareRoomInsertDto.getRoomName())
                 .filePath(shareRoomInsertDto.getFilePath())
                 .hostName(shareRoomInsertDto.getHostName())
@@ -39,8 +42,8 @@ public class ShareRoomServiceImpl implements ShareRoomService {
                 .user(user)
                 .date(new Date()).build();
 
-        ShareRoomHistory shareRoomHistoryResponse =shareRoomHistoryRepository.save(shareRoomHistory);
-        ShareRoomHistoryResponseDto shareRoomHistoryResponseDto= new ShareRoomHistoryResponseDto().builder()
+        ShareRoomHistory shareRoomHistoryResponse = shareRoomHistoryRepository.save(shareRoomHistory);
+        ShareRoomHistoryResponseDto shareRoomHistoryResponseDto = new ShareRoomHistoryResponseDto().builder()
                 .uuid(user.getUuid())
                 .roomName(shareRoomInsertDto.getRoomName())
                 .participants(shareRoomInsertDto.getParticipants())
@@ -52,9 +55,10 @@ public class ShareRoomServiceImpl implements ShareRoomService {
 
     }
 
-    public List<ShareRoomHistoryResponseDto> getShareRoomHistoryByUuid(String uuid){
+    public List<ShareRoomHistoryResponseDto> getShareRoomHistoryByUuid(String accessToken) {
+        String uuid = tokenProvider.getUserUuid(accessToken);
         User user = userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
-        List<ShareRoomHistoryResponseDto> roomList=user.getShareRoomHistoryList().stream().map(shareRoomHistory
+        List<ShareRoomHistoryResponseDto> roomList = user.getShareRoomHistoryList().stream().map(shareRoomHistory
                 -> ShareRoomHistoryResponseDto.builder().roomName(shareRoomHistory.getRoomName())
                 .date(shareRoomHistory.getDate())
                 .filePath(shareRoomHistory.getFilePath())
@@ -63,15 +67,15 @@ public class ShareRoomServiceImpl implements ShareRoomService {
                 .participants(shareRoomHistory.getParticipants())
                 .uuid(shareRoomHistory.getUser().getUuid())
                 .build()).collect(Collectors.toList());
-        Collections.sort(roomList,(o1, o2)->o2.getDate().compareTo(o1.getDate()));
+        Collections.sort(roomList, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
         return roomList;
     }
 
-    public ShareRoomHistoryResponseDto getShareRoomHistoryById(ShareRoomDetailDto shareRoomDetailDto){
+    public ShareRoomHistoryResponseDto getShareRoomHistoryById(ShareRoomDetailDto shareRoomDetailDto) {
 
-        ShareRoomHistory shareRoomHistory=shareRoomHistoryRepository.findById(shareRoomDetailDto.getId())
+        ShareRoomHistory shareRoomHistory = shareRoomHistoryRepository.findById(shareRoomDetailDto.getId())
                 .orElseThrow(NotFindShareRoomException::new);
-        ShareRoomHistoryResponseDto shareRoomHistoryResponseDto= new ShareRoomHistoryResponseDto().builder()
+        ShareRoomHistoryResponseDto shareRoomHistoryResponseDto = new ShareRoomHistoryResponseDto().builder()
                 .uuid(shareRoomDetailDto.getUuid())
                 .roomName(shareRoomHistory.getRoomName())
                 .participants(shareRoomHistory.getParticipants())
