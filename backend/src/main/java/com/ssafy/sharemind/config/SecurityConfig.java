@@ -57,13 +57,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().configurationSource(request ->{
+        httpSecurity.cors().configurationSource(request -> {
             CorsConfiguration cors = new CorsConfiguration();
             cors.setAllowedOrigins(Collections.singletonList("*"));
-            cors.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+            cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             cors.setAllowedHeaders(Collections.singletonList("*"));
             return cors;
         });
+//        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+
 
         httpSecurity.csrf().disable() // token 을 사용하는 방식이기 때문에 csrf를 disable합니다.
 
@@ -100,6 +102,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/login-success")
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .userInfoEndpoint().userService(userOAuth2Service);
-
     }
 }
