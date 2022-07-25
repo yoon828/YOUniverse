@@ -13,8 +13,8 @@ import com.ssafy.sharemind.db.entity.User;
 import com.ssafy.sharemind.db.repository.TokenRepository;
 import com.ssafy.sharemind.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -43,7 +43,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String email = (String) kakao_account.get("email");
         Map<String, Object> properties = (Map<String, Object>) oAuth2User.getAttributes().get("properties");
         String nickname = (String) properties.get("nickname");
-
         String accessToken = tokenProvider.createAccessToken(email, nickname);
         String refreshToken = tokenProvider.createRefreshToken();
 

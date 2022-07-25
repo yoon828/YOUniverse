@@ -57,10 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().configurationSource(request ->{
+        httpSecurity.cors().configurationSource(request -> {
             CorsConfiguration cors = new CorsConfiguration();
             cors.setAllowedOrigins(Collections.singletonList("*"));
-            cors.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+            cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             cors.setAllowedHeaders(Collections.singletonList("*"));
             return cors;
         });
@@ -100,6 +100,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/login-success")
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .userInfoEndpoint().userService(userOAuth2Service);
-
     }
 }
