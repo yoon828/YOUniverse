@@ -1,5 +1,6 @@
 package com.ssafy.sharemind.api.service;
 
+import com.ssafy.sharemind.api.response.UserDetailResponseDto;
 import com.ssafy.sharemind.api.response.UserMypageResponseDto;
 import com.ssafy.sharemind.db.entity.User;
 import com.ssafy.sharemind.api.request.UserRegisterDto;
@@ -12,8 +13,10 @@ public interface UserService {
 
     UserRegistResponseDto register(UserRegisterDto userRegisterDto);
 
-    UserMypageResponseDto findUser(String uuid);
+    UserMypageResponseDto findUser(String accessToken);
 
 
-    void deleteUser(String uuid);
+    void deleteUser(String accessToken);
+
+    UserDetailResponseDto userInfoByToken(String accessToken);
 }

@@ -12,7 +12,7 @@ public interface ShareRoomService {
 
     ShareRoomHistoryResponseDto insertShareRoomHistory(ShareRoomInsertDto shareRoomInsertDto);
 
-    List<ShareRoomHistoryResponseDto> getShareRoomHistoryByUuid(String uuid);
+    List<ShareRoomHistoryResponseDto> getShareRoomHistoryByUuid(String accessToken);
 
     ShareRoomHistoryResponseDto getShareRoomHistoryById(ShareRoomDetailDto shareRoomDetailDto);
 }

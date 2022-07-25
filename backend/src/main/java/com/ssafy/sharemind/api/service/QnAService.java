@@ -12,7 +12,7 @@ import java.util.List;
 public interface QnAService {
 
     QnAResponseDto writeQnA(QnARegisterDto userRegisterDto);
-    List<QnAResponseDto> getQnAList(String uuid);
+    List<QnAResponseDto> getQnAList(String accessToken);
 
     boolean deleteQnA(long id);
 
