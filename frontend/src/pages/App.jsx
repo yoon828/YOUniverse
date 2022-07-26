@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
 import '../common/style/Reset.scss';
-import '../common/style/All.scss';
+import '../common/style/all.scss';
 
 import MainPage from './MainPage';
 import Login from './enter/LoginPage';
