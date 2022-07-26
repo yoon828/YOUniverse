@@ -46,8 +46,8 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/invite" component={Invite} />
         <Route path="/guest" component={Guest} />
-        <Route path="/history" component={HistoryList} />
         <Route path="/history/:historyId" component={HistoryDetail} />
+        <Route path="/history" component={HistoryList} />
         <Route path="/questionlist" component={QnAList} />
         <Route path="/question" component={QnA} />
         <Route path="/share" component={Share} />
