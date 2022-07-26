@@ -1,13 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-type RandomData = {
-  owner: string;
-  title: string;
-  date: string;
-  historyId: number;
-};
-const dataList: RandomData[] = [
+const dataList = [
   {
     owner: 'Germane Wilkins',
     title: 'Swiętokrzyskie',

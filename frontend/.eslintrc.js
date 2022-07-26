@@ -1,14 +1,13 @@
 module.exports = {
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['prettier', 'jsx-a11y', 'react', 'react-hooks', 'import'],
   extends: [
     'airbnb',
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
+    'plugin:react-hooks/recommended'
   ],
   rules: {
     'react/function-component-definition': [
@@ -48,16 +47,12 @@ module.exports = {
       }
     ],
     'jsx-a11y/no-noninteractive-element-interactions': 0,
-    '@typescript-eslint/explicit-module-boundary-types': 0,
-    'prettier/prettier': [
-      'error',
-      { singleQuote: true, parser: 'typescript', endOfLine: 'auto' }
-    ]
+    'prettier/prettier': ['error', { singleQuote: true, endOfLine: 'auto' }]
   },
   settings: {
     'import/resolver': {
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx']
+        extensions: ['.js', '.jsx']
       }
     }
   }

@@ -1,0 +1,21 @@
+// 공통
+$themeFirst: #f6f6f6;
+$themeSecond: #8785a2;
+$themeThird: #211b72;
+
+body {
+  background-color: $themeSecond;
+}
+
+a {
+  text-decoration: none;
+}
+
+@mixin box($height, $width) {
+  background-color: $themeFirst;
+  border-radius: 60px;
+  color: $themeThird;
+  height: $height;
+  width: $width;
+  margin: auto;
+}
