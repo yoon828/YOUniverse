@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import '../common/style/Reset.scss';
 import '../common/style/all.scss';
 
@@ -42,7 +42,7 @@ const App = () => {
         </div>
       </header>
 
-      <Routes>
+      <Switch>
         <Route path="/" element={<MainPage />} />
         <Route path="/:userId" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
@@ -53,7 +53,7 @@ const App = () => {
         <Route path="/questionlist" element={<QnAList />} />
         <Route path="/question" element={<QnA />} />
         <Route path="/share" element={<Share />} />
-      </Routes>
+      </Switch>
     </div>
   );
 };
