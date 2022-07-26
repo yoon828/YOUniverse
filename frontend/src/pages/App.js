@@ -41,18 +41,17 @@ const App = () => {
           </div>
         </div>
       </header>
-
       <Switch>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/:userId" element={<MyPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/invite" element={<Invite />} />
-        <Route path="/guest" element={<Guest />} />
-        <Route path="/history" element={<HistoryList />} />
-        <Route path="/history/:historyId" element={<HistoryDetail />} />
-        <Route path="/questionlist" element={<QnAList />} />
-        <Route path="/question" element={<QnA />} />
-        <Route path="/share" element={<Share />} />
+        <Route exact path="/" component={MainPage} />
+        <Route path="/login" component={Login} />
+        <Route path="/invite" component={Invite} />
+        <Route path="/guest" component={Guest} />
+        <Route path="/history" component={HistoryList} />
+        <Route path="/history/:historyId" component={HistoryDetail} />
+        <Route path="/questionlist" component={QnAList} />
+        <Route path="/question" component={QnA} />
+        <Route path="/share" component={Share} />
+        <Route path="/:userId" component={MyPage} />
       </Switch>
     </div>
   );
