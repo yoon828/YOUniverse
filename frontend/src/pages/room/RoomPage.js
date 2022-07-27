@@ -7,17 +7,17 @@ import UserVideoComponent from './UserVideoComponent';
 const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
-class App extends Component {
+class RoomPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      mySessionId: 'SessionA', // session ID
-      myUserName: 'Participant' + Math.floor(Math.random() * 100), //사용자 이름
+      mySessionId: 'SessionA', // 방 ID (영어와 숫자 조합 또는 영어) - 사용자마다 고유한 값 부여
+      myUserName: 'Participant' + Math.floor(Math.random() * 100), // 사용자 이름
       session: undefined, //session
       mainStreamManager: undefined,
-      publisher: undefined,
-      subscribers: []
+      publisher: undefined, //내 스트림을 다른 사용자들에게 게시
+      subscribers: [] //다른 사용자들의 스트림을 받아오기
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -31,6 +31,7 @@ class App extends Component {
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.onbeforeunload);
+    this.joinSession();
   }
 
   componentWillUnmount() {
@@ -38,7 +39,7 @@ class App extends Component {
   }
 
   onbeforeunload(event) {
-    this.leaveSession(); //session에서 나가기
+    this.leaveSession(); //방에서 나가기
   }
 
   //session ID 변경
@@ -93,11 +94,13 @@ class App extends Component {
         // --- 3) Specify the actions when events take place in the session ---
 
         // On every new Stream received...
+        //스트림 생성
         mySession.on('streamCreated', (event) => {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
           let subscriber = mySession.subscribe(event.stream, undefined);
           let subscribers = this.state.subscribers;
+          //참가자 리스트에 추가
           subscribers.push(subscriber);
 
           // Update the state with the new subscribers
@@ -107,6 +110,7 @@ class App extends Component {
         });
 
         // On every Stream destroyed...
+        //다른 사용자가 나갔을 경우 제거하기
         mySession.on('streamDestroyed', (event) => {
           // Remove the stream from 'subscribers' array
           this.deleteSubscriber(event.stream.streamManager);
@@ -121,6 +125,7 @@ class App extends Component {
 
         // 'getToken' method is simulating what your server-side should do.
         // 'token' parameter should be retrieved and returned by your own backend
+        // tokent얻어오기
         this.getToken().then((token) => {
           // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
@@ -149,6 +154,7 @@ class App extends Component {
 
               // --- 6) Publish your stream ---
 
+              //내 스트림을 다른 사람들에게 publish
               mySession.publish(publisher);
 
               // Set the main video in the page to display our webcam and store our Publisher
@@ -237,7 +243,7 @@ class App extends Component {
 
     return (
       <div className="container">
-        {this.state.session === undefined ? (
+        {/* {this.state.session === undefined ? ( //session이 없으면
           <div id="join">
             <div id="img-div">
               <img
@@ -281,8 +287,7 @@ class App extends Component {
               </form>
             </div>
           </div>
-        ) : null}
-
+        ) : null} */}
         {this.state.session !== undefined ? (
           <div id="session">
             <div id="session-header">
@@ -426,4 +431,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default RoomPage;
