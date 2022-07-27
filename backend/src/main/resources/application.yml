@@ -1,7 +1,12 @@
+server:
+  port: 8000
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/ShareMind?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8
+    #    url: jdbc:mysql://localhost:3306/ShareMind?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8
+    #    url: jdbc:mysql://i7c204.p.ssafy.io:3306/ShareMind?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8
+    # docker
     url: jdbc:mysql://sharemind-db:3306/ShareMind?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8
     username: root
     password: 1234
@@ -25,8 +30,10 @@ spring:
         registration:
           kakao:
             client-id: 9a207ca169983309ce2fe15d2c1831da
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
-#            redirect-uri: http://i7c204.p.ssafy.io:8080/login/oauth2/code/kakao
+            #            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: http://i7c204.p.ssafy.io:8080/login/oauth2/code/kakao
+            # docker
+            #            redirect-uri: http://i7c204.p.ssafy.io:8000/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: POST
             client-name: Kakao
@@ -47,8 +54,10 @@ jwt:
   refresh-token-validity-in-seconds: 86400
 
 front:
-  url: http://localhost:8080/test
-#  url: http://i7c204.p.ssafy.io:8080/test
+  #  url: http://localhost:8080/test
+  url: http://i7c204.p.ssafy.io:8080/test
+  # docker
+#  url: http://i7c204.p.ssafy.io:8000/test
 
 
 logging:
