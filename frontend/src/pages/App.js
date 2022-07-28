@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 import '../common/style/Reset.scss';
 import '../common/style/all.scss';
-
+import '../common/style/app.scss';
 import MainPage from './MainPage';
 import Login from './enter/LoginPage';
 import Guest from './enter/GuestPage';
@@ -17,8 +17,8 @@ import Share from './room/SharePage';
 const App = () => {
   return (
     <div className="App">
-      <header className="MainHeader">
-        <div className="MainLogo">
+      <header className="main_header">
+        <div className="main_header_logo">
           <Link to="/">
             <img
               src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
@@ -26,7 +26,7 @@ const App = () => {
             />
           </Link>
         </div>
-        <div className="MainMenu">
+        <div className="main_header_menu">
           <div>
             <Link to="/share">쉐어룸</Link>
           </div>
