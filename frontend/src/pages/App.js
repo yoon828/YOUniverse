@@ -7,6 +7,7 @@ import MainPage from './MainPage';
 import Login from './enter/LoginPage';
 import Guest from './enter/GuestPage';
 import Invite from './enter/InvitePage';
+import CallBack from './enter/CallBackPage';
 import MyPage from './mypage/MyPage';
 import HistoryList from './mypage/HistoryList';
 import HistoryDetail from './mypage/HistoryDetail';
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="/questionlist" component={QnAList} />
         <Route path="/question" component={QnA} />
         <Route path="/share" component={Share} />
+        <Route path="/oauth/callback" component={CallBack} />
         <Route path="/:userId" component={MyPage} />
       </Switch>
     </div>
