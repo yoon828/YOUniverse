@@ -7,6 +7,7 @@ import com.ssafy.sharemind.common.util.JwtAccessDeniedHandler;
 import com.ssafy.sharemind.common.util.JwtAuthenticationEntryPoint;
 import com.ssafy.sharemind.common.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,7 +16,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,7 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             return cors;
         });
 //        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
-
+        httpSecurity.httpBasic().disable()
+                .cors().configurationSource(configurationSource());
 
         httpSecurity.csrf().disable() // token 을 사용하는 방식이기 때문에 csrf를 disable합니다.
 
@@ -102,5 +106,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/login-success")
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .userInfoEndpoint().userService(userOAuth2Service);
+    }
+
+    @Bean
+    public CorsConfigurationSource configurationSource(){
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
