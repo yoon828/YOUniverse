@@ -1,0 +1,12 @@
+//여기가 초대페이지
+.invite_page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main_logo {
+  > a > img {
+    width: 100px;
+  }
+}

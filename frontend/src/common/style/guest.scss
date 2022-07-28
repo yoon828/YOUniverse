@@ -1,0 +1,12 @@
+//여기가 게스트페이지
+.guest_page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main_logo {
+  > a > img {
+    width: 100px;
+  }
+}
