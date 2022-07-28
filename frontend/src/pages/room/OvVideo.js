@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 
 export default class OpenViduVideoComponent extends Component {
@@ -18,7 +17,6 @@ export default class OpenViduVideoComponent extends Component {
       this.props.streamManager.addVideoElement(this.videoRef.current);
     }
   }
-
   render() {
     return <video autoPlay={true} ref={this.videoRef} />;
   }

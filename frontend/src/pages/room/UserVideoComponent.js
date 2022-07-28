@@ -5,6 +5,7 @@ import OpenViduVideoComponent from './OvVideo';
 export default class UserVideoComponent extends Component {
   getNicknameTag() {
     // Gets the nickName of the user
+    console.log(this.props.streamManager);
     return JSON.parse(this.props.streamManager.stream.connection.data)
       .clientData;
   }

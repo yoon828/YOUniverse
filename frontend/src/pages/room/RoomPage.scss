@@ -1,0 +1,22 @@
+#session-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#stream-container {
+  width: 45vh;
+}
+
+#video-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+video {
+  width: 45vw;
+}
+
+#session-footer {
+  display: flex;
+  justify-content: space-between;
+}

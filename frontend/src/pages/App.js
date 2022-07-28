@@ -13,7 +13,7 @@ import HistoryDetail from './mypage/HistoryDetail';
 import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
 import Share from './room/ShareModal';
-import Room from './room/Room';
+import Room from './room/RoomPage';
 
 const App = () => {
   return (
@@ -24,6 +24,7 @@ const App = () => {
             <img
               src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
               alt="logo"
+              width={50} //이미지가 커서 임시로 설정
             />
           </a>
         </div>

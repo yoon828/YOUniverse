@@ -1,8 +1,16 @@
 /* eslint-disable react/destructuring-assignment */
+/* eslint-disable prettier/prettier */
+import React, { Component } from 'react';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
-import React, { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
+import './RoomPage.scss'
+import CCImg from '../../asset/img/cc.png'
+import SoundImg from '../../asset/img/sound.png'
+import MouthImg from '../../asset/img/mouth.png'
+import ExitImg from '../../asset/img/exit.png'
+import MuteImg from '../../asset/img/mute.png'
+import NocamImg from '../../asset/img/nocam.png'
 
 const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -12,12 +20,14 @@ class RoomPage extends Component {
     super(props);
 
     this.state = {
-      mySessionId: 'SessionA', // 방 ID (영어와 숫자 조합 또는 영어) - 사용자마다 고유한 값 부여
-      myUserName: 'Participant' + Math.floor(Math.random() * 100), // 사용자 이름
-      session: undefined, //session
+      mySessionId: 'SessionA', //세션 이름 (방이름)
+      myUserName: 'Participant' + Math.floor(Math.random() * 100), //사용자 이름
+      session: undefined,
       mainStreamManager: undefined,
-      publisher: undefined, //내 스트림을 다른 사용자들에게 게시
-      subscribers: [] //다른 사용자들의 스트림을 받아오기
+      publisher: undefined, //본인을 다른 사람에게 송출할 때
+      subscribers: [], //다른 사람들을 수신할 때
+      isMute: false,
+      isNocam: false,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -27,42 +37,56 @@ class RoomPage extends Component {
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    this.handleMute = this.handleMute.bind(this);
+    this.handleCam = this.handleCam.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.onbeforeunload);
-    this.joinSession();
+    this.joinSession()
   }
 
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.onbeforeunload);
+    this.leaveSession();
   }
 
   onbeforeunload(event) {
-    this.leaveSession(); //방에서 나가기
+    this.leaveSession();
   }
 
-  //session ID 변경
   handleChangeSessionId(e) {
     this.setState({
       mySessionId: e.target.value
     });
   }
 
-  //사용자 이름 변경
   handleChangeUserName(e) {
     this.setState({
       myUserName: e.target.value
     });
   }
 
-  //
   handleMainVideoStream(stream) {
     if (this.state.mainStreamManager !== stream) {
       this.setState({
         mainStreamManager: stream
       });
     }
+  }
+  handleMute() {
+    this.setState({
+      isMute: !this.state.isMute
+    })
+    console.log(this.state.isMute);
+    this.state.publisher.publishAudio(this.state.isMute)
+  }
+  handleCam() {
+    this.setState({
+      isNocam: !this.state.isNocam
+    })
+    console.log(this.state.isNocam);
+    this.state.publisher.publishVideo(this.state.isNocam)
   }
 
   deleteSubscriber(streamManager) {
@@ -76,7 +100,6 @@ class RoomPage extends Component {
     }
   }
 
-  //방 참가
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
@@ -94,13 +117,11 @@ class RoomPage extends Component {
         // --- 3) Specify the actions when events take place in the session ---
 
         // On every new Stream received...
-        //스트림 생성
         mySession.on('streamCreated', (event) => {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
           let subscriber = mySession.subscribe(event.stream, undefined);
           let subscribers = this.state.subscribers;
-          //참가자 리스트에 추가
           subscribers.push(subscriber);
 
           // Update the state with the new subscribers
@@ -110,7 +131,6 @@ class RoomPage extends Component {
         });
 
         // On every Stream destroyed...
-        //다른 사용자가 나갔을 경우 제거하기
         mySession.on('streamDestroyed', (event) => {
           // Remove the stream from 'subscribers' array
           this.deleteSubscriber(event.stream.streamManager);
@@ -125,7 +145,6 @@ class RoomPage extends Component {
 
         // 'getToken' method is simulating what your server-side should do.
         // 'token' parameter should be retrieved and returned by your own backend
-        // tokent얻어오기
         this.getToken().then((token) => {
           // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
@@ -154,7 +173,6 @@ class RoomPage extends Component {
 
               // --- 6) Publish your stream ---
 
-              //내 스트림을 다른 사람들에게 publish
               mySession.publish(publisher);
 
               // Set the main video in the page to display our webcam and store our Publisher
@@ -176,7 +194,6 @@ class RoomPage extends Component {
     );
   }
 
-  //방 떠나기
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
@@ -196,9 +213,12 @@ class RoomPage extends Component {
       mainStreamManager: undefined,
       publisher: undefined
     });
+
+    //나가기 버튼 누르면 main페이지로 이동
+    this.props.history.push('/');
+
   }
 
-  //카메라 변경
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
@@ -243,64 +263,19 @@ class RoomPage extends Component {
 
     return (
       <div className="container">
-        {/* {this.state.session === undefined ? ( //session이 없으면
-          <div id="join">
-            <div id="img-div">
-              <img
-                src="resources/images/openvidu_grey_bg_transp_cropped.png"
-                alt="OpenVidu logo"
-              />
-            </div>
-            <div id="join-dialog" className="jumbotron vertical-center">
-              <h1> Join a video session </h1>
-              <form className="form-group" onSubmit={this.joinSession}>
-                <p>
-                  <label>Participant: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="userName"
-                    value={myUserName}
-                    onChange={this.handleChangeUserName}
-                    required
-                  />
-                </p>
-                <p>
-                  <label> Session: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="sessionId"
-                    value={mySessionId}
-                    onChange={this.handleChangeSessionId}
-                    required
-                  />
-                </p>
-                <p className="text-center">
-                  <input
-                    className="btn btn-lg btn-success"
-                    name="commit"
-                    type="submit"
-                    value="JOIN"
-                  />
-                </p>
-              </form>
-            </div>
-          </div>
-        ) : null} */}
         {this.state.session !== undefined ? (
           <div id="session">
             <div id="session-header">
-              <h1 id="session-title">{mySessionId}</h1>
-              <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={this.leaveSession}
-                value="Leave session"
-              />
-            </div>
+              <h1 id="session-title">{mySessionId}님의 쉐어룸</h1>
+              <h1 id="session-title">시간 </h1>
 
+              <div id='feature'>
+                <button id='feature-cc'><img src={CCImg} alt='cc' width={50} /></button>
+                <button id='feature-sound '><img src={SoundImg} alt='sound' width={50} /></button>
+                <button id='feature-mouth'><img src={MouthImg} alt='mouth' width={50} /></button>
+              </div>
+            </div>
+            {/* 
             {this.state.mainStreamManager !== undefined ? (
               <div id="main-video" className="col-md-6">
                 <UserVideoComponent
@@ -314,7 +289,7 @@ class RoomPage extends Component {
                   value="Switch Camera"
                 />
               </div>
-            ) : null}
+            ) : null} */}
             <div id="video-container" className="col-md-6">
               {this.state.publisher !== undefined ? (
                 <div
@@ -335,6 +310,25 @@ class RoomPage extends Component {
                   <UserVideoComponent streamManager={sub} />
                 </div>
               ))}
+            </div>
+            <div id="session-footer">
+              <div id='feature'>
+                <button id='feature-mute'><img src={MuteImg} alt='mute' width={50} onClick={this.handleMute} /></button>
+                <button id='feature-nocam '><img src={NocamImg} alt='nocam' width={50} onClick={this.handleCam} /></button>
+                {/* <button id='feature-exit'><img src={ExitImg} alt='exit' width={50} /></button> */}
+                <input
+                  className="btn btn-large btn-danger"
+                  type="button"
+                  id="buttonLeaveSession"
+                  onClick={this.leaveSession}
+                  value="Leave session"
+                />
+              </div>
+              <input
+                className="btn btn-large btn-danger"
+                id="buttonLeaveSession"
+              />
+              <button id="session-share">공유하기</button>
             </div>
           </div>
         ) : null}
@@ -383,16 +377,16 @@ class RoomPage extends Component {
             console.log(error);
             console.warn(
               'No connection to OpenVidu Server. This may be a certificate error at ' +
-                OPENVIDU_SERVER_URL
+              OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  OPENVIDU_SERVER_URL +
-                  '"'
+                OPENVIDU_SERVER_URL +
+                '"\n\nClick OK to navigate and accept it. ' +
+                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                OPENVIDU_SERVER_URL +
+                '"'
               )
             ) {
               window.location.assign(
@@ -410,9 +404,9 @@ class RoomPage extends Component {
       axios
         .post(
           OPENVIDU_SERVER_URL +
-            '/openvidu/api/sessions/' +
-            sessionId +
-            '/connection',
+          '/openvidu/api/sessions/' +
+          sessionId +
+          '/connection',
           data,
           {
             headers: {

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import './common/style/index.scss';
 import App from './pages/App.js';
-// import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker from './pages/room/registerServiceWorker';
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -15,7 +15,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// registerServiceWorker();
+registerServiceWorker();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
