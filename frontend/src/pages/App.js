@@ -17,14 +17,14 @@ import Share from './room/SharePage';
 const App = () => {
   return (
     <div className="App">
-      <header className="MainHeade fr">
+      <header className="MainHeader">
         <div className="MainLogo">
-          <a href="/">
+          <Link to="/">
             <img
               src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
               alt="logo"
             />
-          </a>
+          </Link>
         </div>
         <div className="MainMenu">
           <div>

@@ -10,6 +10,7 @@ export const api = axios.create({
   }
 });
 
+// 코드 참고용
 export const setApiHeaders = () => {
   api.interceptors.request.use(function (config) {
     config.headers.Authorization = `Bearer ${
@@ -19,7 +20,7 @@ export const setApiHeaders = () => {
     return config;
   });
 };
-
+// 코드 참고용
 export const fileApi = axios.create({
   baseURL: 'http://i7c204.p.ssafy.io:8080/',
   headers: {
@@ -30,6 +31,7 @@ export const fileApi = axios.create({
   }
 });
 
+// 코드 참고용
 export const setFileApiHeaders = () => {
   fileApi.interceptors.request.use(function (config) {
     config.headers.Authorization = `Bearer ${
