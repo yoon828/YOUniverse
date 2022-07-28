@@ -39,6 +39,7 @@ class RoomPage extends Component {
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.handleMute = this.handleMute.bind(this);
     this.handleCam = this.handleCam.bind(this);
+    this.countMemeber = this.countMemeber.bind(this);
   }
 
   componentDidMount() {
@@ -100,6 +101,11 @@ class RoomPage extends Component {
     }
   }
 
+  //현재 참가한 사람의 수 
+  countMemeber() {
+    return this.state.subscribers.length + 1;
+  }
+
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
@@ -123,7 +129,6 @@ class RoomPage extends Component {
           let subscriber = mySession.subscribe(event.stream, undefined);
           let subscribers = this.state.subscribers;
           subscribers.push(subscriber);
-
           // Update the state with the new subscribers
           this.setState({
             subscribers: subscribers
@@ -267,6 +272,7 @@ class RoomPage extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">{mySessionId}님의 쉐어룸</h1>
+              <h1 id="session-title">{this.countMemeber()}명</h1>
               <h1 id="session-title">시간 </h1>
 
               <div id='feature'>
