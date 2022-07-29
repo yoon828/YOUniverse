@@ -74,6 +74,13 @@ class RoomPage extends Component {
       });
     }
   }
+  //음소거 on/off 함수
+  handleMute() {
+    this.setState({
+      isMute: !this.state.isMute
+    });
+    this.state.publisher.publishAudio(this.state.isMute);
+  }
 
   deleteSubscriber(streamManager) {
     let subscribers = this.state.subscribers;
