@@ -40,6 +40,7 @@ class RoomPage extends Component {
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.handleMute = this.handleMute.bind(this);
     this.handleCam = this.handleCam.bind(this);
+    this.countUser = this.countUser.bind(this);
   }
 
   componentDidMount() {
@@ -99,6 +100,10 @@ class RoomPage extends Component {
         subscribers: subscribers
       });
     }
+  }
+
+  countUser() {
+    return this.state.subscribers.length + 1;
   }
 
   joinSession() {
@@ -266,7 +271,9 @@ class RoomPage extends Component {
         {this.state.session !== undefined ? (
           <div id="session">
             <div id="session-header">
-              <h1 id="session-title">{mySessionId}님의 쉐어룸</h1>
+              <h1 id="session-title">
+                {mySessionId}님의 쉐어룸({this.countUser()}명)
+              </h1>
               <h1 id="session-title">시간 </h1>
 
               <div id="feature">
@@ -296,6 +303,7 @@ class RoomPage extends Component {
                 />
               </div>
             ) : null} */}
+            {}
             <div id="video-container" className="col-md-6">
               {this.state.publisher !== undefined ? (
                 <div

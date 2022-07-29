@@ -18,5 +18,10 @@ video {
 
 #session-footer {
   display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  width: 100%;
   justify-content: space-between;
+  position: fixed;
+  bottom: 0;
 }
