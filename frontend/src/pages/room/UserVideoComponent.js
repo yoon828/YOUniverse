@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import OpenViduVideoComponent from './OvVideo';
-import '../room/RoomPage.scss';
+import '../room/VideoComponent.scss';
 
 export default class UserVideoComponent extends Component {
   getNicknameTag() {

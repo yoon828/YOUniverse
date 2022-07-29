@@ -10,6 +10,7 @@ const MainPage = () => {
   //redux에서 선언한 reducers 사용할 때
   const dispatch = useDispatch();
 
+  let sessionId = 'sessionA';
   //예시
   const getUser = () => {
     console.log(user);
@@ -27,7 +28,7 @@ const MainPage = () => {
       <button onClick={getUser}>리덕스 테스트</button>
       <button onClick={insertUser}>사용자 값 넣기</button>
       <button onClick={deleteUser}>사용자 제거</button>
-      <Link to="/share">room 활성화</Link>
+      <Link to={`/room/${sessionId}`}>room 활성화</Link>
       <Link to="/question">1:1문의하기</Link>
       <Link to="/:userId">마이페이지</Link>
     </div>

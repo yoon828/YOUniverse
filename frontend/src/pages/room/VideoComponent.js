@@ -4,22 +4,27 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideoComponent from './UserVideoComponent';
-import './RoomPage.scss';
+import './VideoComponent.scss';
 import CCImg from '../../asset/img/cc.png';
 import SoundImg from '../../asset/img/sound.png';
 import MouthImg from '../../asset/img/mouth.png';
-import ExitImg from '../../asset/img/exit.png';
-import MuteImg from '../../asset/img/mute.png';
-import NocamImg from '../../asset/img/nocam.png';
+import {
+  Mic,
+  MicOff,
+  Videocam,
+  VideocamOff,
+  Logout,
+  Share
+} from '@mui/icons-material';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
-class RoomPage extends Component {
+class VideoComponent extends Component {
   constructor(props) {
     super(props);
-
+    console.log(props);
     this.state = {
       mySessionId: 'SessionA', //세션 이름 (방이름)
       myUserName: 'Participant' + Math.floor(Math.random() * 100), //사용자 이름
@@ -228,6 +233,7 @@ class RoomPage extends Component {
       publisher: undefined
     });
 
+    console.log(this.props.history);
     //나가기 버튼 누르면 main페이지로 이동
     this.props.history.push('/');
   }
@@ -334,36 +340,37 @@ class RoomPage extends Component {
             </div>
             <div id="session-footer">
               <div id="feature">
-                <button id="feature-mute">
-                  <img
-                    src={MuteImg}
-                    alt="mute"
-                    width={50}
-                    onClick={this.handleMute}
-                  />
+                <button
+                  onClick={this.handleMute}
+                  className="round-button"
+                  alt="mute"
+                >
+                  {this.state.isMute ? <MicOff /> : <Mic />}
                 </button>
-                <button id="feature-nocam">
-                  <img
-                    src={NocamImg}
-                    alt="nocam"
-                    width={50}
-                    onClick={this.handleCam}
-                  />
+                <button
+                  onClick={this.handleCam}
+                  className="round-button"
+                  alt="nocam"
+                >
+                  {this.state.isNocam ? <VideocamOff /> : <Videocam />}
                 </button>
-                {/* <button id='feature-exit'><img src={ExitImg} alt='exit' width={50} /></button> */}
-                <input
-                  className="btn btn-large btn-danger"
-                  type="button"
-                  id="buttonLeaveSession"
+                <button
                   onClick={this.leaveSession}
-                  value="Leave session"
-                />
+                  className="round-button"
+                  alt="exit"
+                >
+                  <Logout />
+                </button>
               </div>
               <input
-                className="btn btn-large btn-danger"
-                id="buttonLeaveSession"
+                id="input_text"
+                type="text"
+                placeholder="대화 내용을 입력해주세요"
               />
-              <button id="session-share">공유하기</button>
+
+              <button className="round-button" alt="공유하기">
+                <Share />
+              </button>
             </div>
           </div>
         ) : null}
@@ -460,4 +467,4 @@ class RoomPage extends Component {
   }
 }
 
-export default RoomPage;
+export default VideoComponent;

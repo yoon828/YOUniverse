@@ -52,8 +52,7 @@ const App = () => {
         <Route path="/history" component={HistoryList} />
         <Route path="/questionlist" component={QnAList} />
         <Route path="/question" component={QnA} />
-        {/* <Route path="/room/:sessionId" component={Room} /> */}
-        <Route path="/room" component={Room} />
+        <Route path="/room/:sessionId" component={Room} />
         <Route path="/share" component={Share} />
         <Route path="/:userId" component={MyPage} />
       </Switch>
