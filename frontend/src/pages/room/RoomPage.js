@@ -12,7 +12,8 @@ import ExitImg from '../../asset/img/exit.png';
 import MuteImg from '../../asset/img/mute.png';
 import NocamImg from '../../asset/img/nocam.png';
 
-const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
+// const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
+const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
 class RoomPage extends Component {
