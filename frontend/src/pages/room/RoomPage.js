@@ -41,6 +41,7 @@ class RoomPage extends Component {
     this.handleMute = this.handleMute.bind(this);
     this.handleCam = this.handleCam.bind(this);
     this.countUser = this.countUser.bind(this);
+    this.chooseCase = this.chooseCase.bind(this);
   }
 
   componentDidMount() {
@@ -84,6 +85,7 @@ class RoomPage extends Component {
     this.state.publisher.publishAudio(this.state.isMute);
   }
 
+  //영상 on/off
   handleCam() {
     this.setState({
       isNocam: !this.state.isNocam
@@ -104,6 +106,12 @@ class RoomPage extends Component {
 
   countUser() {
     return this.state.subscribers.length + 1;
+  }
+
+  chooseCase() {
+    let count = this.countUser();
+    if (count <= 2) return 'caseA';
+    else return 'caseB';
   }
 
   joinSession() {
@@ -171,7 +179,7 @@ class RoomPage extends Component {
                 videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: '640x480', // The resolution of your video
+                resolution: '580x400', // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
                 mirror: false // Whether to mirror your local video or not
@@ -303,8 +311,7 @@ class RoomPage extends Component {
                 />
               </div>
             ) : null} */}
-            {}
-            <div id="video-container" className="col-md-6">
+            <div id="video-container" className={this.chooseCase()}>
               {this.state.publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
@@ -335,7 +342,7 @@ class RoomPage extends Component {
                     onClick={this.handleMute}
                   />
                 </button>
-                <button id="feature-nocam ">
+                <button id="feature-nocam">
                   <img
                     src={NocamImg}
                     alt="nocam"
