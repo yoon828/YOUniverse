@@ -4,13 +4,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideoComponent from './UserVideoComponent';
-import './RoomPage.scss'
-import CCImg from '../../asset/img/cc.png'
-import SoundImg from '../../asset/img/sound.png'
-import MouthImg from '../../asset/img/mouth.png'
-import ExitImg from '../../asset/img/exit.png'
-import MuteImg from '../../asset/img/mute.png'
-import NocamImg from '../../asset/img/nocam.png'
+import './RoomPage.scss';
+import CCImg from '../../asset/img/cc.png';
+import SoundImg from '../../asset/img/sound.png';
+import MouthImg from '../../asset/img/mouth.png';
+import ExitImg from '../../asset/img/exit.png';
+import MuteImg from '../../asset/img/mute.png';
+import NocamImg from '../../asset/img/nocam.png';
 
 const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -27,7 +27,7 @@ class RoomPage extends Component {
       publisher: undefined, //본인을 다른 사람에게 송출할 때
       subscribers: [], //다른 사람들을 수신할 때
       isMute: false,
-      isNocam: false,
+      isNocam: false
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -43,7 +43,7 @@ class RoomPage extends Component {
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.onbeforeunload);
-    this.joinSession()
+    this.joinSession();
   }
 
   componentWillUnmount() {
@@ -73,20 +73,6 @@ class RoomPage extends Component {
         mainStreamManager: stream
       });
     }
-  }
-  handleMute() {
-    this.setState({
-      isMute: !this.state.isMute
-    })
-    console.log(this.state.isMute);
-    this.state.publisher.publishAudio(this.state.isMute)
-  }
-  handleCam() {
-    this.setState({
-      isNocam: !this.state.isNocam
-    })
-    console.log(this.state.isNocam);
-    this.state.publisher.publishVideo(this.state.isNocam)
   }
 
   deleteSubscriber(streamManager) {
@@ -216,7 +202,6 @@ class RoomPage extends Component {
 
     //나가기 버튼 누르면 main페이지로 이동
     this.props.history.push('/');
-
   }
 
   async switchCamera() {
@@ -269,10 +254,16 @@ class RoomPage extends Component {
               <h1 id="session-title">{mySessionId}님의 쉐어룸</h1>
               <h1 id="session-title">시간 </h1>
 
-              <div id='feature'>
-                <button id='feature-cc'><img src={CCImg} alt='cc' width={50} /></button>
-                <button id='feature-sound '><img src={SoundImg} alt='sound' width={50} /></button>
-                <button id='feature-mouth'><img src={MouthImg} alt='mouth' width={50} /></button>
+              <div id="feature">
+                <button id="feature-cc">
+                  <img src={CCImg} alt="cc" width={50} />
+                </button>
+                <button id="feature-sound ">
+                  <img src={SoundImg} alt="sound" width={50} />
+                </button>
+                <button id="feature-mouth">
+                  <img src={MouthImg} alt="mouth" width={50} />
+                </button>
               </div>
             </div>
             {/* 
@@ -312,9 +303,23 @@ class RoomPage extends Component {
               ))}
             </div>
             <div id="session-footer">
-              <div id='feature'>
-                <button id='feature-mute'><img src={MuteImg} alt='mute' width={50} onClick={this.handleMute} /></button>
-                <button id='feature-nocam '><img src={NocamImg} alt='nocam' width={50} onClick={this.handleCam} /></button>
+              <div id="feature">
+                <button id="feature-mute">
+                  <img
+                    src={MuteImg}
+                    alt="mute"
+                    width={50}
+                    onClick={this.handleMute}
+                  />
+                </button>
+                <button id="feature-nocam ">
+                  <img
+                    src={NocamImg}
+                    alt="nocam"
+                    width={50}
+                    onClick={this.handleCam}
+                  />
+                </button>
                 {/* <button id='feature-exit'><img src={ExitImg} alt='exit' width={50} /></button> */}
                 <input
                   className="btn btn-large btn-danger"
@@ -377,16 +382,16 @@ class RoomPage extends Component {
             console.log(error);
             console.warn(
               'No connection to OpenVidu Server. This may be a certificate error at ' +
-              OPENVIDU_SERVER_URL
+                OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                OPENVIDU_SERVER_URL +
-                '"\n\nClick OK to navigate and accept it. ' +
-                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                OPENVIDU_SERVER_URL +
-                '"'
+                  OPENVIDU_SERVER_URL +
+                  '"\n\nClick OK to navigate and accept it. ' +
+                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                  OPENVIDU_SERVER_URL +
+                  '"'
               )
             ) {
               window.location.assign(
@@ -404,9 +409,9 @@ class RoomPage extends Component {
       axios
         .post(
           OPENVIDU_SERVER_URL +
-          '/openvidu/api/sessions/' +
-          sessionId +
-          '/connection',
+            '/openvidu/api/sessions/' +
+            sessionId +
+            '/connection',
           data,
           {
             headers: {
