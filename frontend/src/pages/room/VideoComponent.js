@@ -27,7 +27,7 @@ class VideoComponent extends Component {
     console.log(props);
     this.state = {
       mySessionId: 'SessionA', //세션 이름 (방이름)
-      myUserName: 'Participant' + Math.floor(Math.random() * 100), //사용자 이름
+      myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined, //본인을 다른 사람에게 송출할 때
@@ -47,6 +47,7 @@ class VideoComponent extends Component {
     this.handleCam = this.handleCam.bind(this);
     this.countUser = this.countUser.bind(this);
     this.chooseCase = this.chooseCase.bind(this);
+    this.exitRoom = this.exitRoom.bind(this);
   }
 
   componentDidMount() {
@@ -213,9 +214,13 @@ class VideoComponent extends Component {
     );
   }
 
+  exitRoom() {
+    this.leaveSession();
+    this.props.props.push('/');
+  }
+
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-
     const mySession = this.state.session;
 
     if (mySession) {
@@ -233,9 +238,8 @@ class VideoComponent extends Component {
       publisher: undefined
     });
 
-    console.log(this.props.history);
     //나가기 버튼 누르면 main페이지로 이동
-    this.props.history.push('/');
+    // this.props.history.push('/');
   }
 
   async switchCamera() {
@@ -355,7 +359,7 @@ class VideoComponent extends Component {
                   {this.state.isNocam ? <VideocamOff /> : <Videocam />}
                 </button>
                 <button
-                  onClick={this.leaveSession}
+                  onClick={this.exitRoom}
                   className="round-button"
                   alt="exit"
                 >
