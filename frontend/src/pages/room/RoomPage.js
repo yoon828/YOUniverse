@@ -82,6 +82,13 @@ class RoomPage extends Component {
     this.state.publisher.publishAudio(this.state.isMute);
   }
 
+  handleCam() {
+    this.setState({
+      isNocam: !this.state.isNocam
+    });
+    this.state.publisher.publishVideo(this.state.isNocam);
+  }
+
   deleteSubscriber(streamManager) {
     let subscribers = this.state.subscribers;
     let index = subscribers.indexOf(streamManager, 0);
