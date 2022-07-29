@@ -19,7 +19,7 @@ public class UserMypageResponseDto {
     private String email;
     private String imagePath;
     private String name;
-    private String url;
+    private String sessionId;
     private List<ShareRoomHistoryResponseDto> shareRoomHistoryList = new ArrayList<>();
     private List<QnAResponseDto> qnAList = new ArrayList<>();
 }

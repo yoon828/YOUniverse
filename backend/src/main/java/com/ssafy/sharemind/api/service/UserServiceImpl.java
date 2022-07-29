@@ -38,14 +38,14 @@ public class UserServiceImpl implements UserService {
         User user = User.builder().uuid(userRegisterDto.getUuid())
                 .name(userRegisterDto.getName())
                 .email(userRegisterDto.getEmail())
-                .url(userRegisterDto.getUrl())
+                .sessionId(userRegisterDto.getSessionId())
                 .imagePath(userRegisterDto.getImagePath()).build();
         userRepository.save(user);
         UserRegistResponseDto userRegistResponseDto =new UserRegistResponseDto().builder()
                 .email(user.getEmail())
                 .name(user.getName())
                 .imagePath(user.getImagePath())
-                .url(user.getUrl())
+                .sessionId(user.getSessionId())
                 .uuid(user.getUuid()).build();
         return userRegistResponseDto;
     }
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .name(user.getName())
                 .imagePath(user.getImagePath())
-                .url(user.getUrl())
+                .sessionId(user.getSessionId())
                 .qnAList(qnAResponseList)
                 .shareRoomHistoryList(roomResponseList)
                 .uuid(user.getUuid()).build();
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .imagePath(user.getImagePath())
                 .uuid(user.getUuid())
-                .url(user.getUrl())
+                .sessionId(user.getSessionId())
                 .build();
     }
 

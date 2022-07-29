@@ -71,7 +71,7 @@ public class AdminServiceImpl implements AdminService{
                 .email(user.getEmail())
                 .name(user.getName())
                 .imagePath(user.getImagePath())
-                .url(user.getUrl())
+                .sessionId(user.getSessionId())
                 .uuid(user.getUuid())
                 .build()).collect(Collectors.toList());
         return list;

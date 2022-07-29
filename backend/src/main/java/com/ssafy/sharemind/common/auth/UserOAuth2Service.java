@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -39,17 +40,28 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         String nickname = (String) properties.get("nickname");
 
         User user = userRepository.findByEmail(email).orElse(null);
-
+        log.info("11111111");
         if (user == null) {
             log.info("가입되지 않은 사용자입니다. DB에 저장합니다.");
             userRepository.save(User.builder()
                     .email(email)
                     .uuid(uuid)
                     .name(nickname)
-                    .url("test URL")
+                    .sessionId(createSessionId(email))
                     .build());
         }
 
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_MEMBER")), attributes, "id");
     }
+
+    private String createSessionId(String email){
+        LocalDateTime now = LocalDateTime.now();
+        int hash = 17;
+        hash = 31 * hash + email.hashCode();
+        hash = 31 * hash + now.hashCode();
+        hash = hash & 0x7fffffff;
+
+        return "ITDA-" + hash;
+    }
+
 }

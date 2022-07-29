@@ -12,6 +12,6 @@ public class UserRegistResponseDto {
     private String email;
     private String imagePath;
     private String name;
-    private String url;
+    private String sessionId;
 
 }

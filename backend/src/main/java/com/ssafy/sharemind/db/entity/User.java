@@ -24,7 +24,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String url;
+    private String sessionId;
 
     private String imagePath;
 
