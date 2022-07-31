@@ -42,11 +42,15 @@ const Page = ({ data }) => {
         .map((v, i) => {
           return (
             <div key={i}>
-              <h3>{v.title}</h3>
+              <h1>{v.roomName}</h1>
               <div>
-                userId = {v.userId}, id = {v.id}
+                <span>id: {v.id}</span>
+                <span>data: {v.data}</span>
+                <span>filePath: {v.filePath}</span>
+                <span>hostName: {v.hostName}</span>
+                <span>participants: {v.participants}</span>
+                <span>uuid: {v.uuid}</span>
               </div>
-              <div>{v.body}</div>
             </div>
           );
         })}

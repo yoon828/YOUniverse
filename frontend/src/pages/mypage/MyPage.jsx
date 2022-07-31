@@ -1,14 +1,15 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import './MyPage.scss';
 
 const MyPage = () => {
-  const { userId } = useParams();
+  const { name, email } = useSelector((state) => state.user.value);
   return (
     <div className="my_page">
       <div className="box">
-        <p>{userId}님의 마이페이지</p>
-        <p>eunyoung950210@gmail.com</p>
+        <p>{name}님의 마이페이지</p>
+        <p>{email}</p>
         <button type="button">회원탈퇴</button>
       </div>
 

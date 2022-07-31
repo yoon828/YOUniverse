@@ -1,9 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 //초기값
-const initialState = { name: '', age: 0, email: '' };
-// const setUser = "setUser" //로그인
-// const getUser = "getUser"; // 유저 정보 불러오기
+const initialState = {
+  uuid: '',
+  email: '',
+  imagePath: null,
+  name: '',
+  url: '',
+  shareRoomHistoryList: [],
+  qnAList: [],
+  sessionId: ''
+};
 
 export const userReducer = createSlice({
   name: 'user',
@@ -11,8 +18,11 @@ export const userReducer = createSlice({
   reducers: {
     insertUser: (state, action) => {
       state.value = action.payload;
+    },
+    resetUser: (state) => {
+      state.value = initialState;
     }
   }
 });
-export const { insertUser } = userReducer.actions;
+export const { insertUser, resetUser } = userReducer.actions;
 export default userReducer.reducer;

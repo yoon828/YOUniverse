@@ -15,35 +15,59 @@ import HistoryDetail from './mypage/HistoryDetail';
 import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
 import Share from './room/SharePage';
+import MyPageModule from 'modules/MyPageModule';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { insertUser } from 'redux/user';
 import _ from 'lodash';
 import PrivateRoute from 'routes/PrivateRoute';
 import { getUser } from 'api/user';
-import { getAccessToken, setApiHeaders } from 'api/api';
+import { setApiHeaders, renewToken } from 'api/api';
+import { deleteToken, renewToken as renewAccessToken } from 'redux/auth';
 
 const App = () => {
+  const expiredMsg = '만료된 JWT 토큰입니다.';
   const isLoggedIn = useSelector(
     (state) => !_.isEmpty(state.auth.value.refreshToken)
   );
   const dispatch = useDispatch();
+  const isExpired = (message) => {
+    if (message === expiredMsg) {
+      return true;
+    }
+    return false;
+  };
 
   useEffect(() => {
+    // localStorage.setItem('accessToken', accessToken);
     if (isLoggedIn) {
       setApiHeaders();
       getUser()
         .then(({ data }) => {
           dispatch(insertUser(data.data));
         })
-        .catch((err) => {
-          console.log('에러발생: ', err);
+        .catch(({ response }) => {
+          if (isExpired(response.data.msg)) {
+            console.log('다시 쏘러감');
+            renewToken()
+              .then(({ data }) => {
+                dispatch(renewAccessToken(data));
+              })
+              .catch(({ response }) => {
+                console.log(response);
+                if (response.data.msg === expiredMsg) {
+                  dispatch(deleteToken());
+                }
+              });
+          }
+          console.log('에러발생: ', response);
         });
       console.log('로그인상태입니다.');
     } else {
       console.log('로그아웃상태입니다.');
     }
-  });
+  }, [isLoggedIn]);
+
   return (
     <div className="App">
       <header className="main_header">
@@ -63,7 +87,7 @@ const App = () => {
             <Link to="/question">1:1문의하기</Link>
           </div>
           <div>
-            <Link to="/:userId">마이페이지</Link>
+            <MyPageModule />
           </div>
           <div>
             <Link to="/login">로그인</Link>
@@ -84,7 +108,7 @@ const App = () => {
         <PrivateRoute path="/questionlist" component={QnAList} />
         <PrivateRoute path="/question" component={QnA} />
         <PrivateRoute path="/share" component={Share} />
-        <PrivateRoute path="/:userId" component={MyPage} />
+        <PrivateRoute path="/:uuid" component={MyPage} />
       </Switch>
     </div>
   );

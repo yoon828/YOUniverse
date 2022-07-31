@@ -15,6 +15,13 @@ export const api = axios.create({
   }
 });
 
+export const renewToken = async (sucess, fail) => {
+  return await api
+    .get(`/token/reissuance/${getRefreshToken()}`)
+    .then(sucess)
+    .catch(fail);
+};
+
 export const setApiHeaders = () => {
   api.interceptors.request.use(function (config) {
     config.headers.Authorization = `Bearer ${getAccessToken()}`;

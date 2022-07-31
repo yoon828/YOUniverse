@@ -15,13 +15,13 @@ export const authReducer = createSlice({
       localStorage.setItem('accessToken', state.value.accessToken);
       localStorage.setItem('refreshToken', state.value.refreshToken);
     },
-    deleteToken: (state, action) => {
-      state.value = action.payload;
+    deleteToken: (state) => {
       localStorage.setItem('accessToken', '');
       localStorage.setItem('refreshToken', '');
+      state.value = initialState;
     },
     renewToken: (state, action) => {
-      state.value.accessToken = action.payload;
+      state.value.accessToken = action.payload.accessToken;
       localStorage.setItem('accessToken', state.value.accessToken);
     }
   }
