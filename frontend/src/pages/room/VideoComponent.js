@@ -24,7 +24,6 @@ const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 class VideoComponent extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       mySessionId: 'SessionA', //세션 이름 (방이름)
       myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
@@ -57,7 +56,7 @@ class VideoComponent extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.onbeforeunload);
-    this.leaveSession();
+    // this.leaveSession();
   }
 
   onbeforeunload(event) {
@@ -132,6 +131,7 @@ class VideoComponent extends Component {
         session: this.OV.initSession()
       },
       () => {
+        console.log(this.state.session);
         let mySession = this.state.session;
 
         // --- 3) Specify the actions when events take place in the session ---
@@ -210,6 +210,7 @@ class VideoComponent extends Component {
               );
             });
         });
+        console.log(this.state.session);
       }
     );
   }
@@ -222,6 +223,7 @@ class VideoComponent extends Component {
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;
+    console.log(mySession);
 
     if (mySession) {
       mySession.disconnect();
@@ -292,7 +294,12 @@ class VideoComponent extends Component {
               <h1 id="session-title">
                 {mySessionId}님의 쉐어룸({this.countUser()}명)
               </h1>
-              <h1 id="session-title">시간 </h1>
+              <h1
+                id="session-title"
+                onClick={() => console.log(this.state.session)}
+              >
+                시간{' '}
+              </h1>
 
               <div id="feature">
                 <button id="feature-cc">
@@ -329,6 +336,7 @@ class VideoComponent extends Component {
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
+                  <UserVideoComponent streamManager={this.state.publisher} />
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
               ) : null}
