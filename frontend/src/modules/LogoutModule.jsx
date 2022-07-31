@@ -5,7 +5,7 @@ import { deleteToken } from 'redux/auth';
 const LogoutModule = () => {
   const dispatch = useDispatch();
   const deleteUser = () => {
-    dispatch(deleteToken({ accessToken: '', refreshToken: '' }));
+    dispatch(deleteToken());
   };
   return (
     <div className="logout_box">

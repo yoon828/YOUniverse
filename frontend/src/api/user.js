@@ -12,3 +12,7 @@ export const dumpHistory = async () => {
 export const getUser = async () => {
   return await api.get('/user');
 };
+
+export const deleteUser = async () => {
+  return await api.delete('/user');
+};
