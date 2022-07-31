@@ -22,6 +22,7 @@ const CallBackPage = () => {
         saveToken({ accessToken: accessToken, refreshToken: refreshToken })
       );
       history.replace('/');
+      // 로그인 후 메인페이지로 이동
     }
   }, [url, dispatch, history]);
 
