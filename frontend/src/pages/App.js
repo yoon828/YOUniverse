@@ -5,8 +5,10 @@ import '../common/style/all.scss';
 import '../common/style/app.scss';
 import MainPage from './MainPage';
 import Login from './enter/LoginPage';
+import LogoutModule from '../module/LogoutModule';
 import Guest from './enter/GuestPage';
 import Invite from './enter/InvitePage';
+import CallBack from './enter/CallBackPage';
 import MyPage from './mypage/MyPage';
 import HistoryList from './mypage/HistoryList';
 import HistoryDetail from './mypage/HistoryDetail';
@@ -37,7 +39,10 @@ const App = () => {
             <Link to="/:userId">마이페이지</Link>
           </div>
           <div>
-            <Link to="/login">로그아웃은 아직</Link>
+            <Link to="/login">로그인</Link>
+          </div>
+          <div>
+            <LogoutModule />
           </div>
         </div>
       </header>
@@ -51,6 +56,7 @@ const App = () => {
         <Route path="/questionlist" component={QnAList} />
         <Route path="/question" component={QnA} />
         <Route path="/share" component={Share} />
+        <Route path="/oauth/callback" component={CallBack} />
         <Route path="/:userId" component={MyPage} />
       </Switch>
     </div>
