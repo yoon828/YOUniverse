@@ -113,9 +113,10 @@ const VideoComponent = () => {
       let subscribers_copy = subscribers;
       subscribers_copy.push(subscriber);
 
-      console.log(subscribers_copy);
+      console.log(subscribers);
       // Update the state with the new subscribers
-      setSubscribers(subscribers_copy);
+      setSubscribers(() => subscribers_copy);
+      console.log(subscribers);
     });
 
     // On every Stream destroyed...
@@ -325,7 +326,9 @@ const VideoComponent = () => {
             <h1 id="session-title">
               {mySessionId}님의 쉐어룸({countUser()}명)
             </h1>
-            <h1 id="session-title">시간 </h1>
+            <h1 id="session-title" onClick={() => console.log(subscribers)}>
+              시간{' '}
+            </h1>
 
             <div id="feature">
               <button id="feature-cc">

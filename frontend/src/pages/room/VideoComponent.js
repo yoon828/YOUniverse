@@ -55,11 +55,12 @@ class VideoComponent extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.onbeforeunload);
-    // this.leaveSession();
+    // window.removeEventListener('beforeunload', this.onbeforeunload);
+    this.onbeforeunload();
   }
 
   onbeforeunload(event) {
+    window.location.reload();
     this.leaveSession();
   }
 
@@ -298,7 +299,7 @@ class VideoComponent extends Component {
                 id="session-title"
                 onClick={() => console.log(this.state.session)}
               >
-                시간{' '}
+                시간
               </h1>
 
               <div id="feature">
@@ -337,7 +338,7 @@ class VideoComponent extends Component {
                   }
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
-                  <UserVideoComponent streamManager={this.state.publisher} />
+                  {/* <UserVideoComponent streamManager={this.state.publisher} /> */}
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
