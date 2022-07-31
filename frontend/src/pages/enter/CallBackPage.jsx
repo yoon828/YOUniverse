@@ -14,9 +14,6 @@ const CallBackPage = () => {
   const refreshToken = url.get('refreshToken');
 
   useEffect(() => {
-    const accessToken = url.get('accessToken');
-    const refreshToken = url.get('refreshToken');
-
     if (accessToken && refreshToken) {
       dispatch(
         saveToken({ accessToken: accessToken, refreshToken: refreshToken })

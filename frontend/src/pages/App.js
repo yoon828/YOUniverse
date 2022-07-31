@@ -5,6 +5,7 @@ import '../common/style/all.scss';
 import '../common/style/app.scss';
 import MainPage from './MainPage';
 import Login from './enter/LoginPage';
+import LogoutModule from '../module/LogoutModule';
 import Guest from './enter/GuestPage';
 import Invite from './enter/InvitePage';
 import CallBack from './enter/CallBackPage';
@@ -38,7 +39,10 @@ const App = () => {
             <Link to="/:userId">마이페이지</Link>
           </div>
           <div>
-            <Link to="/login">로그아웃은 아직</Link>
+            <Link to="/login">로그인</Link>
+          </div>
+          <div>
+            <LogoutModule />
           </div>
         </div>
       </header>
