@@ -16,16 +16,29 @@ import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
 import Share from './room/SharePage';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { insertUser } from 'redux/user';
 import _ from 'lodash';
 import PrivateRoute from 'routes/PrivateRoute';
+import { getUser } from 'api/user';
+import { getAccessToken, setApiHeaders } from 'api/api';
 
 const App = () => {
   const isLoggedIn = useSelector(
     (state) => !_.isEmpty(state.auth.value.refreshToken)
   );
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (isLoggedIn) {
+      setApiHeaders();
+      getUser()
+        .then(({ data }) => {
+          dispatch(insertUser(data.data));
+        })
+        .catch((err) => {
+          console.log('에러발생: ', err);
+        });
       console.log('로그인상태입니다.');
     } else {
       console.log('로그아웃상태입니다.');
