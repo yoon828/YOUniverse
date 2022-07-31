@@ -5,8 +5,6 @@ import { deleteToken } from 'redux/auth';
 const LogoutModule = () => {
   const dispatch = useDispatch();
   const deleteUser = () => {
-    console.log('check');
-    console.log(dispatch(deleteToken));
     dispatch(deleteToken({ accessToken: '', refreshToken: '' }));
   };
   return (

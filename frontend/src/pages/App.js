@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 import '../common/style/Reset.scss';
 import '../common/style/all.scss';
 import '../common/style/app.scss';
 import MainPage from './MainPage';
 import Login from './enter/LoginPage';
-import LogoutModule from '../module/LogoutModule';
+import LogoutModule from '../modules/LogoutModule';
 import Guest from './enter/GuestPage';
 import Invite from './enter/InvitePage';
 import CallBack from './enter/CallBackPage';
@@ -16,7 +16,34 @@ import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
 import Share from './room/SharePage';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { insertUser } from 'redux/user';
+import _ from 'lodash';
+import PrivateRoute from 'routes/PrivateRoute';
+import { getUser } from 'api/user';
+import { getAccessToken, setApiHeaders } from 'api/api';
+
 const App = () => {
+  const isLoggedIn = useSelector(
+    (state) => !_.isEmpty(state.auth.value.refreshToken)
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setApiHeaders();
+      getUser()
+        .then(({ data }) => {
+          dispatch(insertUser(data.data));
+        })
+        .catch((err) => {
+          console.log('에러발생: ', err);
+        });
+      console.log('로그인상태입니다.');
+    } else {
+      console.log('로그아웃상태입니다.');
+    }
+  });
   return (
     <div className="App">
       <header className="main_header">
@@ -47,17 +74,17 @@ const App = () => {
         </div>
       </header>
       <Switch>
-        <Route exact path="/" component={MainPage} />
+        <PrivateRoute exact path="/" component={MainPage} />
         <Route path="/login" component={Login} />
-        <Route path="/invite" component={Invite} />
-        <Route path="/guest" component={Guest} />
-        <Route path="/history/:historyId" component={HistoryDetail} />
-        <Route path="/history" component={HistoryList} />
-        <Route path="/questionlist" component={QnAList} />
-        <Route path="/question" component={QnA} />
-        <Route path="/share" component={Share} />
         <Route path="/oauth/callback" component={CallBack} />
-        <Route path="/:userId" component={MyPage} />
+        <PrivateRoute path="/invite" component={Invite} />
+        <PrivateRoute path="/guest" component={Guest} />
+        <PrivateRoute path="/history/:historyId" component={HistoryDetail} />
+        <PrivateRoute path="/history" component={HistoryList} />
+        <PrivateRoute path="/questionlist" component={QnAList} />
+        <PrivateRoute path="/question" component={QnA} />
+        <PrivateRoute path="/share" component={Share} />
+        <PrivateRoute path="/:userId" component={MyPage} />
       </Switch>
     </div>
   );

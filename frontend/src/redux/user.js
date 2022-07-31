@@ -9,15 +9,10 @@ export const userReducer = createSlice({
   name: 'user',
   initialState: { value: initialState },
   reducers: {
-    //사용자 정보를 받아서 redux에 넣어주기
-    login: (state, action) => {
+    insertUser: (state, action) => {
       state.value = action.payload;
-    },
-    //redux에 있는 값을 제거
-    logout: (state) => {
-      state.value = initialState;
     }
   }
 });
-export const { login, logout } = userReducer.actions;
+export const { insertUser } = userReducer.actions;
 export default userReducer.reducer;
