@@ -4,30 +4,35 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideoComponent from './UserVideoComponent';
-import './RoomPage.scss'
-import CCImg from '../../asset/img/cc.png'
-import SoundImg from '../../asset/img/sound.png'
-import MouthImg from '../../asset/img/mouth.png'
-import ExitImg from '../../asset/img/exit.png'
-import MuteImg from '../../asset/img/mute.png'
-import NocamImg from '../../asset/img/nocam.png'
+import './VideoComponent.scss';
+import CCImg from '../../asset/img/cc.png';
+import SoundImg from '../../asset/img/sound.png';
+import MouthImg from '../../asset/img/mouth.png';
+import {
+  Mic,
+  MicOff,
+  Videocam,
+  VideocamOff,
+  Logout,
+  Share
+} from '@mui/icons-material';
 
-const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
+// const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
+const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
-class RoomPage extends Component {
+class VideoComponent extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       mySessionId: 'SessionA', //세션 이름 (방이름)
-      myUserName: 'Participant' + Math.floor(Math.random() * 100), //사용자 이름
+      myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined, //본인을 다른 사람에게 송출할 때
       subscribers: [], //다른 사람들을 수신할 때
       isMute: false,
-      isNocam: false,
+      isNocam: false
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -39,17 +44,19 @@ class RoomPage extends Component {
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.handleMute = this.handleMute.bind(this);
     this.handleCam = this.handleCam.bind(this);
-    this.countMemeber = this.countMemeber.bind(this);
+    this.countUser = this.countUser.bind(this);
+    this.chooseCase = this.chooseCase.bind(this);
+    this.exitRoom = this.exitRoom.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.onbeforeunload);
-    this.joinSession()
+    this.joinSession();
   }
 
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.onbeforeunload);
-    this.leaveSession();
+    // this.leaveSession();
   }
 
   onbeforeunload(event) {
@@ -75,19 +82,20 @@ class RoomPage extends Component {
       });
     }
   }
+  //음소거 on/off 함수
   handleMute() {
     this.setState({
       isMute: !this.state.isMute
-    })
-    console.log(this.state.isMute);
-    this.state.publisher.publishAudio(this.state.isMute)
+    });
+    this.state.publisher.publishAudio(this.state.isMute);
   }
+
+  //영상 on/off
   handleCam() {
     this.setState({
       isNocam: !this.state.isNocam
-    })
-    console.log(this.state.isNocam);
-    this.state.publisher.publishVideo(this.state.isNocam)
+    });
+    this.state.publisher.publishVideo(this.state.isNocam);
   }
 
   deleteSubscriber(streamManager) {
@@ -101,9 +109,14 @@ class RoomPage extends Component {
     }
   }
 
-  //현재 참가한 사람의 수 
-  countMemeber() {
+  countUser() {
     return this.state.subscribers.length + 1;
+  }
+
+  chooseCase() {
+    let count = this.countUser();
+    if (count <= 2) return 'caseA';
+    else return 'caseB';
   }
 
   joinSession() {
@@ -118,6 +131,7 @@ class RoomPage extends Component {
         session: this.OV.initSession()
       },
       () => {
+        console.log(this.state.session);
         let mySession = this.state.session;
 
         // --- 3) Specify the actions when events take place in the session ---
@@ -170,7 +184,7 @@ class RoomPage extends Component {
                 videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: '640x480', // The resolution of your video
+                resolution: '580x400', // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
                 mirror: false // Whether to mirror your local video or not
@@ -195,14 +209,20 @@ class RoomPage extends Component {
               );
             });
         });
+        console.log(this.state.session);
       }
     );
   }
 
+  exitRoom() {
+    this.leaveSession();
+    this.props.props.push('/');
+  }
+
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-
     const mySession = this.state.session;
+    console.log(mySession);
 
     if (mySession) {
       mySession.disconnect();
@@ -220,8 +240,7 @@ class RoomPage extends Component {
     });
 
     //나가기 버튼 누르면 main페이지로 이동
-    this.props.history.push('/');
-
+    // this.props.history.push('/');
   }
 
   async switchCamera() {
@@ -271,14 +290,26 @@ class RoomPage extends Component {
         {this.state.session !== undefined ? (
           <div id="session">
             <div id="session-header">
-              <h1 id="session-title">{mySessionId}님의 쉐어룸</h1>
-              <h1 id="session-title">{this.countMemeber()}명</h1>
-              <h1 id="session-title">시간 </h1>
+              <h1 id="session-title">
+                {mySessionId}님의 쉐어룸({this.countUser()}명)
+              </h1>
+              <h1
+                id="session-title"
+                onClick={() => console.log(this.state.session)}
+              >
+                시간{' '}
+              </h1>
 
-              <div id='feature'>
-                <button id='feature-cc'><img src={CCImg} alt='cc' width={50} /></button>
-                <button id='feature-sound '><img src={SoundImg} alt='sound' width={50} /></button>
-                <button id='feature-mouth'><img src={MouthImg} alt='mouth' width={50} /></button>
+              <div id="feature">
+                <button id="feature-cc">
+                  <img src={CCImg} alt="cc" width={50} />
+                </button>
+                <button id="feature-sound ">
+                  <img src={SoundImg} alt="sound" width={50} />
+                </button>
+                <button id="feature-mouth">
+                  <img src={MouthImg} alt="mouth" width={50} />
+                </button>
               </div>
             </div>
             {/* 
@@ -296,7 +327,7 @@ class RoomPage extends Component {
                 />
               </div>
             ) : null} */}
-            <div id="video-container" className="col-md-6">
+            <div id="video-container" className={this.chooseCase()}>
               {this.state.publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
@@ -304,6 +335,7 @@ class RoomPage extends Component {
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
+                  <UserVideoComponent streamManager={this.state.publisher} />
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
               ) : null}
@@ -318,23 +350,38 @@ class RoomPage extends Component {
               ))}
             </div>
             <div id="session-footer">
-              <div id='feature'>
-                <button id='feature-mute'><img src={MuteImg} alt='mute' width={50} onClick={this.handleMute} /></button>
-                <button id='feature-nocam '><img src={NocamImg} alt='nocam' width={50} onClick={this.handleCam} /></button>
-                {/* <button id='feature-exit'><img src={ExitImg} alt='exit' width={50} /></button> */}
-                <input
-                  className="btn btn-large btn-danger"
-                  type="button"
-                  id="buttonLeaveSession"
-                  onClick={this.leaveSession}
-                  value="Leave session"
-                />
+              <div id="feature">
+                <button
+                  onClick={this.handleMute}
+                  className="round-button"
+                  alt="mute"
+                >
+                  {this.state.isMute ? <MicOff /> : <Mic />}
+                </button>
+                <button
+                  onClick={this.handleCam}
+                  className="round-button"
+                  alt="nocam"
+                >
+                  {this.state.isNocam ? <VideocamOff /> : <Videocam />}
+                </button>
+                <button
+                  onClick={this.exitRoom}
+                  className="round-button"
+                  alt="exit"
+                >
+                  <Logout />
+                </button>
               </div>
               <input
-                className="btn btn-large btn-danger"
-                id="buttonLeaveSession"
+                id="input_text"
+                type="text"
+                placeholder="대화 내용을 입력해주세요"
               />
-              <button id="session-share">공유하기</button>
+
+              <button className="round-button" alt="공유하기">
+                <Share />
+              </button>
             </div>
           </div>
         ) : null}
@@ -431,4 +478,4 @@ class RoomPage extends Component {
   }
 }
 
-export default RoomPage;
+export default VideoComponent;

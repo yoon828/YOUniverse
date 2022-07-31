@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 import '../common/style/Reset.scss';
 import '../common/style/all.scss';
-
+import '../common/style/app.scss';
 import MainPage from './MainPage';
 import Login from './enter/LoginPage';
 import Guest from './enter/GuestPage';
@@ -14,21 +14,22 @@ import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
 import Share from './room/ShareModal';
 import Room from './room/RoomPage';
+import RoomTest from './room/Room';
 
 const App = () => {
   return (
     <div className="App">
-      <header className="MainHeade fr">
-        <div className="MainLogo">
-          <a href="/">
+      <header className="main_header">
+        <div className="main_header_logo">
+          <Link to="/">
             <img
               src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
               alt="logo"
               width={50} //이미지가 커서 임시로 설정
             />
-          </a>
+          </Link>
         </div>
-        <div className="MainMenu">
+        <div className="main_header_menu">
           <div>
             <Link to="/share">쉐어룸</Link>
           </div>
@@ -52,8 +53,8 @@ const App = () => {
         <Route path="/history" component={HistoryList} />
         <Route path="/questionlist" component={QnAList} />
         <Route path="/question" component={QnA} />
-        {/* <Route path="/room/:sessionId" component={Room} /> */}
-        <Route path="/room" component={Room} />
+        <Route path="/room/test" component={RoomTest} />
+        <Route path="/room/:sessionId" component={Room} />
         <Route path="/share" component={Share} />
         <Route path="/:userId" component={MyPage} />
       </Switch>
