@@ -26,7 +26,7 @@ class VideoComponent extends Component {
     super(props);
     console.log(props);
     this.state = {
-      mySessionId: 'SessionA', //세션 이름 (방이름)
+      mySessionId: 'SessionES', //세션 이름 (방이름)
       myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
