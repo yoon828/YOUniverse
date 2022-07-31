@@ -61,7 +61,7 @@ const App = () => {
         </div>
       </header>
       <Switch>
-        <Route exact path="/" component={MainPage} />
+        <PrivateRoute exact path="/" component={MainPage} />
         <Route path="/login" component={Login} />
         <Route path="/oauth/callback" component={CallBack} />
         <PrivateRoute path="/invite" component={Invite} />
