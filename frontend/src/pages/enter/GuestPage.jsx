@@ -1,15 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import '../../common/style/Reset.scss';
+import '../../common/style/all.scss';
+import '../../common/style/guest.scss';
 
 const Guest = () => {
   return (
-    <>
-      <div className="MainLogo">
-        <a href="/">
+    <div className="guest_page">
+      <div className="main_logo">
+        <Link to="/">
           <img
             src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
             alt="logo"
           />
-        </a>
+        </Link>
       </div>
       <div className="LoginBox">
         <div className="LoginBoxText">이름을 입력해주세요.</div>
@@ -18,7 +22,7 @@ const Guest = () => {
         </div>
         <div className="KaKaoLogin">확인</div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -2,11 +2,13 @@ import React from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 import '../common/style/Reset.scss';
 import '../common/style/all.scss';
-
+import '../common/style/app.scss';
 import MainPage from './MainPage';
 import Login from './enter/LoginPage';
+import LogoutModule from '../module/LogoutModule';
 import Guest from './enter/GuestPage';
 import Invite from './enter/InvitePage';
+import CallBack from './enter/CallBackPage';
 import MyPage from './mypage/MyPage';
 import HistoryList from './mypage/HistoryList';
 import HistoryDetail from './mypage/HistoryDetail';
@@ -17,8 +19,8 @@ import Share from './room/SharePage';
 const App = () => {
   return (
     <div className="App">
-      <header className="MainHeader">
-        <div className="MainLogo">
+      <header className="main_header">
+        <div className="main_header_logo">
           <Link to="/">
             <img
               src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
@@ -26,7 +28,7 @@ const App = () => {
             />
           </Link>
         </div>
-        <div className="MainMenu">
+        <div className="main_header_menu">
           <div>
             <Link to="/share">쉐어룸</Link>
           </div>
@@ -37,7 +39,10 @@ const App = () => {
             <Link to="/:userId">마이페이지</Link>
           </div>
           <div>
-            <Link to="/login">로그아웃은 아직</Link>
+            <Link to="/login">로그인</Link>
+          </div>
+          <div>
+            <LogoutModule />
           </div>
         </div>
       </header>
@@ -51,6 +56,7 @@ const App = () => {
         <Route path="/questionlist" component={QnAList} />
         <Route path="/question" component={QnA} />
         <Route path="/share" component={Share} />
+        <Route path="/oauth/callback" component={CallBack} />
         <Route path="/:userId" component={MyPage} />
       </Switch>
     </div>
