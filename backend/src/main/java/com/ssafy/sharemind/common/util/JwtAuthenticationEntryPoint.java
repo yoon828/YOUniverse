@@ -29,7 +29,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.getWriter().write(objectMapper.writeValueAsString(
                 JsonDto.builder()
                         .success(false)
-                        .msg(String.valueOf(request.getAttribute("exception")))
+                        .message(String.valueOf(request.getAttribute("exception")))
                         .build()
         ));
     }

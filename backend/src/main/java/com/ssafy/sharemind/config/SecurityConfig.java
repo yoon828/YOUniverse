@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             /* swagger v3 */
             "/v3/api-docs/**",
             "/swagger-ui/**",
+            "/favicon.ico",
             /* custom oauth api */
             "/oauth2/authorization/kakao",
             "/test",
