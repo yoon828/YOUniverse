@@ -56,15 +56,15 @@ function onDecreaseScoreThreshold() {
   // updateResults();
 }
 
-function onIncreaseMinFaceSize() {
-  minFaceSize = Math.min(faceapi.utils.round(minFaceSize + 20), 300);
-  $('#minFaceSize').val(minFaceSize);
-}
+// function onIncreaseMinFaceSize() {
+//   minFaceSize = Math.min(faceapi.utils.round(minFaceSize + 20), 300);
+//   $('#minFaceSize').val(minFaceSize);
+// }
 
-function onDecreaseMinFaceSize() {
-  minFaceSize = Math.max(faceapi.utils.round(minFaceSize - 20), 50);
-  $('#minFaceSize').val(minFaceSize);
-}
+// function onDecreaseMinFaceSize() {
+//   minFaceSize = Math.max(faceapi.utils.round(minFaceSize - 20), 50);
+//   $('#minFaceSize').val(minFaceSize);
+// }
 
 function getCurrentFaceDetectionNet() {
   if (selectedFaceDetector === SSD_MOBILENETV1) {

@@ -59,7 +59,6 @@ const App = () => {
         <Route path="/room/:sessionId" component={Room} />
         <Route path="/share" component={Share} />
         <Route path="/:userId" component={MyPage} />
-        <Route path="/:userId" component={MyPage} />
       </Switch>
     </div>
   );
