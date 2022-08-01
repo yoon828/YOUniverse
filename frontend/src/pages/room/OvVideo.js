@@ -48,35 +48,43 @@ export default class OpenViduVideoComponent extends Component {
             this.videoRef.current,
             new faceapi.TinyFaceDetectorOptions()
           )
-          .withFaceLandmarks()
-          .withFaceExpressions();
+          .withFaceLandmarks();
+        // .withFaceExpressions();
 
-        const resizedDetections = faceapi.resizeResults(
-          detections,
-          displaySize
-        );
+        // const resizedDetections = faceapi.resizeResults(
+        //   detections,
+        //   displaySize
+        // );
+
+        const dets = detections[0]?.landmarks.getMouth();
+        if (dets) {
+          console.log(dets);
+        }
 
         this.canvasRef &&
           this.canvasRef.current &&
           this.canvasRef.current.getContext('2d').clearRect(0, 0, 281, 194);
-        this.canvasRef &&
-          this.canvasRef.current &&
-          faceapi.draw.drawDetections(
-            this.canvasRef.current,
-            resizedDetections
-          );
-        this.canvasRef &&
-          this.canvasRef.current &&
-          faceapi.draw.drawFaceLandmarks(
-            this.canvasRef.current,
-            resizedDetections
-          );
-        this.canvasRef &&
-          this.canvasRef.current &&
-          faceapi.draw.drawFaceExpressions(
-            this.canvasRef.current,
-            resizedDetections
-          );
+
+        // this.canvasRef &&
+        //   this.canvasRef.current &&
+        //   faceapi.draw.drawDetections(
+        //     this.canvasRef.current,
+        //     resizedDetections
+        //   );
+
+        // this.canvasRef &&
+        //   this.canvasRef.current &&
+        //   faceapi.draw.drawFaceLandmarks(
+        //     this.canvasRef.current,
+        //     resizedDetections
+        //   );
+
+        // this.canvasRef &&
+        //   this.canvasRef.current &&
+        //   faceapi.draw.drawFaceExpressions(
+        //     this.canvasRef.current,
+        //     resizedDetections
+        //   );
       }
     }, 100);
   };
