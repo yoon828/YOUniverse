@@ -32,9 +32,7 @@ recognition.continuous = true;
 // maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
 recognition.maxAlternatives = 100000;
 let speechToText = "";
-console.log("봐라1");
 console.log(recognition);
-console.log("봐라2");
 class VideoComponent extends Component {
   constructor(props) {
     super(props);
@@ -71,10 +69,8 @@ class VideoComponent extends Component {
     
     recognition.addEventListener("result", (e) => {
       let interimTranscript = "";
-      // console.log(e);
       for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
         let transcript = e.results[i][0].transcript;
-        // console.log(transcript);
         if (e.results[i].isFinal) {
           speechToText += transcript;
         } else {
@@ -84,10 +80,9 @@ class VideoComponent extends Component {
 
       // speechToText : 지금까지 누적으로 대화한 내용 ( 처음부터... 발화가 끊기기 전 것도)
       // interimTranscript : 방금 전의 발화 (한 문장)
-      // document.querySelector(".para").innerHTML = speechToText + interimTranscript;
       // console.log(speechToText);
-      // console.log(speechToText + interimTranscript);
       console.log(interimTranscript);
+      // console.log(speechToText + interimTranscript);
       // 여기다가 서버로 닉네임 + interimTranscript 보내기
       // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
 
