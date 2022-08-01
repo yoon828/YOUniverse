@@ -31,15 +31,18 @@ const App = () => {
     (state) => !_.isEmpty(state.auth.value.refreshToken)
   );
   const dispatch = useDispatch();
-  const isExpired = (message) => {
+  const isTokenExpired = (message) => {
     if (message === expiredMsg) {
       return true;
     }
     return false;
   };
 
+  /* 
+  유저 정보 받아오는 useEffect
+  콜백 지옥 그 자체.... 후에 리팩토링 하겠습니다.
+  */
   useEffect(() => {
-    // localStorage.setItem('accessToken', accessToken);
     if (isLoggedIn) {
       setApiHeaders();
       getUser()
@@ -47,11 +50,16 @@ const App = () => {
           dispatch(insertUser(data.data));
         })
         .catch(({ response }) => {
-          if (isExpired(response.data.msg)) {
+          if (isTokenExpired(response.data.message)) {
             console.log('다시 쏘러감');
             renewToken()
               .then(({ data }) => {
+                console.log(data, '드디어 갱신 성공');
                 dispatch(renewAccessToken(data));
+                getUser().then(({ data }) => {
+                  dispatch(insertUser(data.data));
+                  console.log(data);
+                });
               })
               .catch(({ response }) => {
                 console.log(response);
@@ -66,7 +74,7 @@ const App = () => {
     } else {
       console.log('로그아웃상태입니다.');
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, dispatch]);
 
   return (
     <div className="App">
