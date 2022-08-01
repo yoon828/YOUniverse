@@ -8,5 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 public class JsonDto {
     private boolean success;
-    private String msg;
+    private String message;
 }
