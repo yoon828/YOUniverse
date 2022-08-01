@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import * as faceapi from 'face-api.js';
+import './OvVideo.scss';
 
-const MODEL_URL = process.env.PUBLIC_URL + '/models';
+const MODEL_URL = '/models';
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
@@ -13,20 +14,29 @@ Promise.all([
 export default class OpenViduVideoComponent extends Component {
   constructor(props) {
     super(props);
-    this.videoRef = React.createRef();
+    this.videoRef1 = React.createRef();
+    this.videoRef2 = React.createRef();
     this.canvasRef = React.createRef();
   }
 
   componentDidUpdate(props) {
-    if (props && !!this.videoRef) {
-      let video = this.videoRef.current;
+    if (props && !!this.videoRef1) {
+      let video = this.videoRef1.current;
+      this.props.streamManager.addVideoElement(video);
+    }
+    if (props && !!this.videoRef2) {
+      let video = this.videoRef2.current;
       this.props.streamManager.addVideoElement(video);
     }
   }
 
   componentDidMount() {
-    if (this.props && !!this.videoRef) {
-      let video = this.videoRef.current;
+    if (this.props && !!this.videoRef1) {
+      let video = this.videoRef1.current;
+      this.props.streamManager.addVideoElement(video);
+    }
+    if (this.props && !!this.videoRef2) {
+      let video = this.videoRef2.current;
       this.props.streamManager.addVideoElement(video);
     }
   }
@@ -34,7 +44,7 @@ export default class OpenViduVideoComponent extends Component {
     setInterval(async () => {
       if (this.canvasRef && this.canvasRef.current) {
         this.canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
-          this.videoRef.current
+          this.videoRef1.current
         );
         const displaySize = {
           width: 281,
@@ -45,7 +55,7 @@ export default class OpenViduVideoComponent extends Component {
 
         const detections = await faceapi
           .detectAllFaces(
-            this.videoRef.current,
+            this.videoRef1.current,
             new faceapi.TinyFaceDetectorOptions()
           )
           .withFaceLandmarks();
@@ -91,15 +101,19 @@ export default class OpenViduVideoComponent extends Component {
   render() {
     return (
       <div
+        id="ov"
         style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
       >
         <video
           autoPlay={true}
-          ref={this.videoRef}
+          ref={this.videoRef1}
           onPlay={this.handleVideoOnPlay}
           style={{ borderRadius: '10px' }}
         />
         <canvas ref={this.canvasRef} style={{ position: 'absolute' }} />
+        <div className="mouth">
+          <video autoPlay={true} ref={this.videoRef2} />
+        </div>
       </div>
     );
   }
