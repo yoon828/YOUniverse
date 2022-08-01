@@ -1,8 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
+import React, { useState, useEffect } from 'react';
 import UserVideoComponent from './UserVideoComponent';
 import './VideoComponent.scss';
 import CCImg from '../../asset/img/cc.png';
@@ -22,41 +21,47 @@ import { useHistory } from 'react-router-dom';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
-const VideoComponent = () => {
+const RoomPage = () => {
   const [mySessionId, setMySessionId] = useState('SessionA');
   const [myUserName, setMyUserName] = useState(
     '김모씨' + Math.floor(Math.random() * 100)
   );
-  let _session = null;
   const [session, setSession] = useState(new OpenVidu().initSession());
   const [mainStreamManager, setMainStreamManager] = useState(undefined);
   const [currentVideoDevice, setCurrentVideoDevice] = useState(undefined);
   const [publisher, setPublisher] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
+  const [OV, setOV] = useState(null);
   const [isMute, setIsMute] = useState(false);
   const [isNocam, setIsNocam] = useState(false);
 
   const history = useHistory();
 
-  useEffect(() => {
-    window.addEventListener('beforeunload', onbeforeunload);
-    joinSession();
+  const test = () => {
+    console.log(session);
+  };
 
+  // --- 2) Init a session ---
+
+  useEffect(async () => {
+    await joinSession();
+    setTimeout(() => {
+      window.addEventListener('beforeunload', onbeforeunload);
+      window.addEventListener('click', test);
+    }, 1000);
     return () => {
-      // leaveSession();
-      console.log('페이지 나가기');
       window.removeEventListener('beforeunload', onbeforeunload);
-      // alert('멈춰');
+      // leaveSession();
     };
   }, []);
 
-  useEffect(() => {
-    console.log('change sub');
-    console.log(subscribers);
-  }, [subscribers]);
-
   const onbeforeunload = (event) => {
-    leaveSession();
+    console.log(
+      '나가기나가기나가기나가기나가기나가기나가기나가기나가기나가기나가기나가기나가기나가기나가기나가기나가기나가기ㅍ'
+    );
+    console.log('---session : ' + session);
+
+    leaveSession(event); //방에서 나가기
   };
 
   const handleMainVideoStream = (stream) => {
@@ -64,26 +69,27 @@ const VideoComponent = () => {
       setMainStreamManager(stream);
     }
   };
-  //음소거 on/off 함수
-  const handleMute = () => {
-    setIsMute(!isMute);
-    publisher.publishAudio(!isMute);
-  };
-  //영상 on/off
-  const handleCam = () => {
-    // console.log('first');
-    setIsNocam(() => !isNocam);
-    publisher.publishVideo(isNocam);
-  };
+
   const deleteSubscriber = (streamManager) => {
     let subscribers_copy = subscribers;
-    let index = subscribers_copy.indexOf(streamManager, 0);
+    let index = subscribers.indexOf(streamManager, 0);
     if (index > -1) {
       subscribers_copy.splice(index, 1);
-      console.log(subscribers_copy);
       setSubscribers(subscribers_copy);
     }
   };
+  //음소거 on/off 함수
+  const handleMute = () => {
+    setIsMute(!isMute);
+    publisher.publishAudio(isMute);
+  };
+
+  //영상 on/off
+  const handleCam = () => {
+    setIsNocam(!isNocam);
+    publisher.publishVideo(isNocam);
+  };
+
   const countUser = () => {
     return subscribers.length + 1;
   };
@@ -94,39 +100,41 @@ const VideoComponent = () => {
     else return 'caseB';
   };
 
-  const joinSession = () => {
+  //방 참가
+  const joinSession = async () => {
     // --- 1) Get an OpenVidu object ---
-
-    const OV = new OpenVidu();
-
+    const ov = new OpenVidu();
     // --- 2) Init a session ---
-    let mySession = OV.initSession();
-    _session = OV.initSession();
+
+    let mySession = ov.initSession();
+    console.log(mySession);
+    setSession(() => mySession);
+
     // --- 3) Specify the actions when events take place in the session ---
 
     // On every new Stream received...
-    _session.on('streamCreated', (event) => {
+    //스트림 생성
+    mySession.on('streamCreated', (event) => {
       // Subscribe to the Stream to receive it. Second parameter is undefined
       // so OpenVidu doesn't create an HTML video by its own
-      let subscriber = _session.subscribe(event.stream, undefined);
-      console.log(subscriber);
+      let subscriber = mySession.subscribe(event.stream, undefined);
       let subscribers_copy = subscribers;
+      //참가자 리스트에 추가
       subscribers_copy.push(subscriber);
 
-      console.log(subscribers);
       // Update the state with the new subscribers
-      setSubscribers(() => subscribers_copy);
-      console.log(subscribers);
+      setSubscribers(subscribers_copy);
     });
 
     // On every Stream destroyed...
-    _session.on('streamDestroyed', (event) => {
+    //다른 사용자가 나갔을 경우 제거하기
+    mySession.on('streamDestroyed', (event) => {
       // Remove the stream from 'subscribers' array
       deleteSubscriber(event.stream.streamManager);
     });
 
     // On every asynchronous exception...
-    _session.on('exception', (exception) => {
+    mySession.on('exception', (exception) => {
       console.warn(exception);
     });
 
@@ -134,13 +142,14 @@ const VideoComponent = () => {
 
     // 'getToken' method is simulating what your server-side should do.
     // 'token' parameter should be retrieved and returned by your own backend
+    // tokent얻어오기
     getToken().then((token) => {
       // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
       // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-      _session
+      mySession
         .connect(token, { clientData: myUserName })
         .then(async () => {
-          let devices = await OV.getDevices();
+          let devices = await ov.getDevices();
           let videoDevices = devices.filter(
             (device) => device.kind === 'videoinput'
           );
@@ -149,7 +158,7 @@ const VideoComponent = () => {
 
           // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
           // element: we will manage it on our own) and with the desired properties
-          let publisher = OV.initPublisher(undefined, {
+          let publisher = ov.initPublisher(undefined, {
             audioSource: undefined, // The source of audio. If undefined default microphone
             videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
             publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
@@ -162,7 +171,8 @@ const VideoComponent = () => {
 
           // --- 6) Publish your stream ---
 
-          _session.publish(publisher);
+          //내 스트림을 다른 사람들에게 publish
+          mySession.publish(publisher);
 
           // Set the main video in the page to display our webcam and store our Publisher
           setCurrentVideoDevice(videoDevices[0]);
@@ -177,70 +187,77 @@ const VideoComponent = () => {
           );
         });
     });
-    setSession(_session);
   };
 
   const exitRoom = () => {
     leaveSession();
+
     history.push('/');
   };
 
-  const leaveSession = () => {
+  const listener = (e) => {
+    e.preventDefault();
+    e.returnValue = '';
+  };
+
+  //방 떠나기
+  const leaveSession = (e) => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-    const mySession = session;
-    console.log(_session);
-    console.log(session);
-    if (_session) {
-      _session.disconnect();
-      session.disconnect();
+    const mySession = () => session;
+    console.log('---session : ' + session);
+    console.log('---mySession : ' + mySession());
+    e.preventDefault();
+    e.returnValue = '';
+    if (mySession()) {
+      mySession.disconnect();
     }
 
     // Empty all properties...
-    setSession(undefined);
+    setOV(null);
+    // setSession(undefined);
     setSubscribers([]);
     setMySessionId('SessionA');
-    setMyUserName('김모씨' + Math.floor(Math.random() * 100));
+    setMyUserName('Participant' + Math.floor(Math.random() * 100));
     setMainStreamManager(undefined);
     setPublisher(undefined);
   };
 
-  // const  switchCamera= async ()=> {
-  //   try {
-  //     const devices = await OV.getDevices();
-  //     let videoDevices = devices.filter(
-  //       (device) => device.kind === 'videoinput'
-  //     );
+  //카메라 변경
+  const switchCamera = async () => {
+    try {
+      const devices = await OV.getDevices();
+      let videoDevices = devices.filter(
+        (device) => device.kind === 'videoinput'
+      );
 
-  //     if (videoDevices && videoDevices.length > 1) {
-  //       let newVideoDevice = videoDevices.filter(
-  //         (device) => device.deviceId !== currentVideoDevice.deviceId
-  //       );
+      if (videoDevices && videoDevices.length > 1) {
+        let newVideoDevice = videoDevices.filter(
+          (device) => device.deviceId !== currentVideoDevice.deviceId
+        );
 
-  //       if (newVideoDevice.length > 0) {
-  //         // Creating a new publisher with specific videoSource
-  //         // In mobile devices the default and first camera is the front one
-  //         let newPublisher = OV.initPublisher(undefined, {
-  //           videoSource: newVideoDevice[0].deviceId,
-  //           publishAudio: true,
-  //           publishVideo: true,
-  //           mirror: true
-  //         });
+        if (newVideoDevice.length > 0) {
+          // Creating a new publisher with specific videoSource
+          // In mobile devices the default and first camera is the front one
+          let newPublisher = OV.initPublisher(undefined, {
+            videoSource: newVideoDevice[0].deviceId,
+            publishAudio: true,
+            publishVideo: true,
+            mirror: true
+          });
 
-  //         //newPublisher.once("accessAllowed", () => {
-  //         await session.unpublish(mainStreamManager);
+          //newPublisher.once("accessAllowed", () => {
+          await session.unpublish(mainStreamManager);
 
-  //         await session.publish(newPublisher);
-  //         setState({
-  //           currentVideoDevice: newVideoDevice,
-  //           mainStreamManager: newPublisher,
-  //           publisher: newPublisher
-  //         });
-  //       }
-  //     }
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // }
+          await session.publish(newPublisher);
+          setCurrentVideoDevice(newVideoDevice);
+          setMainStreamManager(newPublisher);
+          setPublisher(newPublisher);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const getToken = () => {
     return createSession(mySessionId).then((sessionId) =>
@@ -251,6 +268,8 @@ const VideoComponent = () => {
   const createSession = (sessionId) => {
     return new Promise((resolve, reject) => {
       let data = JSON.stringify({ customSessionId: sessionId });
+      console.log(data);
+      console.log(OPENVIDU_SERVER_URL);
       axios
         .post(OPENVIDU_SERVER_URL + '/openvidu/api/sessions', data, {
           headers: {
@@ -326,7 +345,7 @@ const VideoComponent = () => {
             <h1 id="session-title">
               {mySessionId}님의 쉐어룸({countUser()}명)
             </h1>
-            <h1 id="session-title" onClick={() => console.log(subscribers)}>
+            <h1 id="session-title" onClick={() => console.log(session)}>
               시간{' '}
             </h1>
 
@@ -394,6 +413,7 @@ const VideoComponent = () => {
               type="text"
               placeholder="대화 내용을 입력해주세요"
             />
+
             <button className="round-button" alt="공유하기">
               <Share />
             </button>
@@ -416,4 +436,4 @@ const VideoComponent = () => {
    */
 };
 
-export default VideoComponent;
+export default RoomPage;
