@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { dumpHistory } from 'api/user';
+import { getHistoryList } from 'api/history';
 import Page from 'modules/Pagination';
 
 const HistoryList = () => {
   const [historyList, setHistoryList] = useState([]);
 
   useEffect(() => {
-    dumpHistory()
+    getHistoryList()
       .then(({ data }) => {
-        setHistoryList(data);
+        setHistoryList(data.data);
       })
       .catch((err) => alert(err));
   }, []);
