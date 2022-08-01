@@ -7,7 +7,8 @@ import UserVideoComponent from './UserVideoComponent';
 import './VideoComponent.scss';
 import CCImg from '../../asset/img/cc.png';
 import SoundImg from '../../asset/img/sound.png';
-import MouthImg from '../../asset/img/mouth.png';
+import MouthImg from '../../asset/img/silent.png';
+import BigMouthImg from '../../asset/img/mouth.png';
 import {
   Mic,
   MicOff,
@@ -16,6 +17,7 @@ import {
   Logout,
   Share
 } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
@@ -32,7 +34,8 @@ class VideoComponent extends Component {
       publisher: undefined, //본인을 다른 사람에게 송출할 때
       subscribers: [], //다른 사람들을 수신할 때
       isMute: false,
-      isNocam: false
+      isNocam: false,
+      isMouthBig: false,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -47,6 +50,8 @@ class VideoComponent extends Component {
     this.countUser = this.countUser.bind(this);
     this.chooseCase = this.chooseCase.bind(this);
     this.exitRoom = this.exitRoom.bind(this);
+    this.handleMouth = this.handleMouth.bind(this);
+
   }
 
   componentDidMount() {
@@ -82,6 +87,10 @@ class VideoComponent extends Component {
         mainStreamManager: stream
       });
     }
+  }
+  //mouth 확대  on/off 함수
+  handleMouth() {
+
   }
   //음소거 on/off 함수
   handleMute() {
@@ -309,26 +318,15 @@ class VideoComponent extends Component {
                 <button id="feature-sound ">
                   <img src={SoundImg} alt="sound" width={50} />
                 </button>
-                <button id="feature-mouth">
-                  <img src={MouthImg} alt="mouth" width={50} />
+                <button
+                  onClick={this.handleMouth}
+                  className="round-button"
+                  alt="mute"
+                >
+                  <img src={this.state.isMouthBig ? MouthImg : BigMouthImg} alt="mouth" width={50} /> :
                 </button>
               </div>
             </div>
-            {/* 
-            {this.state.mainStreamManager !== undefined ? (
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent
-                  streamManager={this.state.mainStreamManager}
-                />
-                <input
-                  className="btn btn-large btn-success"
-                  type="button"
-                  id="buttonSwitchCamera"
-                  onClick={this.switchCamera}
-                  value="Switch Camera"
-                />
-              </div>
-            ) : null} */}
             <div id="video-container" className={this.chooseCase()}>
               {this.state.publisher !== undefined ? (
                 <div
@@ -338,7 +336,6 @@ class VideoComponent extends Component {
                   }
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
-                  {/* <UserVideoComponent streamManager={this.state.publisher} /> */}
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (

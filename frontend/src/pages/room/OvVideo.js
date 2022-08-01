@@ -56,49 +56,17 @@ export default class OpenViduVideoComponent extends Component {
         faceapi.matchDimensions(this.canvasRef.current, displaySize);
 
         const detections = await faceapi
-          .detectAllFaces(
+          .detectSingleFace(
             this.videoRef1.current,
             new faceapi.TinyFaceDetectorOptions()
           )
           .withFaceLandmarks();
-        // .withFaceExpressions();
 
-        // const resizedDetections = faceapi.resizeResults(
-        //   detections,
-        //   displaySize
-        // );
-
-        const dets = detections[0]?.landmarks.getMouth();
+        const dets = detections?.landmarks.getMouth();
         if (dets) {
-          console.log(dets);
           this.videoRef2.current.style.left = 270 - dets[0].x + 'px';
           this.videoRef2.current.style.top = 220 - dets[0].y + 'px';
         }
-
-        this.canvasRef &&
-          this.canvasRef.current &&
-          this.canvasRef.current.getContext('2d').clearRect(0, 0, 281, 194);
-
-        // this.canvasRef &&
-        //   this.canvasRef.current &&
-        //   faceapi.draw.drawDetections(
-        //     this.canvasRef.current,
-        //     resizedDetections
-        //   );
-
-        // this.canvasRef &&
-        //   this.canvasRef.current &&
-        //   faceapi.draw.drawFaceLandmarks(
-        //     this.canvasRef.current,
-        //     resizedDetections
-        //   );
-
-        // this.canvasRef &&
-        //   this.canvasRef.current &&
-        //   faceapi.draw.drawFaceExpressions(
-        //     this.canvasRef.current,
-        //     resizedDetections
-        //   );
       }
     }, 10);
   };
