@@ -432,16 +432,16 @@ class VideoComponent extends Component {
             console.log(error);
             console.warn(
               'No connection to OpenVidu Server. This may be a certificate error at ' +
-                OPENVIDU_SERVER_URL
+              OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  OPENVIDU_SERVER_URL +
-                  '"'
+                OPENVIDU_SERVER_URL +
+                '"\n\nClick OK to navigate and accept it. ' +
+                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                OPENVIDU_SERVER_URL +
+                '"'
               )
             ) {
               window.location.assign(
@@ -459,9 +459,9 @@ class VideoComponent extends Component {
       axios
         .post(
           OPENVIDU_SERVER_URL +
-            '/openvidu/api/sessions/' +
-            sessionId +
-            '/connection',
+          '/openvidu/api/sessions/' +
+          sessionId +
+          '/connection',
           data,
           {
             headers: {

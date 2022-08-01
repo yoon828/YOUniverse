@@ -17,6 +17,8 @@ export default class OpenViduVideoComponent extends Component {
     this.videoRef1 = React.createRef();
     this.videoRef2 = React.createRef();
     this.canvasRef = React.createRef();
+    this.x = 0;
+    this.y = 0;
   }
 
   componentDidUpdate(props) {
@@ -69,6 +71,8 @@ export default class OpenViduVideoComponent extends Component {
         const dets = detections[0]?.landmarks.getMouth();
         if (dets) {
           console.log(dets);
+          this.videoRef2.current.style.left = 270 - dets[0].x + 'px';
+          this.videoRef2.current.style.top = 220 - dets[0].y + 'px';
         }
 
         this.canvasRef &&
@@ -96,7 +100,7 @@ export default class OpenViduVideoComponent extends Component {
         //     resizedDetections
         //   );
       }
-    }, 100);
+    }, 10);
   };
   render() {
     return (

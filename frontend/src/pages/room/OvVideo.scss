@@ -9,7 +9,10 @@
     height: 80px;
     overflow: hidden;
     video {
-      transform: scale(6);
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      transform: scale(8);
     }
   }
 }
