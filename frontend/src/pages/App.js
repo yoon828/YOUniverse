@@ -109,8 +109,8 @@ const App = () => {
         <PrivateRoute exact path="/" component={MainPage} />
         <Route path="/login" component={Login} />
         <Route path="/oauth/callback" component={CallBack} />
-        <PrivateRoute path="/invite" component={Invite} />
-        <PrivateRoute path="/guest" component={Guest} />
+        <Route path="/invite" component={Invite} />
+        <Route path="/guest" component={Guest} />
         <PrivateRoute path="/history/:historyId" component={HistoryDetail} />
         <PrivateRoute path="/history" component={HistoryList} />
         <PrivateRoute path="/questionlist" component={QnAList} />
