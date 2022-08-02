@@ -23,7 +23,19 @@ import { toggleMouth } from '../../redux/feature';
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
-
+const recognition = new window.webkitSpeechRecognition();
+// true면 음절을 연속적으로 인식하나 false면 한 음절만 기록함
+recognition.interimResults = true;
+// 값이 없으면 HTML의 <html lang="en">을 참고합니다. ko-KR, en-US
+recognition.lang = 'ko-KR';
+// true means continuous, and false means not continuous (single result each time.)
+// true면 음성 인식이 안 끝나고 계속 됩니다.
+recognition.continuous = true;
+// 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
+// maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
+recognition.maxAlternatives = 100000;
+let speechToText = '';
+console.log(recognition);
 class VideoComponent extends Component {
   constructor(props) {
     super(props);
@@ -56,6 +68,27 @@ class VideoComponent extends Component {
   componentDidMount() {
     window.addEventListener('beforeunload', this.onbeforeunload);
     this.joinSession();
+
+    recognition.addEventListener('result', (e) => {
+      let interimTranscript = '';
+      for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
+        let transcript = e.results[i][0].transcript;
+        if (e.results[i].isFinal) {
+          speechToText += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+
+      // speechToText : 지금까지 누적으로 대화한 내용 ( 처음부터... 발화가 끊기기 전 것도)
+      // interimTranscript : 방금 전의 발화 (한 문장)
+      // console.log(speechToText);
+      console.log(interimTranscript);
+      // console.log(speechToText + interimTranscript);
+      // 여기다가 서버로 닉네임 + interimTranscript 보내기
+      // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
+    });
+    recognition.start();
   }
 
   componentWillUnmount() {
@@ -96,6 +129,17 @@ class VideoComponent extends Component {
     this.setState({
       isMute: !this.state.isMute
     });
+    // console.log("on/off 버튼 누름 ");
+    // console.log(this.state.isMute);
+    if (this.state.isMute) {
+      // console.log("start recognition");
+      // console.log(recognition);
+      recognition.start();
+    } else {
+      // console.log("stop recognition");
+      // console.log(recognition);
+      recognition.stop();
+    }
     this.state.publisher.publishAudio(this.state.isMute);
   }
 
