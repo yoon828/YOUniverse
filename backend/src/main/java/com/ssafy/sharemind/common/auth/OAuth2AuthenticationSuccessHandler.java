@@ -48,7 +48,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String uuid =  oAuth2User.getAttributes().get("id").toString();
 
         String accessToken = tokenProvider.createAccessToken(uuid, email, nickname);
-        String refreshToken = tokenProvider.createRefreshToken();
+        String refreshToken = tokenProvider.createRefreshToken(uuid);
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));

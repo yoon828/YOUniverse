@@ -41,7 +41,7 @@ public class OAuth2LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
         response.getWriter().write(objectMapper.writeValueAsString(
                 JsonDto.builder()
                         .success(true)
-                        .msg("로그아웃이 정상적으로 처리되었습니다.")
+                        .message("로그아웃이 정상적으로 처리되었습니다.")
                         .build()
         ));
     }

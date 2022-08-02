@@ -122,9 +122,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public TokenResponseDto reIssue(String accessToken, String refreshToken) {
         tokenProvider.validateToken(refreshToken);
-
-        String uuid = tokenProvider.getUserUuid(accessToken);
-
+        String uuid = tokenProvider.getUserUuid(refreshToken);
         Token token = tokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(TokenNotFoundException::new);
 
