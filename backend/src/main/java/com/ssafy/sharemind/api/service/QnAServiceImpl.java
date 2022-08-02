@@ -1,5 +1,6 @@
 package com.ssafy.sharemind.api.service;
 
+import com.ssafy.sharemind.api.request.QnADetailDto;
 import com.ssafy.sharemind.common.exception.NotFindQuestionException;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import com.ssafy.sharemind.db.entity.QnA;
@@ -14,12 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class QnAServiceImpl implements QnAService{
+public class QnAServiceImpl implements QnAService {
 
     private final QnARepository qnARepository;
 
@@ -28,16 +30,16 @@ public class QnAServiceImpl implements QnAService{
     private final TokenProvider tokenProvider;
 
 
-    public QnAResponseDto writeQnA(QnARegisterDto qnARegisterDto){
-        User user=userRepository.findByUuid(qnARegisterDto.getUuid()).orElseThrow(NotFindUuidException::new);
+    public QnAResponseDto writeQnA(QnARegisterDto qnARegisterDto) {
+        User user = userRepository.findByUuid(qnARegisterDto.getUuid()).orElseThrow(NotFindUuidException::new);
 
 
-        QnA qna= QnA.builder().
+        QnA qna = QnA.builder().
                 title(qnARegisterDto.getTitle()).
                 content(qnARegisterDto.getContent()).
                 isAnswered(qnARegisterDto.getIsAnswered()).
                 user(user).build();
-        QnA qnaResponse=qnARepository.save(qna);
+        QnA qnaResponse = qnARepository.save(qna);
         QnAResponseDto qnAResponseDto = new QnAResponseDto().builder()
                 .id(qnaResponse.getId())
                 .answer(qnaResponse.getAnswer())
@@ -51,11 +53,11 @@ public class QnAServiceImpl implements QnAService{
         return qnAResponseDto;
     }
 
-    public List<QnAResponseDto> getQnAList(String accessToken){
+    public List<QnAResponseDto> getQnAList(String accessToken) {
         String uuid = tokenProvider.getUserUuid(accessToken);
-        User user =userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
+        User user = userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
 
-        List<QnAResponseDto> list= user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
+        List<QnAResponseDto> list = user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
                 .answer(qnA.getAnswer())
                 .id(qnA.getId())
                 .answer_date(qnA.getAnswerDate())
@@ -65,13 +67,30 @@ public class QnAServiceImpl implements QnAService{
                 .uuid(qnA.getUser().getUuid())
                 .isAnswered(qnA.getIsAnswered())
                 .build()).collect(Collectors.toList());
-        Collections.sort(list, (o1, o2)->o2.getQuestion_date().compareTo(o1.getQuestion_date()));
+        Collections.sort(list, (o1, o2) -> o2.getQuestion_date().compareTo(o1.getQuestion_date()));
 
         return list;
     }
 
+
+    @Override
+    public QnAResponseDto getQnAById(QnADetailDto qnADetailDto) {
+        QnA qnA = qnARepository.findById(qnADetailDto.getId()).orElseThrow(NotFindQuestionException::new);
+
+        return QnAResponseDto.builder()
+                .id(qnA.getId())
+                .answer(qnA.getAnswer())
+                .answer_date(qnA.getAnswerDate())
+                .title(qnA.getTitle())
+                .content(qnA.getContent())
+                .question_date(qnA.getQuestionDate())
+                .isAnswered(qnA.getIsAnswered())
+                .uuid(qnADetailDto.getUuid())
+                .build();
+    }
+
     @Transactional
-    public boolean deleteQnA(long id){
+    public boolean deleteQnA(long id) {
         qnARepository.findById(id).orElseThrow(NotFindQuestionException::new);
         qnARepository.deleteById(id);
         return true;

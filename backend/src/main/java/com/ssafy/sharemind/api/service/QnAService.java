@@ -1,5 +1,6 @@
 package com.ssafy.sharemind.api.service;
 
+import com.ssafy.sharemind.api.request.QnADetailDto;
 import com.ssafy.sharemind.api.response.QnAListForUser;
 import com.ssafy.sharemind.api.response.QnAResponseDto;
 import com.ssafy.sharemind.db.entity.QnA;
@@ -12,8 +13,11 @@ import java.util.List;
 public interface QnAService {
 
     QnAResponseDto writeQnA(QnARegisterDto userRegisterDto);
+
     List<QnAResponseDto> getQnAList(String accessToken);
 
     boolean deleteQnA(long id);
+
+    QnAResponseDto getQnAById(QnADetailDto qnADetailDto);
 
 }
