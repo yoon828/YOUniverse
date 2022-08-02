@@ -28,7 +28,7 @@ class VideoComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mySessionId: 'SessionES', //세션 이름 (방이름)
+      mySessionId: 'sessionA', //세션 이름 (방이름)
       myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
@@ -320,8 +320,7 @@ class VideoComponent extends Component {
                   alt="mute"
                 >
                   <img
-                    src=""
-                    // src={this.state.isMouthBig ? MouthImg : BigMouthImg}
+                    src={this.props.bigMouth ? BigMouthImg : MouthImg}
                     alt="mouth"
                     width={50}
                   />{' '}
@@ -479,6 +478,6 @@ class VideoComponent extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  // bigMouth: state.feature.bigMouth
+  bigMouth: state.feature.value.bigMouth
 });
 export default connect(mapStateToProps)(VideoComponent);
