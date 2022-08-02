@@ -7,7 +7,8 @@ import UserVideoComponent from './UserVideoComponent';
 import './VideoComponent.scss';
 import CCImg from '../../asset/img/cc.png';
 import SoundImg from '../../asset/img/sound.png';
-import MouthImg from '../../asset/img/mouth.png';
+import MouthImg from '../../asset/img/silent.png';
+import BigMouthImg from '../../asset/img/mouth.png';
 import {
   Mic,
   MicOff,
@@ -16,6 +17,8 @@ import {
   Logout,
   Share
 } from '@mui/icons-material';
+import { connect } from 'react-redux';
+import { toggleMouth } from '../../redux/feature';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
@@ -24,20 +27,20 @@ const recognition = new window.webkitSpeechRecognition();
 // true면 음절을 연속적으로 인식하나 false면 한 음절만 기록함
 recognition.interimResults = true;
 // 값이 없으면 HTML의 <html lang="en">을 참고합니다. ko-KR, en-US
-recognition.lang = "ko-KR";
+recognition.lang = 'ko-KR';
 // true means continuous, and false means not continuous (single result each time.)
 // true면 음성 인식이 안 끝나고 계속 됩니다.
 recognition.continuous = true;
 // 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
 // maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
 recognition.maxAlternatives = 100000;
-let speechToText = "";
+let speechToText = '';
 console.log(recognition);
 class VideoComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mySessionId: 'SessionCCC', //세션 이름 (방이름)
+      mySessionId: 'sessionA', //세션 이름 (방이름)
       myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
@@ -59,16 +62,15 @@ class VideoComponent extends Component {
     this.countUser = this.countUser.bind(this);
     this.chooseCase = this.chooseCase.bind(this);
     this.exitRoom = this.exitRoom.bind(this);
+    this.handleMouth = this.handleMouth.bind(this);
   }
-
-  
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.onbeforeunload);
     this.joinSession();
-    
-    recognition.addEventListener("result", (e) => {
-      let interimTranscript = "";
+
+    recognition.addEventListener('result', (e) => {
+      let interimTranscript = '';
       for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
         // console.log("e.resultIndex: "+e.resultIndex +"  e.results.length: "+e.results.length);
         let transcript = e.results[i][0].transcript;
@@ -89,19 +91,19 @@ class VideoComponent extends Component {
       // interimTranscript : 방금 전의 발화 (한 문장)
       // console.log(speechToText);
       // console.log(speechToText + interimTranscript);
-
-
-
+      // 여기다가 서버로 닉네임 + interimTranscript 보내기
+      // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
     });
     recognition.start();
   }
 
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.onbeforeunload);
-    // this.leaveSession();
+    // window.removeEventListener('beforeunload', this.onbeforeunload);
+    this.onbeforeunload();
   }
 
   onbeforeunload(event) {
+    window.location.reload();
     this.leaveSession();
   }
 
@@ -124,6 +126,10 @@ class VideoComponent extends Component {
       });
     }
   }
+  //mouth 확대  on/off 함수
+  handleMouth() {
+    this.props.dispatch(toggleMouth());
+  }
   //음소거 on/off 함수
   handleMute() {
     this.setState({
@@ -131,11 +137,11 @@ class VideoComponent extends Component {
     });
     // console.log("on/off 버튼 누름 ");
     // console.log(this.state.isMute);
-    if(this.state.isMute){
+    if (this.state.isMute) {
       // console.log("start recognition");
       // console.log(recognition);
       recognition.start();
-    }else{
+    } else {
       // console.log("stop recognition");
       // console.log(recognition);
       recognition.stop();
@@ -184,7 +190,6 @@ class VideoComponent extends Component {
         session: this.OV.initSession()
       },
       () => {
-        console.log(this.state.session);
         let mySession = this.state.session;
 
         // --- 3) Specify the actions when events take place in the session ---
@@ -263,7 +268,6 @@ class VideoComponent extends Component {
               );
             });
         });
-        console.log(this.state.session);
       }
     );
   }
@@ -276,7 +280,6 @@ class VideoComponent extends Component {
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;
-    console.log(mySession);
 
     if (mySession) {
       mySession.disconnect();
@@ -351,7 +354,7 @@ class VideoComponent extends Component {
                 id="session-title"
                 onClick={() => console.log(this.state.session)}
               >
-                시간{' '}
+                시간
               </h1>
 
               <div id="feature">
@@ -361,26 +364,20 @@ class VideoComponent extends Component {
                 <button id="feature-sound ">
                   <img src={SoundImg} alt="sound" width={50} />
                 </button>
-                <button id="feature-mouth">
-                  <img src={MouthImg} alt="mouth" width={50} />
+                <button
+                  onClick={this.handleMouth}
+                  className="round-button"
+                  alt="mute"
+                >
+                  <img
+                    src={this.props.bigMouth ? BigMouthImg : MouthImg}
+                    alt="mouth"
+                    width={50}
+                  />{' '}
+                  :
                 </button>
               </div>
             </div>
-            {/* 
-            {this.state.mainStreamManager !== undefined ? (
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent
-                  streamManager={this.state.mainStreamManager}
-                />
-                <input
-                  className="btn btn-large btn-success"
-                  type="button"
-                  id="buttonSwitchCamera"
-                  onClick={this.switchCamera}
-                  value="Switch Camera"
-                />
-              </div>
-            ) : null} */}
             <div id="video-container" className={this.chooseCase()}>
               {this.state.publisher !== undefined ? (
                 <div
@@ -389,7 +386,6 @@ class VideoComponent extends Component {
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
               ) : null}
@@ -531,5 +527,7 @@ class VideoComponent extends Component {
     });
   }
 }
-
-export default VideoComponent;
+const mapStateToProps = (state) => ({
+  bigMouth: state.feature.value.bigMouth
+});
+export default connect(mapStateToProps)(VideoComponent);

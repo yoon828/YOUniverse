@@ -1,0 +1,16 @@
+#ov {
+  position: relative;
+
+  .mouth {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    video {
+      position: absolute;
+      transform: scale(10);
+    }
+  }
+}
