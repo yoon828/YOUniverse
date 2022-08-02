@@ -32,7 +32,11 @@ class VideoComponent extends Component {
       publisher: undefined, //본인을 다른 사람에게 송출할 때
       subscribers: [], //다른 사람들을 수신할 때
       isMute: false,
-      isNocam: false
+      isNocam: false,
+
+      isTts: false,
+      dialog: "",
+      inputComment:"",
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -47,6 +51,9 @@ class VideoComponent extends Component {
     this.countUser = this.countUser.bind(this);
     this.chooseCase = this.chooseCase.bind(this);
     this.exitRoom = this.exitRoom.bind(this);
+
+    this.handleTts = this.handleTts.bind(this);
+    this.comment = this.comment.bind(this);
   }
 
   componentDidMount() {
@@ -98,6 +105,13 @@ class VideoComponent extends Component {
     this.state.publisher.publishVideo(this.state.isNocam);
   }
 
+  //음성 서비스 on/off
+  handleTts() {
+    this.setState({
+      isTts: !this.state.isTts
+    });
+  }
+
   deleteSubscriber(streamManager) {
     let subscribers = this.state.subscribers;
     let index = subscribers.indexOf(streamManager, 0);
@@ -117,6 +131,24 @@ class VideoComponent extends Component {
     let count = this.countUser();
     if (count <= 2) return 'caseA';
     else return 'caseB';
+  }
+
+  //채팅 남기기
+  comment() {
+    console.log(this.state.myUserName + this.state.inputComment);
+    this.state.session.signal({
+      data: this.state.myUserName + ' : ' + this.state.inputComment + '\n',
+      to: [],
+      type: 'chat',
+    })
+    .then(() => {
+      console.log("Comment successfully sent");
+      this.dialog += this.state.myUserName + ' : ' + this.state.inputComment + '\n';
+      console.log(this.dialog);
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   joinSession() {
@@ -160,6 +192,18 @@ class VideoComponent extends Component {
         mySession.on('exception', (exception) => {
           console.warn(exception);
         });
+
+        //chat settings
+        mySession.on('signal:chat', (event) => {
+          console.log('============comment start===========');
+          console.log(event.data);
+          console.log(event.from);
+          console.log(event.type);
+          let utterance = new SpeechSynthesisUtterance(event.data);
+          speechSynthesis.speak(utterance);
+          console.log('============comment end===========');
+          this.state.dialog += event.data;
+        })
 
         // --- 4) Connect to the session with a valid user token ---
 
@@ -242,6 +286,14 @@ class VideoComponent extends Component {
 
     //나가기 버튼 누르면 main페이지로 이동
     // this.props.history.push('/');
+  }
+
+  //엔터키 이벤트
+  handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      console.log(this.state.inputComment);
+      this.comment();
+    }
   }
 
   async switchCamera() {
@@ -337,7 +389,6 @@ class VideoComponent extends Component {
                   }
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
-                  <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
@@ -375,8 +426,15 @@ class VideoComponent extends Component {
                 </button>
               </div>
               <input
+                onKeyUp={this.handleKeyUp}
                 id="input_text"
                 type="text"
+                value={this.inputComment}
+                onChange={(e)=>{
+                  this.setState({
+                    inputComment:e.target.value
+                  })
+                }}
                 placeholder="대화 내용을 입력해주세요"
               />
 
