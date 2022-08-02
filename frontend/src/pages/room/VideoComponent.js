@@ -17,7 +17,8 @@ import {
   Logout,
   Share
 } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { toggleMouth } from '../../redux/feature';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
@@ -34,8 +35,7 @@ class VideoComponent extends Component {
       publisher: undefined, //본인을 다른 사람에게 송출할 때
       subscribers: [], //다른 사람들을 수신할 때
       isMute: false,
-      isNocam: false,
-      isMouthBig: false,
+      isNocam: false
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -51,7 +51,6 @@ class VideoComponent extends Component {
     this.chooseCase = this.chooseCase.bind(this);
     this.exitRoom = this.exitRoom.bind(this);
     this.handleMouth = this.handleMouth.bind(this);
-
   }
 
   componentDidMount() {
@@ -90,7 +89,7 @@ class VideoComponent extends Component {
   }
   //mouth 확대  on/off 함수
   handleMouth() {
-
+    this.props.dispatch(toggleMouth());
   }
   //음소거 on/off 함수
   handleMute() {
@@ -141,7 +140,6 @@ class VideoComponent extends Component {
         session: this.OV.initSession()
       },
       () => {
-        console.log(this.state.session);
         let mySession = this.state.session;
 
         // --- 3) Specify the actions when events take place in the session ---
@@ -220,7 +218,6 @@ class VideoComponent extends Component {
               );
             });
         });
-        console.log(this.state.session);
       }
     );
   }
@@ -233,7 +230,6 @@ class VideoComponent extends Component {
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;
-    console.log(mySession);
 
     if (mySession) {
       mySession.disconnect();
@@ -323,7 +319,13 @@ class VideoComponent extends Component {
                   className="round-button"
                   alt="mute"
                 >
-                  <img src={this.state.isMouthBig ? MouthImg : BigMouthImg} alt="mouth" width={50} /> :
+                  <img
+                    src=""
+                    // src={this.state.isMouthBig ? MouthImg : BigMouthImg}
+                    alt="mouth"
+                    width={50}
+                  />{' '}
+                  :
                 </button>
               </div>
             </div>
@@ -429,16 +431,16 @@ class VideoComponent extends Component {
             console.log(error);
             console.warn(
               'No connection to OpenVidu Server. This may be a certificate error at ' +
-              OPENVIDU_SERVER_URL
+                OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                OPENVIDU_SERVER_URL +
-                '"\n\nClick OK to navigate and accept it. ' +
-                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                OPENVIDU_SERVER_URL +
-                '"'
+                  OPENVIDU_SERVER_URL +
+                  '"\n\nClick OK to navigate and accept it. ' +
+                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                  OPENVIDU_SERVER_URL +
+                  '"'
               )
             ) {
               window.location.assign(
@@ -456,9 +458,9 @@ class VideoComponent extends Component {
       axios
         .post(
           OPENVIDU_SERVER_URL +
-          '/openvidu/api/sessions/' +
-          sessionId +
-          '/connection',
+            '/openvidu/api/sessions/' +
+            sessionId +
+            '/connection',
           data,
           {
             headers: {
@@ -476,5 +478,7 @@ class VideoComponent extends Component {
     });
   }
 }
-
-export default VideoComponent;
+const mapStateToProps = (state) => ({
+  // bigMouth: state.feature.bigMouth
+});
+export default connect(mapStateToProps)(VideoComponent);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as faceapi from 'face-api.js';
 import './OvVideo.scss';
+import { connect } from 'react-redux';
 
 const MODEL_URL = '/models';
 
@@ -11,7 +12,7 @@ Promise.all([
   faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL)
 ]);
 
-export default class OpenViduVideoComponent extends Component {
+class OpenViduVideoComponent extends Component {
   constructor(props) {
     super(props);
     this.videoRef1 = React.createRef();
@@ -19,9 +20,11 @@ export default class OpenViduVideoComponent extends Component {
     this.canvasRef = React.createRef();
     this.x = 0;
     this.y = 0;
+    this.getMouth = this.getMouth.bind(this);
   }
 
   componentDidUpdate(props) {
+    console.log(props);
     if (props && !!this.videoRef1) {
       let video = this.videoRef1.current;
       this.props.streamManager.addVideoElement(video);
@@ -70,6 +73,11 @@ export default class OpenViduVideoComponent extends Component {
       }
     }, 10);
   };
+
+  getMouth() {
+    console.log(this.props);
+    // return this.props.bigMouth;
+  }
   render() {
     return (
       <div
@@ -83,10 +91,19 @@ export default class OpenViduVideoComponent extends Component {
           style={{ borderRadius: '10px' }}
         />
         <canvas ref={this.canvasRef} style={{ position: 'absolute' }} />
-        <div className="mouth">
-          <video autoPlay={true} ref={this.videoRef2} />
-        </div>
+        {this.getMouth() ? (
+          <div className="mouth">
+            <video autoPlay={true} ref={this.videoRef2} />
+          </div>
+        ) : null}
+        );
       </div>
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    bigMouth: state.feature.value.bigMouth
+  };
+}
+export default connect(mapStateToProps)(OpenViduVideoComponent);
