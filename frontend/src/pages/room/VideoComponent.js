@@ -34,9 +34,8 @@ class VideoComponent extends Component {
       isMute: false,
       isNocam: false,
 
-      isTts: false,
-      dialog: "",
-      inputComment:"",
+      isSound: true, //음성서비스 on/off 확인
+      inputComment:"",  //채팅내용
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -52,7 +51,7 @@ class VideoComponent extends Component {
     this.chooseCase = this.chooseCase.bind(this);
     this.exitRoom = this.exitRoom.bind(this);
 
-    this.handleTts = this.handleTts.bind(this);
+    this.handleSound = this.handleSound.bind(this);
     this.comment = this.comment.bind(this);
   }
 
@@ -106,9 +105,9 @@ class VideoComponent extends Component {
   }
 
   //음성 서비스 on/off
-  handleTts() {
+  handleSound() {
     this.setState({
-      isTts: !this.state.isTts
+      isSound: !this.state.isSound
     });
   }
 
@@ -135,16 +134,14 @@ class VideoComponent extends Component {
 
   //채팅 남기기
   comment() {
-    console.log(this.state.myUserName + this.state.inputComment);
     this.state.session.signal({
-      data: this.state.myUserName + ' : ' + this.state.inputComment + '\n',
+      data: this.state.myUserName + " : " + this.state.inputComment,  //읽어줄 때 닉네임이랑 텍스트 내용 사이에 텀을 조금 두려고 " : "도 같이 보냄, 변경 가능
       to: [],
-      type: 'chat',
+      type: 'ttsChat',
     })
     .then(() => {
       console.log("Comment successfully sent");
-      this.dialog += this.state.myUserName + ' : ' + this.state.inputComment + '\n';
-      console.log(this.dialog);
+      //여기서 데이터 보내면 될 듯
     })
     .catch(error => {
       console.error(error);
@@ -194,16 +191,22 @@ class VideoComponent extends Component {
         });
 
         //chat settings
-        mySession.on('signal:chat', (event) => {
+        mySession.on('signal:ttsChat', (event) => {
+          // console.log(event.data);
+          // console.log(event.from);
+          // console.log(event.type);
           console.log('============comment start===========');
-          console.log(event.data);
-          console.log(event.from);
-          console.log(event.type);
-          let utterance = new SpeechSynthesisUtterance(event.data);
-          speechSynthesis.speak(utterance);
+          console.log(JSON.parse(event.from.data).clientData);  //보낸사람 닉네임
+          console.log(event.from.creationTime); //보낸 시간
+          console.log(event.data);  //내용
+          console.log(event.from.session.sessionId);  //세션아이디
+          //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
+          if (this.state.isSound && JSON.parse(event.from.data).clientData !== this.state.myUserName) {
+            let utterance = new SpeechSynthesisUtterance(event.data);
+            speechSynthesis.speak(utterance);
+          }
           console.log('============comment end===========');
-          this.state.dialog += event.data;
-        })
+        });
 
         // --- 4) Connect to the session with a valid user token ---
 
@@ -359,7 +362,7 @@ class VideoComponent extends Component {
                   <img src={CCImg} alt="cc" width={50} />
                 </button>
                 <button id="feature-sound ">
-                  <img src={SoundImg} alt="sound" width={50} />
+                  <img src={SoundImg} alt="sound" width={50} onClick={this.handleSound} />
                 </button>
                 <button id="feature-mouth">
                   <img src={MouthImg} alt="mouth" width={50} />
