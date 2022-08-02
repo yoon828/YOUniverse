@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { resetUser } from 'redux/user';
 
 // auth.js - 토큰 관련 & 로그인 상태 처리 : refresh토큰 있으면 로그인 상태
 const initialState = {
@@ -19,6 +20,7 @@ export const authReducer = createSlice({
       localStorage.setItem('accessToken', '');
       localStorage.setItem('refreshToken', '');
       state.value = initialState;
+      resetUser();
     },
     renewToken: (state, action) => {
       state.value.accessToken = action.payload.accessToken;
