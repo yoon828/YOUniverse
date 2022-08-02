@@ -14,7 +14,6 @@ import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
 import Share from './room/ShareModal';
 import Room from './room/RoomPage';
-import RoomTest from './room/Room';
 
 const App = () => {
   return (
@@ -53,7 +52,6 @@ const App = () => {
         <Route path="/history" component={HistoryList} />
         <Route path="/questionlist" component={QnAList} />
         <Route path="/question" component={QnA} />
-        <Route path="/room/test" component={RoomTest} />
         <Route path="/room/:sessionId" component={Room} />
         <Route path="/share" component={Share} />
         <Route path="/:userId" component={MyPage} />

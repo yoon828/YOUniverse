@@ -7,7 +7,8 @@ import UserVideoComponent from './UserVideoComponent';
 import './VideoComponent.scss';
 import CCImg from '../../asset/img/cc.png';
 import SoundImg from '../../asset/img/sound.png';
-import MouthImg from '../../asset/img/mouth.png';
+import MouthImg from '../../asset/img/silent.png';
+import BigMouthImg from '../../asset/img/mouth.png';
 import {
   Mic,
   MicOff,
@@ -16,6 +17,8 @@ import {
   Logout,
   Share
 } from '@mui/icons-material';
+import { connect } from 'react-redux';
+import { toggleMouth } from '../../redux/feature';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
@@ -25,7 +28,7 @@ class VideoComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mySessionId: 'SessionA', //세션 이름 (방이름)
+      mySessionId: 'sessionA', //세션 이름 (방이름)
       myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
@@ -47,6 +50,7 @@ class VideoComponent extends Component {
     this.countUser = this.countUser.bind(this);
     this.chooseCase = this.chooseCase.bind(this);
     this.exitRoom = this.exitRoom.bind(this);
+    this.handleMouth = this.handleMouth.bind(this);
   }
 
   componentDidMount() {
@@ -55,11 +59,12 @@ class VideoComponent extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.onbeforeunload);
-    // this.leaveSession();
+    // window.removeEventListener('beforeunload', this.onbeforeunload);
+    this.onbeforeunload();
   }
 
   onbeforeunload(event) {
+    window.location.reload();
     this.leaveSession();
   }
 
@@ -81,6 +86,10 @@ class VideoComponent extends Component {
         mainStreamManager: stream
       });
     }
+  }
+  //mouth 확대  on/off 함수
+  handleMouth() {
+    this.props.dispatch(toggleMouth());
   }
   //음소거 on/off 함수
   handleMute() {
@@ -131,7 +140,6 @@ class VideoComponent extends Component {
         session: this.OV.initSession()
       },
       () => {
-        console.log(this.state.session);
         let mySession = this.state.session;
 
         // --- 3) Specify the actions when events take place in the session ---
@@ -210,7 +218,6 @@ class VideoComponent extends Component {
               );
             });
         });
-        console.log(this.state.session);
       }
     );
   }
@@ -223,7 +230,6 @@ class VideoComponent extends Component {
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;
-    console.log(mySession);
 
     if (mySession) {
       mySession.disconnect();
@@ -298,7 +304,7 @@ class VideoComponent extends Component {
                 id="session-title"
                 onClick={() => console.log(this.state.session)}
               >
-                시간{' '}
+                시간
               </h1>
 
               <div id="feature">
@@ -308,26 +314,20 @@ class VideoComponent extends Component {
                 <button id="feature-sound ">
                   <img src={SoundImg} alt="sound" width={50} />
                 </button>
-                <button id="feature-mouth">
-                  <img src={MouthImg} alt="mouth" width={50} />
+                <button
+                  onClick={this.handleMouth}
+                  className="round-button"
+                  alt="mute"
+                >
+                  <img
+                    src={this.props.bigMouth ? BigMouthImg : MouthImg}
+                    alt="mouth"
+                    width={50}
+                  />{' '}
+                  :
                 </button>
               </div>
             </div>
-            {/* 
-            {this.state.mainStreamManager !== undefined ? (
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent
-                  streamManager={this.state.mainStreamManager}
-                />
-                <input
-                  className="btn btn-large btn-success"
-                  type="button"
-                  id="buttonSwitchCamera"
-                  onClick={this.switchCamera}
-                  value="Switch Camera"
-                />
-              </div>
-            ) : null} */}
             <div id="video-container" className={this.chooseCase()}>
               {this.state.publisher !== undefined ? (
                 <div
@@ -336,7 +336,6 @@ class VideoComponent extends Component {
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
               ) : null}
@@ -478,5 +477,7 @@ class VideoComponent extends Component {
     });
   }
 }
-
-export default VideoComponent;
+const mapStateToProps = (state) => ({
+  bigMouth: state.feature.value.bigMouth
+});
+export default connect(mapStateToProps)(VideoComponent);
