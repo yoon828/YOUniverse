@@ -1,7 +1,6 @@
 package com.ssafy.sharemind.api.controller;
 
 import com.ssafy.sharemind.api.request.QnADetailDto;
-import com.ssafy.sharemind.api.request.ShareRoomDetailDto;
 import com.ssafy.sharemind.common.model.Response;
 import com.ssafy.sharemind.api.service.QnAService;
 import com.ssafy.sharemind.api.request.QnARegisterDto;
