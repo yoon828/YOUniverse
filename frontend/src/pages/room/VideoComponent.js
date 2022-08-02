@@ -70,9 +70,16 @@ class VideoComponent extends Component {
     recognition.addEventListener("result", (e) => {
       let interimTranscript = "";
       for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
+        // console.log("e.resultIndex: "+e.resultIndex +"  e.results.length: "+e.results.length);
         let transcript = e.results[i][0].transcript;
+        // console.log(i);
         if (e.results[i].isFinal) {
+          console.log(transcript);
+          // console.log(interimTranscript);
           speechToText += transcript;
+          
+      // 여기다가 서버로 닉네임 + interimTranscript 보내기
+      // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
         } else {
           interimTranscript += transcript;
         }
@@ -81,10 +88,7 @@ class VideoComponent extends Component {
       // speechToText : 지금까지 누적으로 대화한 내용 ( 처음부터... 발화가 끊기기 전 것도)
       // interimTranscript : 방금 전의 발화 (한 문장)
       // console.log(speechToText);
-      console.log(interimTranscript);
       // console.log(speechToText + interimTranscript);
-      // 여기다가 서버로 닉네임 + interimTranscript 보내기
-      // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
 
 
 
