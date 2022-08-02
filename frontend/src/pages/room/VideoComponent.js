@@ -290,9 +290,10 @@ class VideoComponent extends Component {
 
   //엔터키 이벤트
   handleKeyUp = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && e.nativeEvent.isComposing === false) {
       console.log(this.state.inputComment);
       this.comment();
+      e.target.value="";
     }
   }
 
