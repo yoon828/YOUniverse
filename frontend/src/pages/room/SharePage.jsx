@@ -1,5 +1,18 @@
 import React, { useEffect } from 'react';
 
+const CopyBtn = ({ value }) => {
+  const CopyUrl = () => {
+    const textarea = document.createElement('textarea');
+    document.body.appendChild(textarea);
+    const url = window.document.location.href;
+    textarea.value = url;
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  };
+  return <button onClick={() => CopyUrl()}>{value}</button>;
+};
+
 const Share = () => {
   const API_KEY = 'e09419333dd810c5a8fcc8db0d0c8aea';
   useEffect(() => {
@@ -21,9 +34,12 @@ const Share = () => {
   };
 
   return (
-    <button type="button" onClick={onShareKakaoClick}>
-      share
-    </button>
+    <>
+      <CopyBtn value="링크복사" />
+      <button type="button" onClick={onShareKakaoClick}>
+        share
+      </button>
+    </>
   );
 };
 
