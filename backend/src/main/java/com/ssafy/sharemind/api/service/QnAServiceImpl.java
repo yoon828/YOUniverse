@@ -1,6 +1,5 @@
 package com.ssafy.sharemind.api.service;
 
-import com.ssafy.sharemind.api.request.QnADetailDto;
 import com.ssafy.sharemind.common.exception.NotFindQuestionException;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
 import com.ssafy.sharemind.db.entity.QnA;
@@ -14,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,8 +36,10 @@ public class QnAServiceImpl implements QnAService {
                 content(qnARegisterDto.getContent()).
                 isAnswered(qnARegisterDto.getIsAnswered()).
                 user(user).build();
+
         QnA qnaResponse = qnARepository.save(qna);
-        QnAResponseDto qnAResponseDto = new QnAResponseDto().builder()
+
+        QnAResponseDto qnAResponseDto = QnAResponseDto.builder()
                 .id(qnaResponse.getId())
                 .answer(qnaResponse.getAnswer())
                 .answer_date(qnaResponse.getAnswerDate())
@@ -66,16 +65,17 @@ public class QnAServiceImpl implements QnAService {
                 .title(qnA.getTitle())
                 .uuid(qnA.getUser().getUuid())
                 .isAnswered(qnA.getIsAnswered())
-                .build()).collect(Collectors.toList());
-        Collections.sort(list, (o1, o2) -> o2.getQuestion_date().compareTo(o1.getQuestion_date()));
+                .build())
+                .sorted((o1, o2) -> o2.getQuestion_date().compareTo(o1.getQuestion_date()))
+                .collect(Collectors.toList());
 
         return list;
     }
 
 
     @Override
-    public QnAResponseDto getQnAById(QnADetailDto qnADetailDto) {
-        QnA qnA = qnARepository.findById(qnADetailDto.getId()).orElseThrow(NotFindQuestionException::new);
+    public QnAResponseDto getQnAById(String accessToken, long id) {
+        QnA qnA = qnARepository.findById(id).orElseThrow(NotFindQuestionException::new);
 
         return QnAResponseDto.builder()
                 .id(qnA.getId())
@@ -85,7 +85,7 @@ public class QnAServiceImpl implements QnAService {
                 .content(qnA.getContent())
                 .question_date(qnA.getQuestionDate())
                 .isAnswered(qnA.getIsAnswered())
-                .uuid(qnADetailDto.getUuid())
+                .uuid(tokenProvider.getUserUuid(accessToken))
                 .build();
     }
 

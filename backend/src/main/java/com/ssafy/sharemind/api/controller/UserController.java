@@ -1,11 +1,8 @@
 package com.ssafy.sharemind.api.controller;
 
 import com.ssafy.sharemind.api.service.UserService;
-import com.ssafy.sharemind.api.request.UserRegisterDto;
-import com.ssafy.sharemind.api.response.UserRegistResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.ssafy.sharemind.common.model.Response;
 

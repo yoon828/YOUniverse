@@ -1,9 +1,6 @@
 package com.ssafy.sharemind.api.service;
 
-import com.ssafy.sharemind.api.request.QnADetailDto;
-import com.ssafy.sharemind.api.response.QnAListForUser;
 import com.ssafy.sharemind.api.response.QnAResponseDto;
-import com.ssafy.sharemind.db.entity.QnA;
 import com.ssafy.sharemind.api.request.QnARegisterDto;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +15,6 @@ public interface QnAService {
 
     boolean deleteQnA(long id);
 
-    QnAResponseDto getQnAById(QnADetailDto qnADetailDto);
+    QnAResponseDto getQnAById(String accessToken, long id);
 
 }

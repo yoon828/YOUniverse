@@ -1,6 +1,5 @@
 package com.ssafy.sharemind.api.service;
 
-import com.ssafy.sharemind.api.request.ShareRoomDetailDto;
 import com.ssafy.sharemind.api.request.ShareRoomInsertDto;
 import com.ssafy.sharemind.api.response.ShareRoomHistoryResponseDto;
 import org.springframework.stereotype.Service;
@@ -14,5 +13,5 @@ public interface ShareRoomService {
 
     List<ShareRoomHistoryResponseDto> getShareRoomHistoryByUuid(String accessToken);
 
-    ShareRoomHistoryResponseDto getShareRoomHistoryById(ShareRoomDetailDto shareRoomDetailDto);
+    ShareRoomHistoryResponseDto getShareRoomHistoryById(String accessToken, long id);
 }
