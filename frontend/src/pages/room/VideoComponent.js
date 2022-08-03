@@ -7,7 +7,8 @@ import UserVideoComponent from './UserVideoComponent';
 import './VideoComponent.scss';
 import CCImg from '../../asset/img/cc.png';
 import SoundImg from '../../asset/img/sound.png';
-import MouthImg from '../../asset/img/mouth.png';
+import MouthImg from '../../asset/img/silent.png';
+import BigMouthImg from '../../asset/img/mouth.png';
 import {
   Mic,
   MicOff,
@@ -16,25 +17,42 @@ import {
   Logout,
   Share
 } from '@mui/icons-material';
+import { connect } from 'react-redux';
+import { toggleMouth } from '../../redux/feature';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
-
+const recognition = new window.webkitSpeechRecognition();
+// true면 음절을 연속적으로 인식하나 false면 한 음절만 기록함
+recognition.interimResults = true;
+// 값이 없으면 HTML의 <html lang="en">을 참고합니다. ko-KR, en-US
+recognition.lang = 'ko-KR';
+// true means continuous, and false means not continuous (single result each time.)
+// true면 음성 인식이 안 끝나고 계속 됩니다.
+recognition.continuous = true;
+// 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
+// maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
+recognition.maxAlternatives = 100000;
+let speechToText = '';
+console.log(recognition);
 class VideoComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mySessionId: 'SessionA', //세션 이름 (방이름)
+      mySessionId: 'sessionA', //세션 이름 (방이름)
       myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined, //본인을 다른 사람에게 송출할 때
       subscribers: [], //다른 사람들을 수신할 때
       isMute: false,
-      isNocam: false
-    };
+      isNocam: false,
 
+      isSound: true, //음성서비스 on/off 확인
+      inputComment: '', //채팅내용
+      logRef: React.createRef()
+    };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.switchCamera = this.switchCamera.bind(this);
@@ -47,19 +65,91 @@ class VideoComponent extends Component {
     this.countUser = this.countUser.bind(this);
     this.chooseCase = this.chooseCase.bind(this);
     this.exitRoom = this.exitRoom.bind(this);
+
+    this.handleSound = this.handleSound.bind(this);
+    this.comment = this.comment.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.onbeforeunload);
     this.joinSession();
+
+    let flag = false;
+    recognition.addEventListener('result', (e) => {
+      let interimTranscript = '';
+      if (!flag) {
+        console.log('start');
+        this.state.session
+          .signal({
+            data: JSON.stringify({
+              name: this.state.myUserName,
+              time: Date.now(),
+              comment: 'start'
+            }),
+            to: [],
+            type: 'sttStart'
+          })
+          .then(() => {
+            console.log('Comment successfully sent');
+            //여기서 데이터 보내면 될 듯
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        flag = true;
+      }
+      for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
+        // console.log("e.resultIndex: "+e.resultIndex +"  e.results.length: "+e.results.length);
+        let transcript = e.results[i][0].transcript;
+        // console.log(i);
+        if (e.results[i].isFinal) {
+          console.log(transcript);
+          // console.log(interimTranscript);
+          speechToText += transcript;
+
+          console.log('end');
+          this.state.session
+            .signal({
+              data: JSON.stringify({
+                name: this.state.myUserName,
+                time: Date.now(),
+                comment: transcript
+              }),
+              to: [],
+              type: 'sttEnd'
+            })
+            .then(() => {
+              console.log('Comment successfully sent');
+              //여기서 데이터 보내면 될 듯
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+          flag = false;
+          // 여기다가 서버로 닉네임 + interimTranscript 보내기
+          // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+
+      // speechToText : 지금까지 누적으로 대화한 내용 ( 처음부터... 발화가 끊기기 전 것도)
+      // interimTranscript : 방금 전의 발화 (한 문장)
+      // console.log(speechToText);
+      // console.log(speechToText + interimTranscript);
+      // 여기다가 서버로 닉네임 + interimTranscript 보내기
+      // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
+    });
+    recognition.start();
   }
 
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.onbeforeunload);
-    // this.leaveSession();
+    // window.removeEventListener('beforeunload', this.onbeforeunload);
+    this.onbeforeunload();
   }
 
   onbeforeunload(event) {
+    window.location.reload();
     this.leaveSession();
   }
 
@@ -82,11 +172,26 @@ class VideoComponent extends Component {
       });
     }
   }
+  //mouth 확대  on/off 함수
+  handleMouth() {
+    this.props.dispatch(toggleMouth());
+  }
   //음소거 on/off 함수
   handleMute() {
     this.setState({
       isMute: !this.state.isMute
     });
+    // console.log("on/off 버튼 누름 ");
+    // console.log(this.state.isMute);
+    if (this.state.isMute) {
+      // console.log("start recognition");
+      // console.log(recognition);
+      recognition.start();
+    } else {
+      // console.log("stop recognition");
+      // console.log(recognition);
+      recognition.stop();
+    }
     this.state.publisher.publishAudio(this.state.isMute);
   }
 
@@ -96,6 +201,13 @@ class VideoComponent extends Component {
       isNocam: !this.state.isNocam
     });
     this.state.publisher.publishVideo(this.state.isNocam);
+  }
+
+  //음성 서비스 on/off
+  handleSound() {
+    this.setState({
+      isSound: !this.state.isSound
+    });
   }
 
   deleteSubscriber(streamManager) {
@@ -119,6 +231,27 @@ class VideoComponent extends Component {
     else return 'caseB';
   }
 
+  //채팅 남기기
+  comment() {
+    this.state.session
+      .signal({
+        data: JSON.stringify({
+          name: this.state.myUserName,
+          time: Date.now(),
+          comment: this.state.inputComment
+        }),
+        to: [],
+        type: 'ttsChat'
+      })
+      .then(() => {
+        console.log('Comment successfully sent');
+        //여기서 데이터 보내면 될 듯
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
@@ -131,7 +264,6 @@ class VideoComponent extends Component {
         session: this.OV.initSession()
       },
       () => {
-        console.log(this.state.session);
         let mySession = this.state.session;
 
         // --- 3) Specify the actions when events take place in the session ---
@@ -158,6 +290,56 @@ class VideoComponent extends Component {
         // On every asynchronous exception...
         mySession.on('exception', (exception) => {
           console.warn(exception);
+        });
+
+        //chat settings
+        mySession.on('signal:ttsChat', (event) => {
+          // console.log(event.data);
+          // console.log(event.from);
+          // console.log(event.type);
+          console.log('============comment start===========');
+          let json = JSON.parse(event.data);
+          console.log(json.name); //보낸 사람 닉네임
+          console.log(json.time); //보낸 시간
+          console.log(json.comment); //채팅 내용
+          // console.log(event.from.session.sessionId);
+          //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
+          if (
+            this.state.isSound &&
+            JSON.parse(event.from.data).clientData !== this.state.myUserName
+          ) {
+            let utterance = new SpeechSynthesisUtterance(event.data);
+            speechSynthesis.speak(utterance);
+          }
+          console.log('============comment end===========');
+        });
+        const root = document.getElementById('logs');
+        const el = document.createElement('li');
+        mySession.on('signal:sttStart', (event) => {
+          console.log('STT-start start ================');
+          // console.log(event.data);
+          // console.log(event.from);
+          // console.log(event.type);
+          let json = JSON.parse(event.data);
+          console.log(json); //보낸 사람 닉네임
+          el.textContent = '변환중';
+          root.appendChild(el);
+          // console.log(event.from.session.sessionId);
+          //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
+          console.log('STT-start End ================');
+        });
+
+        mySession.on('signal:sttEnd', (event) => {
+          console.log('STT-end start ================');
+          // console.log(event.data);
+          // console.log(event.from);
+          // console.log(event.type);
+          let json = JSON.parse(event.data);
+          console.log(json); //보낸 사람 닉네임
+          el.textContent = json.name + ' : ' + json.comment;
+          // console.log(event.from.session.sessionId);
+          //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
+          console.log('STT-end End ================');
         });
 
         // --- 4) Connect to the session with a valid user token ---
@@ -209,7 +391,6 @@ class VideoComponent extends Component {
               );
             });
         });
-        console.log(this.state.session);
       }
     );
   }
@@ -222,7 +403,6 @@ class VideoComponent extends Component {
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;
-    console.log(mySession);
 
     if (mySession) {
       mySession.disconnect();
@@ -242,6 +422,15 @@ class VideoComponent extends Component {
     //나가기 버튼 누르면 main페이지로 이동
     // this.props.history.push('/');
   }
+
+  //엔터키 이벤트
+  handleKeyUp = (e) => {
+    if (e.key === 'Enter' && e.nativeEvent.isComposing === false) {
+      console.log(this.state.inputComment);
+      this.comment();
+      e.target.value = '';
+    }
+  };
 
   async switchCamera() {
     try {
@@ -297,7 +486,7 @@ class VideoComponent extends Component {
                 id="session-title"
                 onClick={() => console.log(this.state.session)}
               >
-                시간{' '}
+                시간
               </h1>
 
               <div id="feature">
@@ -305,28 +494,27 @@ class VideoComponent extends Component {
                   <img src={CCImg} alt="cc" width={50} />
                 </button>
                 <button id="feature-sound ">
-                  <img src={SoundImg} alt="sound" width={50} />
+                  <img
+                    src={SoundImg}
+                    alt="sound"
+                    width={50}
+                    onClick={this.handleSound}
+                  />
                 </button>
-                <button id="feature-mouth">
-                  <img src={MouthImg} alt="mouth" width={50} />
+                <button
+                  onClick={this.handleMouth}
+                  className="round-button"
+                  alt="mute"
+                >
+                  <img
+                    src={this.props.bigMouth ? BigMouthImg : MouthImg}
+                    alt="mouth"
+                    width={50}
+                  />{' '}
+                  :
                 </button>
               </div>
             </div>
-            {/* 
-            {this.state.mainStreamManager !== undefined ? (
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent
-                  streamManager={this.state.mainStreamManager}
-                />
-                <input
-                  className="btn btn-large btn-success"
-                  type="button"
-                  id="buttonSwitchCamera"
-                  onClick={this.switchCamera}
-                  value="Switch Camera"
-                />
-              </div>
-            ) : null} */}
             <div id="video-container" className={this.chooseCase()}>
               {this.state.publisher !== undefined ? (
                 <div
@@ -335,7 +523,6 @@ class VideoComponent extends Component {
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
               ) : null}
@@ -374,14 +561,25 @@ class VideoComponent extends Component {
                 </button>
               </div>
               <input
+                onKeyUp={this.handleKeyUp}
                 id="input_text"
                 type="text"
+                value={this.inputComment}
+                onChange={(e) => {
+                  this.setState({
+                    inputComment: e.target.value
+                  });
+                }}
                 placeholder="대화 내용을 입력해주세요"
               />
 
               <button className="round-button" alt="공유하기">
                 <Share />
               </button>
+            </div>
+            <div>
+              <h2>log test</h2>
+              <ul id="logs"></ul>
             </div>
           </div>
         ) : null}
@@ -477,5 +675,7 @@ class VideoComponent extends Component {
     });
   }
 }
-
-export default VideoComponent;
+const mapStateToProps = (state) => ({
+  bigMouth: state.feature.value.bigMouth
+});
+export default connect(mapStateToProps)(VideoComponent);
