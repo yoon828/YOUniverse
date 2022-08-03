@@ -50,9 +50,9 @@ class VideoComponent extends Component {
       isNocam: false,
 
       isSound: true, //음성서비스 on/off 확인
-      inputComment: '' //채팅내용
+      inputComment: '', //채팅내용
+      logRef: React.createRef()
     };
-
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.switchCamera = this.switchCamera.bind(this);
@@ -74,8 +74,30 @@ class VideoComponent extends Component {
     window.addEventListener('beforeunload', this.onbeforeunload);
     this.joinSession();
 
+    let flag = false;
     recognition.addEventListener('result', (e) => {
       let interimTranscript = '';
+      if (!flag) {
+        console.log('start');
+        this.state.session
+          .signal({
+            data: JSON.stringify({
+              name: this.state.myUserName,
+              time: Date.now(),
+              comment: 'start'
+            }),
+            to: [],
+            type: 'sttStart'
+          })
+          .then(() => {
+            console.log('Comment successfully sent');
+            //여기서 데이터 보내면 될 듯
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        flag = true;
+      }
       for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
         // console.log("e.resultIndex: "+e.resultIndex +"  e.results.length: "+e.results.length);
         let transcript = e.results[i][0].transcript;
@@ -85,6 +107,25 @@ class VideoComponent extends Component {
           // console.log(interimTranscript);
           speechToText += transcript;
 
+          console.log('end');
+          this.state.session
+            .signal({
+              data: JSON.stringify({
+                name: this.state.myUserName,
+                time: Date.now(),
+                comment: transcript
+              }),
+              to: [],
+              type: 'sttEnd'
+            })
+            .then(() => {
+              console.log('Comment successfully sent');
+              //여기서 데이터 보내면 될 듯
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+          flag = false;
           // 여기다가 서버로 닉네임 + interimTranscript 보내기
           // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
         } else {
@@ -272,6 +313,34 @@ class VideoComponent extends Component {
             speechSynthesis.speak(utterance);
           }
           console.log('============comment end===========');
+        });
+        const root = document.getElementById('logs');
+        const el = document.createElement('li');
+        mySession.on('signal:sttStart', (event) => {
+          console.log('STT-start start ================');
+          // console.log(event.data);
+          // console.log(event.from);
+          // console.log(event.type);
+          let json = JSON.parse(event.data);
+          console.log(json); //보낸 사람 닉네임
+          el.textContent = '변환중';
+          root.appendChild(el);
+          // console.log(event.from.session.sessionId);
+          //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
+          console.log('STT-start End ================');
+        });
+
+        mySession.on('signal:sttEnd', (event) => {
+          console.log('STT-end start ================');
+          // console.log(event.data);
+          // console.log(event.from);
+          // console.log(event.type);
+          let json = JSON.parse(event.data);
+          console.log(json); //보낸 사람 닉네임
+          el.textContent = json.name + ' : ' + json.comment;
+          // console.log(event.from.session.sessionId);
+          //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
+          console.log('STT-end End ================');
         });
 
         // --- 4) Connect to the session with a valid user token ---
@@ -508,6 +577,10 @@ class VideoComponent extends Component {
               <button className="round-button" alt="공유하기">
                 <Share />
               </button>
+            </div>
+            <div>
+              <h2>log test</h2>
+              <ul id="logs"></ul>
             </div>
           </div>
         ) : null}
