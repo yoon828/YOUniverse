@@ -8,10 +8,18 @@ const HistoryList = () => {
   useEffect(() => {
     getHistoryList()
       .then(({ data }) => {
+        console.log(data.data);
         setHistoryList(data.data);
       })
       .catch((err) => alert(err));
   }, []);
-  return <Page data={historyList} />;
+
+  return (
+    <Page
+      type="/history"
+      data={historyList}
+      items={['id', 'date', 'roomName', 'hostName']}
+    />
+  );
 };
 export default HistoryList;
