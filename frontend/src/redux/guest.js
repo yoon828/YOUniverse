@@ -10,7 +10,7 @@ export const guestReducer = createSlice({
   initialState: { value: initialState },
   reducers: {
     saveGuestName: (state, action) => {
-      state.guestName = action.payload;
+      state.value = action.payload;
       window.sessionStorage.setItem('guestName', state.guestName);
     }
   }

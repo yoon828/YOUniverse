@@ -13,7 +13,7 @@ const Guest = () => {
   const guestNameInputRef = useRef();
 
   const submit = () => {
-    dispatch(saveGuestName({ guestName: guestNameInputRef.current }));
+    dispatch(saveGuestName({ guestName: guestNameInputRef.current.value }));
     history.replace('/');
   };
 
