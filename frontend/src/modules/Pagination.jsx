@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Item } from 'modules/ListModule';
 import Pagination from 'react-js-pagination';
 import './Pagination.scss';
 
@@ -7,20 +9,21 @@ Pagination 모듈 임포트 구문
 import Page from 'modules/Pagination'
 */
 
-const Page = ({ data }) => {
+const Page = ({ type, data, items }) => {
   const [page, setPage] = useState(1);
-  const [items, setItems] = useState(5);
+  const [units, setUnits] = useState(5);
 
   const handlePageChange = (page) => {
     setPage(page);
   };
+
   const itemChange = (e) => {
-    setItems(Number(e.target.value));
+    setUnits(Number(e.target.value));
   };
 
   /*
   디버깅 용
-  console.log(items * (page - 1), items * (page - 1) + items);
+  console.log(units * (page - 1), units * (page - 1) + units);
   */
 
   if (!data) {
@@ -30,7 +33,7 @@ const Page = ({ data }) => {
     <div>
       <h2>API 연습</h2>
       <div>
-        <select name="items" onChange={itemChange}>
+        <select name="units" onChange={itemChange}>
           <option value="5">5개</option>
           <option value="10">10개</option>
           <option value="15">15개</option>
@@ -38,26 +41,20 @@ const Page = ({ data }) => {
         </select>
       </div>
       {data
-        .slice(items * (page - 1), items * (page - 1) + items)
+        .slice(units * (page - 1), units * (page - 1) + units)
         .map((v, i) => {
           return (
             <div key={i}>
-              <h1>{v.roomName}</h1>
-              <div>
-                <span>id: {v.id}</span>
-                <span>data: {v.data}</span>
-                <span>filePath: {v.filePath}</span>
-                <span>hostName: {v.hostName}</span>
-                <span>participants: {v.participants}</span>
-                <span>uuid: {v.uuid}</span>
-              </div>
+              <Link to={`${type}/${v.id}`}>
+                <Item type={type} data={v} items={items} />
+              </Link>
             </div>
           );
         })}
 
       <Pagination
         activePage={page}
-        itemsCountPerPage={items}
+        itemsCountPerPage={units}
         totalItemsCount={data.length - 1}
         pageRangeDisplayed={5}
         onChange={handlePageChange}
