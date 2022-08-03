@@ -97,12 +97,16 @@ const App = () => {
           <div>
             <MyPageModule />
           </div>
-          <div>
-            <Link to="/login">로그인</Link>
-          </div>
-          <div>
-            <LogoutModule />
-          </div>
+          {localStorage.getItem('accessToken') && (
+            <div>
+              <LogoutModule />
+            </div>
+          )}
+          {!localStorage.getItem('accessToken') && (
+            <div>
+              <Link to="/login">로그인</Link>
+            </div>
+          )}
         </div>
       </header>
       <Switch>
