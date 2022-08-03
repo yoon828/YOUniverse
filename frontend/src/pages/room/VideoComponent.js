@@ -47,7 +47,10 @@ class VideoComponent extends Component {
       publisher: undefined, //본인을 다른 사람에게 송출할 때
       subscribers: [], //다른 사람들을 수신할 때
       isMute: false,
-      isNocam: false
+      isNocam: false,
+
+      isSound: true, //음성서비스 on/off 확인
+      inputComment: '' //채팅내용
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -62,7 +65,9 @@ class VideoComponent extends Component {
     this.countUser = this.countUser.bind(this);
     this.chooseCase = this.chooseCase.bind(this);
     this.exitRoom = this.exitRoom.bind(this);
-    this.handleMouth = this.handleMouth.bind(this);
+
+    this.handleSound = this.handleSound.bind(this);
+    this.comment = this.comment.bind(this);
   }
 
   componentDidMount() {
@@ -79,9 +84,9 @@ class VideoComponent extends Component {
           console.log(transcript);
           // console.log(interimTranscript);
           speechToText += transcript;
-          
-      // 여기다가 서버로 닉네임 + interimTranscript 보내기
-      // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
+
+          // 여기다가 서버로 닉네임 + interimTranscript 보내기
+          // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
         } else {
           interimTranscript += transcript;
         }
@@ -157,6 +162,13 @@ class VideoComponent extends Component {
     this.state.publisher.publishVideo(this.state.isNocam);
   }
 
+  //음성 서비스 on/off
+  handleSound() {
+    this.setState({
+      isSound: !this.state.isSound
+    });
+  }
+
   deleteSubscriber(streamManager) {
     let subscribers = this.state.subscribers;
     let index = subscribers.indexOf(streamManager, 0);
@@ -176,6 +188,27 @@ class VideoComponent extends Component {
     let count = this.countUser();
     if (count <= 2) return 'caseA';
     else return 'caseB';
+  }
+
+  //채팅 남기기
+  comment() {
+    this.state.session
+      .signal({
+        data: JSON.stringify({
+          name: this.state.myUserName,
+          time: Date.now(),
+          comment: this.state.inputComment
+        }),
+        to: [],
+        type: 'ttsChat'
+      })
+      .then(() => {
+        console.log('Comment successfully sent');
+        //여기서 데이터 보내면 될 듯
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   joinSession() {
@@ -217,6 +250,28 @@ class VideoComponent extends Component {
         // On every asynchronous exception...
         mySession.on('exception', (exception) => {
           console.warn(exception);
+        });
+
+        //chat settings
+        mySession.on('signal:ttsChat', (event) => {
+          // console.log(event.data);
+          // console.log(event.from);
+          // console.log(event.type);
+          console.log('============comment start===========');
+          let json = JSON.parse(event.data);
+          console.log(json.name); //보낸 사람 닉네임
+          console.log(json.time); //보낸 시간
+          console.log(json.comment); //채팅 내용
+          // console.log(event.from.session.sessionId);
+          //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
+          if (
+            this.state.isSound &&
+            JSON.parse(event.from.data).clientData !== this.state.myUserName
+          ) {
+            let utterance = new SpeechSynthesisUtterance(event.data);
+            speechSynthesis.speak(utterance);
+          }
+          console.log('============comment end===========');
         });
 
         // --- 4) Connect to the session with a valid user token ---
@@ -300,6 +355,15 @@ class VideoComponent extends Component {
     // this.props.history.push('/');
   }
 
+  //엔터키 이벤트
+  handleKeyUp = (e) => {
+    if (e.key === 'Enter' && e.nativeEvent.isComposing === false) {
+      console.log(this.state.inputComment);
+      this.comment();
+      e.target.value = '';
+    }
+  };
+
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
@@ -362,7 +426,12 @@ class VideoComponent extends Component {
                   <img src={CCImg} alt="cc" width={50} />
                 </button>
                 <button id="feature-sound ">
-                  <img src={SoundImg} alt="sound" width={50} />
+                  <img
+                    src={SoundImg}
+                    alt="sound"
+                    width={50}
+                    onClick={this.handleSound}
+                  />
                 </button>
                 <button
                   onClick={this.handleMouth}
@@ -424,8 +493,15 @@ class VideoComponent extends Component {
                 </button>
               </div>
               <input
+                onKeyUp={this.handleKeyUp}
                 id="input_text"
                 type="text"
+                value={this.inputComment}
+                onChange={(e) => {
+                  this.setState({
+                    inputComment: e.target.value
+                  });
+                }}
                 placeholder="대화 내용을 입력해주세요"
               />
 
