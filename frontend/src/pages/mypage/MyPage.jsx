@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteUser } from 'api/user';
+import { deleteUser, getUser } from 'api/user';
 import { storeHistory } from 'api/history';
-import './MyPage.scss';
 import { deleteToken } from 'redux/auth';
-import { resetUser } from 'redux/user';
+import { resetUser, insertUser } from 'redux/user';
+import { List } from 'modules/ListModule';
+import _ from 'lodash';
+import './MyPage.scss';
 
 const MyPage = () => {
-  const { name, email, uuid } = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+  const { name, email, uuid, qnAList, shareRoomHistoryList } = useSelector(
+    (state) => state.user.value
+  );
 
+  // 회원 탈퇴 함수
   const onDeleteUser = () => {
-    // 탈퇴 의사 재확인
     if (window.confirm('탈퇴하시겠습니까?')) {
-      // 서버에 탈퇴 요청
       deleteUser()
         .then(() => {
           alert('탈퇴가 성공적으로 진행되었습니다. 로그인으로 이동합니다.');
-          // 로그아웃 처리(토큰 삭제) => 리덕스 유저 정보 삭제
           dispatch(deleteToken());
           dispatch(resetUser());
         })
@@ -26,6 +28,7 @@ const MyPage = () => {
     }
   };
 
+  // 히스토리 테스트용 임의 등록 함수
   const addHistory = () => {
     const content = {
       filePath: '로컬어딘가겠지',
@@ -39,6 +42,15 @@ const MyPage = () => {
       .catch((res) => console.log(res));
   };
 
+  useEffect(() => {
+    getUser()
+      .then(({ data }) => {
+        console.log(data);
+        dispatch(insertUser(data.data));
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <div className="my_page">
       <div className="box">
@@ -49,13 +61,28 @@ const MyPage = () => {
 
       <div className="box">
         <div>
-          <p>쉐어룸 히스토리</p>
+          <h2>쉐어룸 히스토리</h2>
           <button onClick={addHistory}>히스토리 임의 등록</button>
           <Link to="/history">더보기</Link>
+          {!_.isEmpty(shareRoomHistoryList) ? (
+            <List
+              type="/history"
+              data={shareRoomHistoryList}
+              items={['date', 'roomName', 'hostName']}
+            />
+          ) : null}
         </div>
+
         <div>
-          <p>1:1 문의내역</p>
-          <Link to="/questionlist">더보기</Link>
+          <h2>1:1 문의내역</h2>
+          <Link to="/question">더보기</Link>
+          {!_.isEmpty(qnAList) ? (
+            <List
+              type="/question"
+              data={qnAList}
+              items={['question_date', 'title']}
+            />
+          ) : null}
         </div>
       </div>
     </div>
