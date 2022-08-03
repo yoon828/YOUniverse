@@ -16,7 +16,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public Response<?> myPage(@RequestHeader("authorization") String authorization) {
-        return new Response<>("true", "조회 성공", userService.findUser(authorization.replace("Bearer ", "")));
+        return new Response<>(true, "조회 성공", userService.findUser(authorization.replace("Bearer ", "")));
 
     }
 
@@ -26,7 +26,7 @@ public class UserController {
     public Response<?> deleteUser(@RequestHeader("authorization") String authorization) {
 
         userService.deleteUser(authorization.replace("Bearer ", ""));
-        return new Response<>("true", " 회원을 탈퇴시켰습니다.", true);
+        return new Response<>(true, " 회원을 탈퇴시켰습니다.", true);
 
 
     }
