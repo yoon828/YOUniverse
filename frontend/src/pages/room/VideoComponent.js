@@ -135,7 +135,7 @@ class VideoComponent extends Component {
   //채팅 남기기
   comment() {
     this.state.session.signal({
-      data: this.state.myUserName + " : " + this.state.inputComment,  //읽어줄 때 닉네임이랑 텍스트 내용 사이에 텀을 조금 두려고 " : "도 같이 보냄, 변경 가능
+      data: JSON.stringify({"name": this.state.myUserName, "time": Date.now(), "comment":this.state.inputComment}),
       to: [],
       type: 'ttsChat',
     })
@@ -196,10 +196,11 @@ class VideoComponent extends Component {
           // console.log(event.from);
           // console.log(event.type);
           console.log('============comment start===========');
-          console.log(JSON.parse(event.from.data).clientData);  //보낸사람 닉네임
-          console.log(event.from.creationTime); //보낸 시간
-          console.log(event.data);  //내용
-          console.log(event.from.session.sessionId);  //세션아이디
+          let json = JSON.parse(event.data);
+          console.log(json.name); //보낸 사람 닉네임
+          console.log(json.time); //보낸 시간
+          console.log(json.comment);  //채팅 내용
+          // console.log(event.from.session.sessionId);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
           if (this.state.isSound && JSON.parse(event.from.data).clientData !== this.state.myUserName) {
             let utterance = new SpeechSynthesisUtterance(event.data);
