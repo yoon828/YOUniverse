@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { saveGuestName } from 'redux/guest';
 import '../../common/style/Reset.scss';
 import '../../common/style/all.scss';
 import '../../common/style/guest.scss';
 
 const Guest = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const guestNameInputRef = useRef();
+
+  const submit = () => {
+    dispatch(saveGuestName({ guestName: guestNameInputRef.current }));
+    history.replace('/');
+  };
+
   return (
     <div className="guest_page">
       <div className="main_logo">
@@ -15,13 +27,17 @@ const Guest = () => {
           />
         </Link>
       </div>
-      <div className="LoginBox">
-        <div className="LoginBoxText">이름을 입력해주세요.</div>
-        <div className="NameInput">
-          <input type="text" />
-        </div>
-        <div className="KaKaoLogin">확인</div>
-      </div>
+      <form>
+        <input
+          type="text"
+          name="guest"
+          placeholder="이름을 입력해주세요."
+          ref={guestNameInputRef}
+        ></input>
+        <button type="submit" onClick={submit}>
+          확인
+        </button>
+      </form>
     </div>
   );
 };
