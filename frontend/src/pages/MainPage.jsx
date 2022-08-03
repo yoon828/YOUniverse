@@ -8,7 +8,7 @@ const MainPage = () => {
     <div className="main_page_link">
       메인페이지 화면
       <Link to="/share">room 활성화</Link>
-      <Link to="/question">1:1문의하기</Link>
+      <Link to="/quest">1:1문의하기</Link>
       <MyPageModule />
     </div>
   );

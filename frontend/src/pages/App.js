@@ -14,16 +14,17 @@ import HistoryList from './mypage/HistoryList';
 import HistoryDetail from './mypage/HistoryDetail';
 import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
+import QnADetail from './mypage/QnADetail';
 import Share from './room/SharePage';
 import MyPageModule from 'modules/MyPageModule';
+import PrivateRoute from 'routes/PrivateRoute';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { insertUser } from 'redux/user';
+import { deleteToken, renewToken as renewAccessToken } from 'redux/auth';
 import _ from 'lodash';
-import PrivateRoute from 'routes/PrivateRoute';
 import { getUser } from 'api/user';
 import { setApiHeaders, renewToken } from 'api/api';
-import { deleteToken, renewToken as renewAccessToken } from 'redux/auth';
 
 const App = () => {
   const expiredMsg = '만료된 JWT 토큰입니다.';
@@ -92,7 +93,7 @@ const App = () => {
             <Link to="/share">쉐어룸</Link>
           </div>
           <div>
-            <Link to="/question">1:1문의하기</Link>
+            <Link to="/quest">1:1문의하기</Link>
           </div>
           <div>
             <MyPageModule />
@@ -113,8 +114,9 @@ const App = () => {
         <PrivateRoute path="/guest" component={Guest} />
         <PrivateRoute path="/history/:historyId" component={HistoryDetail} />
         <PrivateRoute path="/history" component={HistoryList} />
-        <PrivateRoute path="/questionlist" component={QnAList} />
-        <PrivateRoute path="/question" component={QnA} />
+        <PrivateRoute path="/question/:questionId" component={QnADetail} />
+        <PrivateRoute path="/question" component={QnAList} />
+        <PrivateRoute path="/quest" component={QnA} />
         <PrivateRoute path="/share" component={Share} />
         <PrivateRoute path="/:uuid" component={MyPage} />
       </Switch>
