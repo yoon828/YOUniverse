@@ -1,21 +1,34 @@
-// 공통
+// 색깔
 $themeFirst: #f6f6f6;
-$themeSecond: #8785a2;
-$themeThird: #211b72;
+$themeSecond: #211b72;
+$themeThird: #ffeb00;
 
-body {
-  background-color: $themeSecond;
-}
-
-a {
-  text-decoration: none;
-}
-
+// 흰 박스 남색 글씨(높이, 너비)
 @mixin box($height, $width) {
   background-color: $themeFirst;
   border-radius: 60px;
-  color: $themeThird;
+  color: $themeSecond;
   height: $height;
   width: $width;
   margin: auto;
+}
+
+// flex : space_evenly
+@mixin space_evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+// 텍스트 가운데 정렬
+@mixin text_vertical {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+// 폰트(사이즈, 굵기)
+@mixin font($size, $weight) {
+  font-size: $size;
+  font-weight: $weight;
 }
