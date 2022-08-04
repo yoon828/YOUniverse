@@ -291,6 +291,7 @@ class VideoComponent extends Component {
           console.warn(exception);
         });
 
+        const root = document.getElementById('logs');
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
           // console.log(event.data);
@@ -301,6 +302,11 @@ class VideoComponent extends Component {
           console.log(json.name); //보낸 사람 닉네임
           console.log(json.time); //보낸 시간
           console.log(json.comment); //채팅 내용
+          const el = document.createElement('li');
+          el.id = json.name;
+          el.textContent = json.name + ' : ' + json.comment;
+
+          root.appendChild(el);
           // console.log(event.from.session.sessionId);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
           if (
@@ -312,7 +318,6 @@ class VideoComponent extends Component {
           }
           console.log('============comment end===========');
         });
-        const root = document.getElementById('logs');
         mySession.on('signal:sttStart', (event) => {
           console.log('STT-start start ================');
           let json = JSON.parse(event.data);
