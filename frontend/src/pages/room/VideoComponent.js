@@ -66,6 +66,7 @@ class VideoComponent extends Component {
     this.exitRoom = this.exitRoom.bind(this);
 
     this.handleSound = this.handleSound.bind(this);
+    this.handleMouth = this.handleMouth.bind(this);
     this.comment = this.comment.bind(this);
   }
 
@@ -171,12 +172,16 @@ class VideoComponent extends Component {
       });
     }
   }
+
   //mouth 확대  on/off 함수
   handleMouth() {
+    console.log(this);
     this.props.dispatch(toggleMouth());
   }
+
   //음소거 on/off 함수
   handleMute() {
+    console.log(this.props);
     this.setState({
       isMute: !this.state.isMute
     });
@@ -294,18 +299,12 @@ class VideoComponent extends Component {
         const root = document.getElementById('logs');
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
-          // console.log(event.data);
-          // console.log(event.from);
-          // console.log(event.type);
-          console.log('============comment start===========');
           let json = JSON.parse(event.data);
-          console.log(json.name); //보낸 사람 닉네임
-          console.log(json.time); //보낸 시간
-          console.log(json.comment); //채팅 내용
           const el = document.createElement('li');
           el.id = json.name;
           el.textContent = json.name + ' : ' + json.comment;
 
+          console.log(el);
           root.appendChild(el);
           // console.log(event.from.session.sessionId);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
@@ -316,37 +315,28 @@ class VideoComponent extends Component {
             let utterance = new SpeechSynthesisUtterance(event.data);
             speechSynthesis.speak(utterance);
           }
-          console.log('============comment end===========');
         });
         mySession.on('signal:sttStart', (event) => {
-          console.log('STT-start start ================');
           let json = JSON.parse(event.data);
-          console.log(json);
           const el = document.createElement('li');
           el.id = json.name;
           el.textContent = '변환중';
+          console.log(el);
           root.appendChild(el);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
-          console.log('STT-start End ================');
         });
 
         mySession.on('signal:sttEnd', (event) => {
-          console.log('STT-end start ================');
-          // console.log(event.data);
-          // console.log(event.from);
-          // console.log(event.type);
           let json = JSON.parse(event.data);
-          console.log(json); //보낸 사람 닉네임
           let getel = document.querySelectorAll(`#${json.name}`);
           let ln = getel.length;
-          // let last = getel.item(getel.length);
-          console.log(ln);
           let last = getel.item(ln - 1);
-          console.log(last);
           last.textContent = json.name + ' : ' + json.comment;
+          console.log("====================변환 완료 : ");
+          console.log(last);
+
           // console.log(event.from.session.sessionId);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
-          console.log('STT-end End ================');
         });
 
         // --- 4) Connect to the session with a valid user token ---
