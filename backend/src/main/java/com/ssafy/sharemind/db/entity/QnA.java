@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 
 @Entity
@@ -31,9 +31,9 @@ public class QnA {
 
     @Column(nullable = false, updatable = false, insertable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
-    private Date questionDate;
+    private Timestamp questionDate;
 
-    private Date answerDate;
+    private Timestamp answerDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uuid")

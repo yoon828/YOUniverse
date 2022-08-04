@@ -3,6 +3,7 @@ package com.ssafy.sharemind.db.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -26,7 +27,7 @@ public class ShareRoomHistory {
     private String hostName;
 
     @Column(nullable = false)
-    private Date date;
+    private Timestamp date;
 
     @Column(nullable = false)
     private String participants;

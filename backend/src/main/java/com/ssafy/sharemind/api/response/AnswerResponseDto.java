@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Getter
 @NoArgsConstructor
@@ -14,5 +14,5 @@ import java.util.Date;
 public class AnswerResponseDto {
     long id;
     private String answer;
-    private Date answer_date;
+    private Timestamp answer_date;
 }
