@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +40,7 @@ public class ShareRoomServiceImpl implements ShareRoomService {
                 .hostName(shareRoomInsertDto.getHostName())
                 .participants(shareRoomInsertDto.getParticipants())
                 .user(user)
-                .date(new Date()).build();
+                .date(new Timestamp(System.currentTimeMillis())).build();
 
         ShareRoomHistory shareRoomHistoryResponse = shareRoomHistoryRepository.save(shareRoomHistory);
         ShareRoomHistoryResponseDto shareRoomHistoryResponseDto = ShareRoomHistoryResponseDto.builder()

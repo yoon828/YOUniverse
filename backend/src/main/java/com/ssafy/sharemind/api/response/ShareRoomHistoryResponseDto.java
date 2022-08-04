@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Timestamp;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +13,7 @@ import java.util.Date;
 public class ShareRoomHistoryResponseDto {
 
     private long id;
-    private Date date;
+    private Timestamp date;
     private String filePath;
     private String hostName;
     private String participants;

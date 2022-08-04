@@ -14,6 +14,8 @@ import com.ssafy.sharemind.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
         User user = userRepository.findByUuid(answerRegisterDto.getUuid()).orElseThrow(NotFindUuidException::new);
         QnA qnA = QnA.builder().title(fQnA.getTitle())
                 .id(fQnA.getId())
-                .answerDate(new Date())
+                .answerDate(new Timestamp(System.currentTimeMillis()))
                 .answer(answerRegisterDto.getAnswer())
                 .content(fQnA.getContent())
                 .isAnswered(true)
