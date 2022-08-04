@@ -27,10 +27,10 @@ const OpenViduVideoComponent = (props) => {
       let video = videoRef2.current;
       props.streamManager.addVideoElement(video);
     }
-    return () => {};
   }, []);
 
   useEffect(() => {
+    console.log(bigMouth);
     if (bigMouth) {
       //mouth 기능 on
       // console.log(videoRef2);
