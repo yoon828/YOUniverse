@@ -40,7 +40,6 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         String nickname = (String) properties.get("nickname");
 
         User user = userRepository.findByEmail(email).orElse(null);
-        log.info("11111111");
         if (user == null) {
             log.info("가입되지 않은 사용자입니다. DB에 저장합니다.");
             userRepository.save(User.builder()

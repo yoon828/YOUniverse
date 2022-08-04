@@ -6,7 +6,6 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

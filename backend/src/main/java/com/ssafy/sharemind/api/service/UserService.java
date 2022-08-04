@@ -2,7 +2,6 @@ package com.ssafy.sharemind.api.service;
 
 import com.ssafy.sharemind.api.response.UserDetailResponseDto;
 import com.ssafy.sharemind.api.response.UserMypageResponseDto;
-import com.ssafy.sharemind.db.entity.User;
 import com.ssafy.sharemind.api.request.UserRegisterDto;
 import com.ssafy.sharemind.api.response.UserRegistResponseDto;
 import org.springframework.stereotype.Service;

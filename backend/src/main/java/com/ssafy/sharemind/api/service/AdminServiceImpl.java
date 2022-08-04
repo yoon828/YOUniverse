@@ -4,7 +4,6 @@ import com.ssafy.sharemind.api.request.AnswerDeleteDto;
 import com.ssafy.sharemind.api.request.AnswerRegisterDto;
 import com.ssafy.sharemind.api.response.AnswerResponseDto;
 import com.ssafy.sharemind.api.response.QnAResponseDto;
-import com.ssafy.sharemind.api.response.UserMypageResponseDto;
 import com.ssafy.sharemind.api.response.UserRegistResponseDto;
 import com.ssafy.sharemind.common.exception.NotFindQuestionException;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
@@ -23,13 +22,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService {
     private final QnARepository qnARepository;
     private final UserRepository userRepository;
-    public AnswerResponseDto writeAnswer(AnswerRegisterDto answerRegisterDto){
-        QnA fQnA=qnARepository.findById(answerRegisterDto.getId()).orElseThrow(NotFindQuestionException::new);
-        User user=userRepository.findByUuid(answerRegisterDto.getUuid()).orElseThrow(NotFindUuidException::new);
-        QnA qnA= QnA.builder().title(fQnA.getTitle())
+
+    public AnswerResponseDto writeAnswer(AnswerRegisterDto answerRegisterDto) {
+        QnA fQnA = qnARepository.findById(answerRegisterDto.getId()).orElseThrow(NotFindQuestionException::new);
+        User user = userRepository.findByUuid(answerRegisterDto.getUuid()).orElseThrow(NotFindUuidException::new);
+        QnA qnA = QnA.builder().title(fQnA.getTitle())
                 .id(fQnA.getId())
                 .answerDate(new Timestamp(System.currentTimeMillis()))
                 .answer(answerRegisterDto.getAnswer())
@@ -38,9 +38,9 @@ public class AdminServiceImpl implements AdminService{
                 .questionDate(fQnA.getQuestionDate())
                 .title(fQnA.getTitle())
                 .user(user).build();
-        QnA qnAResponse=qnARepository.save(qnA);
+        QnA qnAResponse = qnARepository.save(qnA);
 
-        AnswerResponseDto answerResponseDto =new AnswerResponseDto().builder()
+        AnswerResponseDto answerResponseDto = AnswerResponseDto.builder()
                 .id(qnAResponse.getId())
                 .answer(qnAResponse.getAnswer())
                 .answer_date(qnAResponse.getAnswerDate()).build();
@@ -50,38 +50,43 @@ public class AdminServiceImpl implements AdminService{
     }
 
 
-    public List<QnAResponseDto> getQnAList(){
+    public List<QnAResponseDto> getQnAList() {
 
-        List<QnAResponseDto> list= qnARepository.findAll().stream().map(qnA -> QnAResponseDto.builder()
-                .answer(qnA.getAnswer())
-                .id(qnA.getId())
-                .answer_date(qnA.getAnswerDate())
-                .content(qnA.getContent())
-                .question_date(qnA.getQuestionDate())
-                .title(qnA.getTitle())
-                .uuid(qnA.getUser().getUuid())
-                .isAnswered(qnA.getIsAnswered())
-                .build()).collect(Collectors.toList());
-        Collections.sort(list, (o1, o2)->o2.getQuestion_date().compareTo(o1.getQuestion_date()));
+        List<QnAResponseDto> list = qnARepository.findAll().stream()
+                .map(qnA -> QnAResponseDto.builder()
+                        .answer(qnA.getAnswer())
+                        .id(qnA.getId())
+                        .answer_date(qnA.getAnswerDate())
+                        .content(qnA.getContent())
+                        .question_date(qnA.getQuestionDate())
+                        .title(qnA.getTitle())
+                        .uuid(qnA.getUser().getUuid())
+                        .isAnswered(qnA.getIsAnswered())
+                        .build())
+                .sorted((o1, o2) -> o2.getQuestion_date().compareTo(o1.getQuestion_date()))
+                .collect(Collectors.toList());
 
         return list;
     }
 
-    public List<UserRegistResponseDto> getUserList(){
-        List<UserRegistResponseDto> list=userRepository.findAll().stream().map(user -> UserRegistResponseDto.builder()
-                .email(user.getEmail())
-                .name(user.getName())
-                .imagePath(user.getImagePath())
-                .sessionId(user.getSessionId())
-                .uuid(user.getUuid())
-                .build()).collect(Collectors.toList());
+    public List<UserRegistResponseDto> getUserList() {
+        List<UserRegistResponseDto> list = userRepository.findAll().stream()
+                .map(user -> UserRegistResponseDto
+                        .builder()
+                        .email(user.getEmail())
+                        .name(user.getName())
+                        .imagePath(user.getImagePath())
+                        .sessionId(user.getSessionId())
+                        .uuid(user.getUuid())
+                        .build())
+                .collect(Collectors.toList());
         return list;
     }
 
-    public void deleteAnswer(AnswerDeleteDto answerDeleteDto){
-        QnA fQnA=qnARepository.findById(answerDeleteDto.getId()).orElseThrow(NotFindQuestionException::new);
-        User user=userRepository.findByUuid(answerDeleteDto.getUuid()).orElseThrow(NotFindUuidException::new);
-        QnA qnA= QnA.builder().title(fQnA.getTitle())
+    public void deleteAnswer(AnswerDeleteDto answerDeleteDto) {
+        QnA fQnA = qnARepository.findById(answerDeleteDto.getId()).orElseThrow(NotFindQuestionException::new);
+        User user = userRepository.findByUuid(answerDeleteDto.getUuid()).orElseThrow(NotFindUuidException::new);
+        QnA qnA = QnA.builder().title(fQnA.getTitle())
                 .id(fQnA.getId())
                 .answerDate(null)
                 .answer(null)
@@ -89,9 +94,10 @@ public class AdminServiceImpl implements AdminService{
                 .isAnswered(false)
                 .questionDate(fQnA.getQuestionDate())
                 .title(fQnA.getTitle())
-                .user(user).build();
-        qnARepository.save(qnA);
+                .user(user)
+                .build();
 
+        qnARepository.save(qnA);
     }
 
 }

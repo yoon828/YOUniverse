@@ -18,13 +18,13 @@ public class QnAController {
     @PostMapping
     public ResponseEntity<?> writeQnA(@RequestBody QnARegisterDto qnARegisterDto){
 
-        return new ResponseEntity<>(new Response<>("true", "글 등록 성공",
+        return new ResponseEntity<>(new Response<>(true, "글 등록 성공",
                 qnAService.writeQnA(qnARegisterDto)), HttpStatus.CREATED);
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> getQnAList(@RequestHeader("authorization") String authorization){
-        return new ResponseEntity<>(new Response<>("true","회원 QnA 조회 성공",
+        return new ResponseEntity<>(new Response<>(true,"회원 QnA 조회 성공",
                 qnAService.getQnAList(authorization.replace("Bearer ", ""))),HttpStatus.OK);
     }
     //    @ResponseStatus(HttpStatus.OK)
@@ -36,9 +36,16 @@ public class QnAController {
 //
 //
 //    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getQnA(@RequestHeader("authorization") String authorization, @PathVariable long id){
+        return new ResponseEntity<>(new Response<>(true,"회원 QnA 상세정보 조회 완료",
+                qnAService.getQnAById(authorization.replace("Bearer ", ""), id)),HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteQnA(@PathVariable long id){
-        return new ResponseEntity<>(new Response<>("true","문의 삭제 성공",
+        return new ResponseEntity<>(new Response<>(true,"문의 삭제 성공",
                 qnAService.deleteQnA(id)),HttpStatus.OK);
     }
 }
