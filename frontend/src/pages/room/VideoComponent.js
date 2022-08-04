@@ -51,7 +51,6 @@ class VideoComponent extends Component {
 
       isSound: true, //음성서비스 on/off 확인
       inputComment: '', //채팅내용
-      logRef: React.createRef()
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -314,17 +313,14 @@ class VideoComponent extends Component {
           console.log('============comment end===========');
         });
         const root = document.getElementById('logs');
-        const el = document.createElement('li');
         mySession.on('signal:sttStart', (event) => {
           console.log('STT-start start ================');
-          // console.log(event.data);
-          // console.log(event.from);
-          // console.log(event.type);
           let json = JSON.parse(event.data);
-          console.log(json); //보낸 사람 닉네임
+          console.log(json);
+          const el = document.createElement('li');
+          el.id = json.name;
           el.textContent = '변환중';
           root.appendChild(el);
-          // console.log(event.from.session.sessionId);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
           console.log('STT-start End ================');
         });
@@ -336,7 +332,13 @@ class VideoComponent extends Component {
           // console.log(event.type);
           let json = JSON.parse(event.data);
           console.log(json); //보낸 사람 닉네임
-          el.textContent = json.name + ' : ' + json.comment;
+          let getel = document.querySelectorAll(`#${json.name}`);
+          let ln = getel.length;
+          // let last = getel.item(getel.length);
+          console.log(ln);
+          let last = getel.item(ln - 1);
+          console.log(last);
+          last.textContent = json.name + ' : ' + json.comment;
           // console.log(event.from.session.sessionId);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
           console.log('STT-end End ================');
