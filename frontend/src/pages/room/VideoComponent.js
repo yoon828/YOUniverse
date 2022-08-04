@@ -177,19 +177,17 @@ class VideoComponent extends Component {
   }
   //음소거 on/off 함수
   handleMute() {
+    const input = document.getElementById('input_text');
+
     this.setState({
       isMute: !this.state.isMute
     });
-    // console.log("on/off 버튼 누름 ");
-    // console.log(this.state.isMute);
     if (this.state.isMute) {
-      // console.log("start recognition");
-      // console.log(recognition);
       recognition.start();
+      input.disabled = true;
     } else {
-      // console.log("stop recognition");
-      // console.log(recognition);
       recognition.stop();
+      input.disabled = false;
     }
     this.state.publisher.publishAudio(this.state.isMute);
   }
@@ -313,7 +311,7 @@ class VideoComponent extends Component {
             this.state.isSound &&
             JSON.parse(event.from.data).clientData !== this.state.myUserName
           ) {
-            let utterance = new SpeechSynthesisUtterance(event.data);
+            let utterance = new SpeechSynthesisUtterance(json.name + ' : ' + json.comment);
             speechSynthesis.speak(utterance);
           }
           console.log('============comment end===========');

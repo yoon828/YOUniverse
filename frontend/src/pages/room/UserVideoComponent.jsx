@@ -16,6 +16,9 @@ const UserVideoComponent = (props) => {
           <OpenViduVideoComponent streamManager={props.streamManager} />
           <div className="stream-text">
             <span>{getNicknameTag()}</span>
+            <span id={getNicknameTag()} className="subtitle">
+              subtitle
+            </span>
           </div>
         </div>
       ) : null}
