@@ -51,6 +51,8 @@ class VideoComponent extends Component {
 
       isSound: true, //음성서비스 on/off 확인
       inputComment: '', //채팅내용
+
+      subtitle: ''
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -303,6 +305,7 @@ class VideoComponent extends Component {
 
           console.log(el);
           root.appendChild(el);
+          this.state.subtitle=json.comment;
           // console.log(event.from.session.sessionId);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
           if (
@@ -331,6 +334,7 @@ class VideoComponent extends Component {
           last.textContent = json.name + ' : ' + json.comment;
           console.log("====================변환 완료 : ");
           console.log(last);
+          this.state.subtitle=json.comment;
 
           // console.log(event.from.session.sessionId);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
@@ -517,7 +521,7 @@ class VideoComponent extends Component {
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
+                  <UserVideoComponent streamManager={this.state.publisher} subtitle={this.state.subtitle} />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (

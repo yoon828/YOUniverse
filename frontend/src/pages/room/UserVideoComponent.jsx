@@ -9,6 +9,10 @@ const UserVideoComponent = (props) => {
     return JSON.parse(props.streamManager.stream.connection.data).clientData;
   };
 
+  const getSubtitle = () => {
+    return props.subtitle;
+  };
+
   return (
     <div className="stream">
       {props.streamManager !== undefined ? (
@@ -17,7 +21,7 @@ const UserVideoComponent = (props) => {
           <div className="stream-text">
             <span>{getNicknameTag()}</span>
             <span id={getNicknameTag()} className="subtitle">
-              subtitle
+              {getSubtitle()}
             </span>
           </div>
         </div>
