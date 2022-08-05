@@ -300,24 +300,18 @@ class VideoComponent extends Component {
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
           let json = JSON.parse(event.data);
-          const el = document.createElement('li');
-          el.id = json.name;
-          el.textContent = json.name + ' : ' + json.comment;
+          //로그 li태그
+          const log = document.createElement('li');
+          log.id = json.name;
+          log.className = 'log_item';
+          log.textContent = json.name + ' : ' + json.comment;
 
-          console.log(el);
-          root.appendChild(el);
+          root.appendChild(log);
 
-          // this.setState({
-          //   subtitle: json.comment,
-          //   talker: json.name
-          // });
-
-          //
-          let ell = document.getElementById(`subtitle_${json.name}`);
-          console.log(ell);
-          ell.innerText = json.comment;
+          let subtitle = document.getElementById(`subtitle_${json.name}`);
+          subtitle.innerText = json.comment;
           setTimeout(() => {
-            ell.innerText = '';
+            subtitle.innerText = '';
           }, 5000);
 
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
