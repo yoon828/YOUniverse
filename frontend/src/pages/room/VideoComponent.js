@@ -15,7 +15,8 @@ import {
   Videocam,
   VideocamOff,
   Logout,
-  Share
+  Share,
+  TurnedIn
 } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { toggleMouth } from '../../redux/feature';
@@ -52,6 +53,7 @@ class VideoComponent extends Component {
       isSound: true, //음성서비스 on/off 확인
       inputComment: '', //채팅내용
 
+      isCC: true, //자막 on/off 확인
       subtitle: '',
       talker: ''
     };
@@ -71,6 +73,8 @@ class VideoComponent extends Component {
     this.handleSound = this.handleSound.bind(this);
     this.handleMouth = this.handleMouth.bind(this);
     this.comment = this.comment.bind(this);
+
+    this.handleCC = this.handleCC.bind(this);
   }
 
   componentDidMount() {
@@ -214,6 +218,24 @@ class VideoComponent extends Component {
     });
   }
 
+  //자막 on/off
+  handleCC() {
+    this.setState({
+      isCC: !this.state.isCC
+    });
+    let el = document.getElementsByClassName("subtitle");
+    console.log(el);
+    for (let i = 0; i < el.length; i++) {
+      el[i].setAttribute('visibility', this.state.isCC ? 'visible' : 'hidden')
+      console.log(el[i].attributes.visibility)
+    }
+    // el.forEach(element => {
+    //   console.log(element);
+    //   console.log(element.attribute);
+    // });
+    
+  }
+
   deleteSubscriber(streamManager) {
     let subscribers = this.state.subscribers;
     let index = subscribers.indexOf(streamManager, 0);
@@ -303,7 +325,7 @@ class VideoComponent extends Component {
           const el = document.createElement('li');
           el.id = json.name;
           el.textContent = json.name + ' : ' + json.comment;
-
+          console.log(event.from);
           console.log(el);
           root.appendChild(el);
 
@@ -313,12 +335,14 @@ class VideoComponent extends Component {
           // });
 
           //
-          let ell = document.getElementById(`subtitle_${json.name}`);
-          console.log(ell);
-          ell.innerText = json.comment;
-          setTimeout(() => {
-            ell.innerText = '';
-          }, 5000);
+          // if (this.state.isCC) {
+            let ell = document.getElementById(`subtitle_${json.name}`);
+            console.log(ell);
+            ell.innerText = json.comment;
+            setTimeout(() => {
+              ell.innerText = '';
+            }, 7000);
+          // }
 
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
           if (
@@ -354,9 +378,14 @@ class VideoComponent extends Component {
             talker: json.name
           });
 
-          let ell = document.getElementById(`subtitle_${json.name}`);
-          console.log(ell);
-          ell.innerText = json.comment;
+          // if (!this.state.isCC) {
+            let ell = document.getElementById(`subtitle_${json.name}`);
+            console.log(ell);
+            ell.innerText = json.comment;
+            setTimeout(() => {
+              ell.innerText = '';
+            }, 7000);
+          // }
 
           // console.log(event.from.session.sessionId);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
@@ -511,7 +540,7 @@ class VideoComponent extends Component {
 
               <div id="feature">
                 <button id="feature-cc">
-                  <img src={CCImg} alt="cc" width={50} />
+                  <img src={CCImg} alt="cc" width={50} onClick={this.handleCC}/>
                 </button>
                 <button id="feature-sound ">
                   <img
