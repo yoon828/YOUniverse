@@ -223,17 +223,6 @@ class VideoComponent extends Component {
     this.setState({
       isCC: !this.state.isCC
     });
-    let el = document.getElementsByClassName("subtitle");
-    console.log(el);
-    for (let i = 0; i < el.length; i++) {
-      el[i].setAttribute('visibility', this.state.isCC ? 'visible' : 'hidden')
-      console.log(el[i].attributes.visibility)
-    }
-    // el.forEach(element => {
-    //   console.log(element);
-    //   console.log(element.attribute);
-    // });
-    
   }
 
   deleteSubscriber(streamManager) {
@@ -576,6 +565,7 @@ class VideoComponent extends Component {
                     streamManager={this.state.publisher}
                     subtitle={this.state.subtitle}
                     talker={this.state.talker}
+                    isCC={this.state.isCC}
                   />
                 </div>
               ) : null}
@@ -589,6 +579,7 @@ class VideoComponent extends Component {
                     streamManager={sub}
                     subtitle={this.state.subtitle}
                     talker={this.state.talker}
+                    isCC={this.state.isCC}
                   />
                 </div>
               ))}
