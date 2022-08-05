@@ -4,8 +4,8 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://127.0.0.1:27017/share_mind
-#      uri: mongodb://mongodb:27017/share_mind
+#      uri: mongodb://127.0.0.1:27017/share_mind
+      uri: mongodb://mongodb:27017/share_mind
 
 logging:
   level:
