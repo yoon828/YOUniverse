@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { registerQnA } from 'api/qna';
+import './QnAPage.scss';
 
 const QnA = () => {
   const qnaTitle = useRef(null);
@@ -49,8 +50,8 @@ const QnA = () => {
   }, []);
 
   return (
-    <div>
-      <h1>1:1 문의하기</h1>
+    <div className="qna_page page_container">
+      <h1 className="title">1:1 문의하기</h1>
       <div>
         <input ref={qnaTitle} type="text" placeholder="문의 제목" />
         <textarea

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getQnAList } from 'api/qna';
 import Page from 'modules/Pagination';
+import './QnAList.scss';
 
 const QnAList = () => {
   const [qnaList, setQnAList] = useState([]);
@@ -15,8 +16,8 @@ const QnAList = () => {
   }, []);
 
   return (
-    <div>
-      <h1>1:1 문의내역</h1>
+    <div className="qna_list page_container">
+      <h1 className="title">1:1 문의내역</h1>
       <Page
         type="/question"
         data={qnaList}

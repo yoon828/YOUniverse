@@ -1,0 +1,13 @@
+@import 'common/style/all.scss';
+
+@mixin input($width) {
+  display: block;
+  width: $width;
+}
+
+.qna_page {
+  input,
+  textarea {
+    @include input(1214px);
+  }
+}

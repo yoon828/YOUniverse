@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
 import { getQnA, deleteQnA } from 'api/qna';
+import { transform } from 'common/functions/functions';
+import './QnADetail.scss';
 
 const QnADetail = () => {
   const history = useHistory();
@@ -33,12 +35,12 @@ const QnADetail = () => {
   }, []);
 
   return (
-    <div>
-      <h1>QnA디테일</h1>
+    <div className="qna_detail page_container">
+      <h1 className="title">QnA디테일</h1>
       <p>제목: {qna.title}</p>
       <p>내용: {qna.content}</p>
       <p>(답변상황) {qna.isAnswered ? '답변완료' : '답변대기'}</p>
-      <p>(문의날짜) {qna.question_date}</p>
+      <p>(문의날짜) {transform(qna.question_date)}</p>
       {!qna.isAnswered ? (
         <>
           <p>(답변날짜) {qna.answer_date}</p>
