@@ -15,8 +15,7 @@ import {
   Videocam,
   VideocamOff,
   Logout,
-  Share,
-  TurnedIn
+  Share
 } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { toggleMouth } from '../../redux/feature';
@@ -35,8 +34,6 @@ recognition.continuous = true;
 // 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
 // maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
 recognition.maxAlternatives = 100000;
-let speechToText = '';
-console.log(recognition);
 class VideoComponent extends Component {
   constructor(props) {
     super(props);
@@ -53,9 +50,7 @@ class VideoComponent extends Component {
       isSound: true, //음성서비스 on/off 확인
       inputComment: '', //채팅내용
 
-      isCC: true, //자막 on/off 확인
-      subtitle: '',
-      talker: ''
+      isCC: true //자막 on/off 확인
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -83,9 +78,7 @@ class VideoComponent extends Component {
 
     let flag = false;
     recognition.addEventListener('result', (e) => {
-      let interimTranscript = '';
       if (!flag) {
-        console.log('start');
         this.state.session
           .signal({
             data: JSON.stringify({
@@ -110,11 +103,6 @@ class VideoComponent extends Component {
         let transcript = e.results[i][0].transcript;
         // console.log(i);
         if (e.results[i].isFinal) {
-          console.log(transcript);
-          // console.log(interimTranscript);
-          speechToText += transcript;
-
-          console.log('end');
           this.state.session
             .signal({
               data: JSON.stringify({
@@ -136,14 +124,12 @@ class VideoComponent extends Component {
           // 여기다가 서버로 닉네임 + interimTranscript 보내기
           // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
         } else {
-          interimTranscript += transcript;
+          // interimTranscript += transcript;
         }
       }
 
       // speechToText : 지금까지 누적으로 대화한 내용 ( 처음부터... 발화가 끊기기 전 것도)
       // interimTranscript : 방금 전의 발화 (한 문장)
-      // console.log(speechToText);
-      // console.log(speechToText + interimTranscript);
       // 여기다가 서버로 닉네임 + interimTranscript 보내기
       // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
     });
@@ -182,7 +168,6 @@ class VideoComponent extends Component {
 
   //mouth 확대  on/off 함수
   handleMouth() {
-    console.log(this);
     this.props.dispatch(toggleMouth());
   }
 
@@ -248,6 +233,7 @@ class VideoComponent extends Component {
 
   //채팅 남기기
   comment() {
+    console.log(this.state.session);
     this.state.session
       .signal({
         data: JSON.stringify({
@@ -313,14 +299,18 @@ class VideoComponent extends Component {
           let json = JSON.parse(event.data);
           //로그 li태그
           const log = document.createElement('li');
-          log.id = json.name;
+          log.id = event.from.connectionId;
           log.className = 'log_item';
           log.textContent = json.name + ' : ' + json.comment;
 
           root.appendChild(log);
 
-          let subtitle = document.getElementById(`subtitle_${json.name}`);
+          let subtitle = document.getElementById(
+            `subtitle_${event.from.connectionId}`
+          );
           subtitle.innerText = json.comment;
+
+          //자막이 7초뒤에 사라지도록
           setTimeout(() => {
             subtitle.innerText = '';
           }, 7000);
@@ -337,39 +327,29 @@ class VideoComponent extends Component {
           }
         });
         mySession.on('signal:sttStart', (event) => {
-          let json = JSON.parse(event.data);
+          // let json = JSON.parse(event.data);
           const el = document.createElement('li');
-          el.id = json.name;
+          el.id = event.from.connectionId;
           el.textContent = '변환중';
-          console.log(el);
           root.appendChild(el);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
         });
 
         mySession.on('signal:sttEnd', (event) => {
           let json = JSON.parse(event.data);
-          let getel = document.querySelectorAll(`#${json.name}`);
+          //변환 후 로그 수정
+          let getel = document.querySelectorAll(`#${event.from.connectionId}`);
           let ln = getel.length;
           let last = getel.item(ln - 1);
           last.textContent = json.name + ' : ' + json.comment;
-          console.log('====================변환 완료 : ');
-          console.log(last);
-          this.setState({
-            subtitle: json.comment,
-            talker: json.name
-          });
-
-          // if (!this.state.isCC) {
-          let ell = document.getElementById(`subtitle_${json.name}`);
-          console.log(ell);
-          ell.innerText = json.comment;
+          //자막 변경
+          let subtitle = document.getElementById(
+            `subtitle_${event.from.connectionId}`
+          );
+          subtitle.innerText = json.comment;
           setTimeout(() => {
-            ell.innerText = '';
+            subtitle.innerText = '';
           }, 7000);
-          // }
-
-          // console.log(event.from.session.sessionId);
-          //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
         });
 
         // --- 4) Connect to the session with a valid user token ---
@@ -502,7 +482,6 @@ class VideoComponent extends Component {
 
   render() {
     const mySessionId = this.state.mySessionId;
-    const myUserName = this.state.myUserName;
 
     return (
       <div className="container">
@@ -528,7 +507,7 @@ class VideoComponent extends Component {
                     onClick={this.handleCC}
                   />
                 </button>
-                <button id="feature-sound ">
+                <button id="feature-sound">
                   <img
                     src={SoundImg}
                     alt="sound"
@@ -553,30 +532,32 @@ class VideoComponent extends Component {
             <div id="video-container" className={this.chooseCase()}>
               {this.state.publisher !== undefined ? (
                 <div
-                  className="stream-container col-md-6 col-xs-6"
+                  className="stream-container"
                   onClick={() =>
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
                   <UserVideoComponent
                     streamManager={this.state.publisher}
-                    subtitle={this.state.subtitle}
-                    talker={this.state.talker}
+                    connectionId={
+                      this.state.publisher.session.connection.connectionId
+                    }
                     isCC={this.state.isCC}
+                    icon="5"
                   />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
-                  className="stream-container col-md-6 col-xs-6"
+                  className="stream-container"
                   onClick={() => this.handleMainVideoStream(sub)}
                 >
                   <UserVideoComponent
                     streamManager={sub}
-                    subtitle={this.state.subtitle}
-                    talker={this.state.talker}
+                    connectionId={sub.stream.connection.connectionId}
                     isCC={this.state.isCC}
+                    icon={i}
                   />
                 </div>
               ))}
@@ -621,10 +602,6 @@ class VideoComponent extends Component {
               <button className="round-button" alt="공유하기">
                 <Share />
               </button>
-            </div>
-            <div>
-              <h2>log test</h2>
-              <ul id="logs"></ul>
             </div>
           </div>
         ) : null}

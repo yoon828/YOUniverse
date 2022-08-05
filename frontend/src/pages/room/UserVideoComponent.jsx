@@ -5,9 +5,9 @@ import '../room/VideoComponent.scss';
 
 const UserVideoComponent = (props) => {
   const [nickname, setNickname] = useState('');
+  const icons = ['diamond', 'heart', 'round', 'square', 'start', 'triangle'];
 
   useEffect(() => {
-    console.log(props);
     setNickname(
       JSON.parse(props.streamManager.stream.connection.data).clientData
     );
@@ -19,9 +19,16 @@ const UserVideoComponent = (props) => {
         <div className="streamcomponent">
           <OpenViduVideoComponent streamManager={props.streamManager} />
           <div className="stream-text">
+            <img
+              src={`/asset/img/${icons[props.icon]}.png`}
+              alt={icons[props.icon]}
+            />
             <span>{nickname}</span>
             {props.isCC && (
-              <span id={`subtitle_${nickname}`} className="subtitle"></span>
+              <span
+                id={`subtitle_${props.connectionId}`}
+                className="subtitle"
+              />
             )}
           </div>
         </div>
