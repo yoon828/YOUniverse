@@ -1,38 +1,19 @@
-@import './all.scss';
+@import 'all.scss';
 
-// 개별 - 메인 페이지
-.main_header {
-  display: flex;
-  justify-content: space-between;
-  // 사이드 헤더 안넣으면 space-between수정해야함
-  > a {
-    border-radius: 60px;
-    background-color: $themeFirst;
-    color: $themeThird;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /*
-    display: -webkit-flex;
-    -webkit-align-item: center;
-    -webkit-justify-content: center;
-*/
-    height: 468px;
-    width: 352px;
-  }
-  > .main_header_logo {
-    > a > img {
-      width: 100px;
-    }
-  }
-  > .main_header_menu {
-    display: flex;
-    flex-direction: row;
-    > div {
-      padding: 10px;
-    }
+body {
+  background-color: $themeSecond;
+}
+
+a {
+  text-decoration: none;
+}
+
+// 문의 및 히스토리 페이지 컨테이너
+.page_container {
+  @include box(863px, 1561px);
+  @include text_vertical;
+  .title {
+    color: $themeSecond;
+    font-size: x-large;
   }
 }
