@@ -13,7 +13,7 @@ $themeThird: #ffeb00;
   margin: auto;
 }
 
-// flex : space_evenly
+// flex - space_evenly
 @mixin space_evenly {
   display: flex;
   justify-content: space-evenly;
