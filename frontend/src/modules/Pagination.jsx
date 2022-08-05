@@ -4,11 +4,6 @@ import { Item } from 'modules/ListModule';
 import Pagination from 'react-js-pagination';
 import './Pagination.scss';
 
-/*
-Pagination 모듈 임포트 구문
-import Page from 'modules/Pagination'
-*/
-
 const Page = ({ type, data, items }) => {
   const [page, setPage] = useState(1);
   const [units, setUnits] = useState(5);
@@ -30,8 +25,7 @@ const Page = ({ type, data, items }) => {
     return null;
   }
   return (
-    <div>
-      <h2>API 연습</h2>
+    <>
       <div>
         <select name="units" onChange={itemChange}>
           <option value="5">5개</option>
@@ -40,17 +34,17 @@ const Page = ({ type, data, items }) => {
           <option value="20">20개</option>
         </select>
       </div>
-      {data
-        .slice(units * (page - 1), units * (page - 1) + units)
-        .map((v, i) => {
-          return (
-            <div key={i}>
-              <Link to={`${type}/${v.id}`}>
+      <ul>
+        {data
+          .slice(units * (page - 1), units * (page - 1) + units)
+          .map((v, i) => {
+            return (
+              <Link to={`${type}/${v.id}`} key={i}>
                 <Item type={type} data={v} items={items} />
               </Link>
-            </div>
-          );
-        })}
+            );
+          })}
+      </ul>
 
       <Pagination
         activePage={page}
@@ -59,7 +53,7 @@ const Page = ({ type, data, items }) => {
         pageRangeDisplayed={5}
         onChange={handlePageChange}
       />
-    </div>
+    </>
   );
 };
 export default Page;
