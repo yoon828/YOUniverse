@@ -296,7 +296,7 @@ class VideoComponent extends Component {
           console.warn(exception);
         });
 
-        const root = document.getElementById('logs');
+        const root = document.getElementById('log_list');
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
           let json = JSON.parse(event.data);
