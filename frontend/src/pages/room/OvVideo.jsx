@@ -30,13 +30,10 @@ const OpenViduVideoComponent = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(bigMouth);
     if (bigMouth) {
       //mouth 기능 on
-      // console.log(videoRef2);
       handleVideoOnPlay();
       videoRef2.current.hidden = false;
-      // videoRef2.current.hide();
     } else {
       videoRef2.current.hidden = true;
     }

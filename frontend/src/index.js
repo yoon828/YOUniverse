@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import './common/style/index.scss';
 import App from './pages/App.js';
-import registerServiceWorker from './pages/room/registerServiceWorker';
+// import registerServiceWorker from './pages/room/registerServiceWorker';
 import store from './redux/store';
 
 // import registerServiceWorker from './registerServiceWorker';

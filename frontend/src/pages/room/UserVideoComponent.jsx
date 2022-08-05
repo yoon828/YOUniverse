@@ -1,24 +1,30 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import OpenViduVideoComponent from './OvVideo';
 import '../room/VideoComponent.scss';
 
 const UserVideoComponent = (props) => {
+  const [nickname, setNickname] = useState('');
+
   useEffect(() => {
-    console.log('change');
-  }, [props]);
-  const getNicknameTag = () => {
-    // Gets the nickName of the user
-    return JSON.parse(props.streamManager.stream.connection.data).clientData;
-  };
+    console.log(props);
+    setNickname(
+      JSON.parse(props.streamManager.stream.connection.data).clientData
+    );
+  }, []);
+
+  // const getNicknameTag = () => {
+  //   // Gets the nickName of the user
+  //   return JSON.parse(props.streamManager.stream.connection.data).clientData;
+  // };
 
   const getSubtitle = () => {
     console.log(props);
     return props.subtitle;
   };
   const getTest = () => {
-    console.log(getNicknameTag() === props.talker);
-    if (getNicknameTag() === props.talker) return true;
+    console.log(nickname === props.talker);
+    if (nickname === props.talker) return true;
     else return false;
   };
 
@@ -28,9 +34,9 @@ const UserVideoComponent = (props) => {
         <div className="streamcomponent">
           <OpenViduVideoComponent streamManager={props.streamManager} />
           <div className="stream-text">
-            <span>{getNicknameTag()}</span>
-            <span id={getNicknameTag()} className="subtitle">
-              {getTest() ? getSubtitle() : null}
+            <span>{nickname}</span>
+            <span id={`subtitle_${nickname}`} className="subtitle">
+              {/* {getTest() ? getSubtitle() : null} */}
             </span>
           </div>
         </div>
