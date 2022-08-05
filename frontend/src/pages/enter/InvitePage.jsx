@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import '../../common/style/Reset.scss';
-import '../../common/style/all.scss';
-import '../../common/style/invite.scss';
+import './InvitePage.scss';
 
 const Invite = () => {
   const { userId } = useParams();

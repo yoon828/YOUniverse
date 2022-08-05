@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../common/style/Reset.scss';
-import '../../common/style/all.scss';
-import '../../common/style/guest.scss';
+import './GuestPage.scss';
 
 const Guest = () => {
   return (
