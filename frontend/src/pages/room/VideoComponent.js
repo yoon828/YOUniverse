@@ -311,27 +311,19 @@ class VideoComponent extends Component {
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
           let json = JSON.parse(event.data);
-          const el = document.createElement('li');
-          el.id = json.name;
-          el.textContent = json.name + ' : ' + json.comment;
-          console.log(event.from);
-          console.log(el);
-          root.appendChild(el);
+          //로그 li태그
+          const log = document.createElement('li');
+          log.id = json.name;
+          log.className = 'log_item';
+          log.textContent = json.name + ' : ' + json.comment;
 
-          // this.setState({
-          //   subtitle: json.comment,
-          //   talker: json.name
-          // });
+          root.appendChild(log);
 
-          //
-          // if (this.state.isCC) {
-            let ell = document.getElementById(`subtitle_${json.name}`);
-            console.log(ell);
-            ell.innerText = json.comment;
-            setTimeout(() => {
-              ell.innerText = '';
-            }, 7000);
-          // }
+          let subtitle = document.getElementById(`subtitle_${json.name}`);
+          subtitle.innerText = json.comment;
+          setTimeout(() => {
+            subtitle.innerText = '';
+          }, 7000);
 
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
           if (
@@ -368,12 +360,12 @@ class VideoComponent extends Component {
           });
 
           // if (!this.state.isCC) {
-            let ell = document.getElementById(`subtitle_${json.name}`);
-            console.log(ell);
-            ell.innerText = json.comment;
-            setTimeout(() => {
-              ell.innerText = '';
-            }, 7000);
+          let ell = document.getElementById(`subtitle_${json.name}`);
+          console.log(ell);
+          ell.innerText = json.comment;
+          setTimeout(() => {
+            ell.innerText = '';
+          }, 7000);
           // }
 
           // console.log(event.from.session.sessionId);
@@ -529,7 +521,12 @@ class VideoComponent extends Component {
 
               <div id="feature">
                 <button id="feature-cc">
-                  <img src={CCImg} alt="cc" width={50} onClick={this.handleCC}/>
+                  <img
+                    src={CCImg}
+                    alt="cc"
+                    width={50}
+                    onClick={this.handleCC}
+                  />
                 </button>
                 <button id="feature-sound ">
                   <img
