@@ -1,16 +1,13 @@
 package com.ssafy.sharemind.common.auth;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
+import java.time.Duration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ssafy.sharemind.common.exception.UserNotFoundException;
+import com.ssafy.sharemind.common.util.RedisService;
 import com.ssafy.sharemind.common.util.TokenProvider;
-import com.ssafy.sharemind.db.entity.Token;
-import com.ssafy.sharemind.db.entity.User;
-import com.ssafy.sharemind.db.repository.TokenRepository;
 import com.ssafy.sharemind.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +26,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final TokenProvider tokenProvider;
-    private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
+    private final RedisService redisService;
     private final Environment env;
 
     @Override
@@ -40,31 +37,17 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 //        login 성공한 사용자
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        String uuid = oAuth2User.getAttributes().get("id").toString();
 
-        Map<String, Object> kakao_account = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
-        String email = (String) kakao_account.get("email");
-        Map<String, Object> properties = (Map<String, Object>) oAuth2User.getAttributes().get("properties");
-        String nickname = (String) properties.get("nickname");
-        String uuid =  oAuth2User.getAttributes().get("id").toString();
-
-        String accessToken = tokenProvider.createAccessToken(uuid, email, nickname);
+        String accessToken = tokenProvider.createAccessToken(uuid);
         String refreshToken = tokenProvider.createRefreshToken(uuid);
 
-        User user = userRepository.findByEmail(email)
+        userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
-        Optional<Token> findToken = tokenRepository.findByUser(user);
-
-        if (!findToken.isPresent()) {
-            tokenRepository.save(
-                    Token.builder()
-                            .refreshToken(refreshToken)
-                            .user(user)
-                            .build()
-            );
-        } else {
-            findToken.get().updateRefreshToken(refreshToken);
-        }
+        redisService.setValues(uuid, refreshToken, Duration.ofSeconds(
+                Long.parseLong(env.getProperty("jwt.refresh-token-validity-in-seconds")))
+        );
 
         String url = makeRedirectUrl(accessToken, refreshToken);
 
@@ -77,7 +60,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private String makeRedirectUrl(String accessToken, String refreshToken) {
-
         return UriComponentsBuilder.fromUriString(env.getProperty("front.url"))
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)

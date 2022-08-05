@@ -46,15 +46,13 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createAccessToken(String uuid, String email, String nickname) {
+    public String createAccessToken(String uuid) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + this.accessTokenValidityInSeconds);
 
         return Jwts.builder()
                 .setSubject(uuid)
                 .setIssuedAt(now)
-                .claim("nickname", nickname)
-                .claim("email", email)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
