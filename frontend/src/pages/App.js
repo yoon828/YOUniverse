@@ -42,7 +42,6 @@ const App = () => {
   콜백 지옥 그 자체.... 후에 리팩토링 하겠습니다.
   */
   useEffect(() => {
-    console.log(api());
     if (isLoggedIn) {
       setApiHeaders();
       getUser()
