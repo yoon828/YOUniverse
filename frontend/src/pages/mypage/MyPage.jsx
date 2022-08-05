@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteUser, getUser } from 'api/user';
 import { storeHistory } from 'api/history';
-import { deleteToken } from 'redux/auth';
+import { logout } from 'redux/auth';
 import { resetUser, insertUser } from 'redux/user';
 import { List } from 'modules/ListModule';
 import _ from 'lodash';
@@ -21,7 +21,7 @@ const MyPage = () => {
       deleteUser()
         .then(() => {
           alert('탈퇴가 성공적으로 진행되었습니다. 로그인으로 이동합니다.');
-          dispatch(deleteToken());
+          dispatch(logout());
           dispatch(resetUser());
         })
         .catch((err) => console.log('err', err));

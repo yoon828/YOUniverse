@@ -19,16 +19,15 @@ import PrivateRoute from 'routes/PrivateRoute';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { insertUser } from 'redux/user';
-import { deleteToken, renewToken as renewAccessToken } from 'redux/auth';
+import {} from 'redux/auth';
 import _ from 'lodash';
 import { getUser } from 'api/user';
 import { setApiHeaders, renewToken } from 'api/api';
 
 const App = () => {
   const expiredMsg = '만료된 JWT 토큰입니다.';
-  const isLoggedIn = useSelector(
-    (state) => !_.isEmpty(state.auth.value.refreshToken)
-  );
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const uuid = useSelector((state) => state.user.value.uuid);
   const dispatch = useDispatch();
   const isTokenExpired = (message) => {
     if (message === expiredMsg) {
@@ -42,10 +41,15 @@ const App = () => {
   콜백 지옥 그 자체.... 후에 리팩토링 하겠습니다.
   */
   useEffect(() => {
-    if (isLoggedIn) {
-      setApiHeaders();
+    console.log('로그인상태', isLoggedIn);
+    console.log(typeof uuid, uuid);
+
+    if (isLoggedIn && !uuid) {
+      // setApiHeaders();
+      console.log('내정보내놔');
       getUser()
         .then(({ data }) => {
+          console.log(data.data);
           dispatch(insertUser(data.data));
         })
         .catch(({ response }) => {
@@ -54,7 +58,7 @@ const App = () => {
             renewToken()
               .then(({ data }) => {
                 console.log(data, '드디어 갱신 성공');
-                dispatch(renewAccessToken(data));
+
                 getUser().then(({ data }) => {
                   dispatch(insertUser(data.data));
                   console.log(data);
@@ -63,7 +67,6 @@ const App = () => {
               .catch(({ response }) => {
                 console.log(response);
                 if (response.data.msg === expiredMsg) {
-                  dispatch(deleteToken());
                 }
               });
           }
@@ -73,7 +76,7 @@ const App = () => {
     } else {
       console.log('로그아웃상태입니다.');
     }
-  }, [isLoggedIn, dispatch]);
+  }, [isLoggedIn, dispatch, uuid]);
 
   return (
     <div className="App">

@@ -30,12 +30,6 @@ export const setRefreshToken = (refreshToken) => {
   return localStorage.setItem('refreshToken', refreshToken);
 };
 
-// accessToken 삭제
-export const deleteAccessToken = () => {
-  localStorage.setItem('accessToken', '');
-};
-
-// refreshToken 삭제
-export const deleteRefreshToken = () => {
-  localStorage.setItem('refreshToken', '');
+export const deleteToken = () => {
+  localStorage.clear();
 };
