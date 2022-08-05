@@ -5,7 +5,7 @@ import './MainPage.scss';
 
 const MainPage = () => {
   return (
-    <div className="main_page_link">
+    <div className="main_page_box">
       <Link to="/share">room 활성화</Link>
       <Link to="/quest">1:1문의하기</Link>
       <MyPageModule />

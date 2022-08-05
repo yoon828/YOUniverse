@@ -1,10 +1,11 @@
 @import 'common/style/all.scss';
 
-.main_page_link {
+.main_page_box {
   @include space_evenly;
   > a {
     @include box(468px, 352px);
     @include text_vertical;
+    min-width: 352px;
   }
 }
 
