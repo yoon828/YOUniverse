@@ -30,6 +30,7 @@ const Guest = () => {
           name="guest"
           placeholder="이름을 입력해주세요."
           ref={guestNameInputRef}
+          defaultValue={localStorage.getItem('guestName')}
         ></input>
         <button type="submit" onClick={submit}>
           확인
