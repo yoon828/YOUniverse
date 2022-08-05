@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useHistory } from 'react-router-dom';
 import { getHistory } from 'api/history';
+import { transform } from 'common/functions/functions';
 
 const HistoryDetail = () => {
   const { historyId } = useParams();
@@ -26,11 +27,11 @@ const HistoryDetail = () => {
   }, []);
 
   return (
-    <div>
-      <p>모임제목: {history.roomName}</p>
+    <div className="page_container history_detail">
+      <p className="title">모임제목: {history.roomName}</p>
       <p>방주인: {history.hostName}</p>
       <p>참여자: {history.participants}</p>
-      <p>일시: {history.date}</p>
+      <p>일시: {transform(history.date)}</p>
       <p>로그: {history.filePath}</p>
       <button onClick={handleDownLoad}>다운로드</button>
       <Link to="/history">목록</Link>
