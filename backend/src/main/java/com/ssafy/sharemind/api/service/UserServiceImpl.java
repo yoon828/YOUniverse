@@ -4,14 +4,12 @@ import com.ssafy.sharemind.api.response.QnAResponseDto;
 import com.ssafy.sharemind.api.response.ShareRoomHistoryResponseDto;
 import com.ssafy.sharemind.api.response.UserMypageResponseDto;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
+import com.ssafy.sharemind.common.util.RedisService;
 import com.ssafy.sharemind.db.entity.User;
 import com.ssafy.sharemind.api.response.TokenResponseDto;
 import com.ssafy.sharemind.api.response.UserDetailResponseDto;
-import com.ssafy.sharemind.common.exception.TokenNotFoundException;
 import com.ssafy.sharemind.common.exception.UserNotFoundException;
 import com.ssafy.sharemind.common.util.TokenProvider;
-import com.ssafy.sharemind.db.entity.Token;
-import com.ssafy.sharemind.db.repository.TokenRepository;
 import com.ssafy.sharemind.db.repository.UserRepository;
 import com.ssafy.sharemind.api.request.UserRegisterDto;
 import com.ssafy.sharemind.api.response.UserRegistResponseDto;
@@ -30,8 +28,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final TokenRepository tokenRepository;
     private final TokenProvider tokenProvider;
+    private final RedisService redisService;
 
     public UserRegistResponseDto register(UserRegisterDto userRegisterDto) {
 
@@ -41,7 +39,7 @@ public class UserServiceImpl implements UserService {
                 .sessionId(userRegisterDto.getSessionId())
                 .imagePath(userRegisterDto.getImagePath()).build();
         userRepository.save(user);
-        UserRegistResponseDto userRegistResponseDto =new UserRegistResponseDto().builder()
+        UserRegistResponseDto userRegistResponseDto = new UserRegistResponseDto().builder()
                 .email(user.getEmail())
                 .name(user.getName())
                 .imagePath(user.getImagePath())
@@ -54,8 +52,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserMypageResponseDto findUser(String accessToken) {
         String uuid = tokenProvider.getUserUuid(accessToken);
-        User user =userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
-        List<QnAResponseDto> qnAList=user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
+        User user = userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
+        List<QnAResponseDto> qnAList = user.getQnAList().stream().map(qnA -> QnAResponseDto.builder()
                 .answer(qnA.getAnswer())
                 .id(qnA.getId())
                 .answer_date(qnA.getAnswerDate())
@@ -65,19 +63,19 @@ public class UserServiceImpl implements UserService {
                 .uuid(qnA.getUser().getUuid())
                 .isAnswered(qnA.getIsAnswered())
                 .build()).collect(Collectors.toList());
-        Collections.sort(qnAList, (o1,o2)->o2.getQuestion_date().compareTo(o1.getQuestion_date()));
+        Collections.sort(qnAList, (o1, o2) -> o2.getQuestion_date().compareTo(o1.getQuestion_date()));
 
         List<QnAResponseDto> qnAResponseList = new ArrayList<>();
-        for(int i=0;i<qnAList.size();i++){
-            if(i==5){
+        for (int i = 0; i < qnAList.size(); i++) {
+            if (i == 5) {
                 break;
             }
             qnAResponseList.add(qnAList.get(i));
         }
 
 
-        List<ShareRoomHistoryResponseDto> roomList=user.getShareRoomHistoryList().stream().map(shareRoomHistory
-        -> ShareRoomHistoryResponseDto.builder().roomName(shareRoomHistory.getRoomName())
+        List<ShareRoomHistoryResponseDto> roomList = user.getShareRoomHistoryList().stream().map(shareRoomHistory
+                -> ShareRoomHistoryResponseDto.builder().roomName(shareRoomHistory.getRoomName())
                 .date(shareRoomHistory.getDate())
                 .filePath(shareRoomHistory.getFilePath())
                 .hostName(shareRoomHistory.getHostName())
@@ -85,17 +83,17 @@ public class UserServiceImpl implements UserService {
                 .participants(shareRoomHistory.getParticipants())
                 .uuid(shareRoomHistory.getUser().getUuid())
                 .build()).collect(Collectors.toList());
-        Collections.sort(roomList,(o1,o2)->o2.getDate().compareTo(o1.getDate()));
+        Collections.sort(roomList, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
 
-        List<ShareRoomHistoryResponseDto> roomResponseList=new ArrayList<>();
-        for(int i=0;i<roomList.size();i++){
-            if(i==5){
+        List<ShareRoomHistoryResponseDto> roomResponseList = new ArrayList<>();
+        for (int i = 0; i < roomList.size(); i++) {
+            if (i == 5) {
                 break;
             }
             roomResponseList.add(roomList.get(i));
         }
 
-        UserMypageResponseDto userMypageResponseDto =new UserMypageResponseDto().builder()
+        UserMypageResponseDto userMypageResponseDto = new UserMypageResponseDto().builder()
                 .email(user.getEmail())
                 .name(user.getName())
                 .imagePath(user.getImagePath())
@@ -111,11 +109,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(String accessToken) {
         String uuid = tokenProvider.getUserUuid(accessToken);
-        tokenRepository.deleteByUuid(uuid);
+        redisService.deleteValues(uuid);
         userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
         userRepository.deleteByUuid(uuid);
-
-
     }
 
 
@@ -123,18 +119,15 @@ public class UserServiceImpl implements UserService {
     public TokenResponseDto reIssue(String accessToken, String refreshToken) {
         tokenProvider.validateToken(refreshToken);
         String uuid = tokenProvider.getUserUuid(refreshToken);
-        Token token = tokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(TokenNotFoundException::new);
+        String findRefreshToken = redisService.getValue(uuid);
 
-        User user = token.getUser();
-
-        if (!uuid.equals(user.getUuid())) {
-            throw new UserNotFoundException("사용자를 찾을 수 없습니다.");
+        if (findRefreshToken == null || !findRefreshToken.equals(refreshToken)) {
+            throw new UserNotFoundException("refreshToken 을 찾을 수 없습니다.");
+        } else {
+            return TokenResponseDto.builder()
+                    .accessToken(tokenProvider.createAccessToken(uuid))
+                    .build();
         }
-
-        return TokenResponseDto.builder()
-                .accessToken(tokenProvider.createAccessToken(user.getUuid(), user.getEmail(), user.getName()))
-                .build();
     }
 
     @Transactional(readOnly = true)
@@ -156,9 +149,9 @@ public class UserServiceImpl implements UserService {
     public void logout(String accessToken) {
         String uuid = tokenProvider.getUserUuid(accessToken);
 
-        User user = userRepository.findByUuid(uuid)
+        userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
-        tokenRepository.deleteByUser(user);
+        redisService.deleteValues(uuid);
     }
 }
