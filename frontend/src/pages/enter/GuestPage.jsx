@@ -1,19 +1,16 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { saveGuestName } from 'redux/guest';
 import '../../common/style/Reset.scss';
 import '../../common/style/all.scss';
 import '../../common/style/guest.scss';
 
 const Guest = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const guestNameInputRef = useRef();
 
   const submit = () => {
-    dispatch(saveGuestName({ guestName: guestNameInputRef.current.value }));
+    localStorage.setItem('guestName', guestNameInputRef.current.value);
     history.replace('/');
   };
 
