@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
-import '../common/style/Reset.scss';
-import '../common/style/all.scss';
 import '../common/style/app.scss';
 import MainPage from './MainPage';
 import Login from './enter/LoginPage';
@@ -44,6 +42,7 @@ const App = () => {
   콜백 지옥 그 자체.... 후에 리팩토링 하겠습니다.
   */
   useEffect(() => {
+    console.log(api());
     if (isLoggedIn) {
       setApiHeaders();
       getUser()
