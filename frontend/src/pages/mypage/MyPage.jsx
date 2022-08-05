@@ -53,13 +53,13 @@ const MyPage = () => {
 
   return (
     <div className="my_page">
-      <div className="box">
+      <div className="profile">
         <p>{name}님의 마이페이지</p>
         <p>{email}</p>
         <button onClick={onDeleteUser}>회원탈퇴</button>
       </div>
 
-      <div className="box">
+      <div className="info">
         <div>
           <h2>쉐어룸 히스토리</h2>
           <button onClick={addHistory}>히스토리 임의 등록</button>
