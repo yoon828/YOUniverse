@@ -5,10 +5,6 @@ import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideoComponent from './UserVideoComponent';
 import './VideoComponent.scss';
-import CCImg from '../../asset/img/cc.png';
-import SoundImg from '../../asset/img/sound.png';
-import MouthImg from '../../asset/img/silent.png';
-import BigMouthImg from '../../asset/img/mouth.png';
 import {
   Mic,
   MicOff,
@@ -38,7 +34,7 @@ class VideoComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mySessionId: 'sessionA', //세션 이름 (방이름)
+      mySessionId: 'sessionA123', //세션 이름 (방이름)
       myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
@@ -50,7 +46,9 @@ class VideoComponent extends Component {
       isSound: true, //음성서비스 on/off 확인
       inputComment: '', //채팅내용
 
-      isCC: true //자막 on/off 확인
+      isCC: true, //자막 on/off 확인
+
+      icons: ['diamond', 'heart', 'round', 'square', 'start', 'triangle']
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -70,6 +68,7 @@ class VideoComponent extends Component {
     this.comment = this.comment.bind(this);
 
     this.handleCC = this.handleCC.bind(this);
+    this.getIdx = this.getIdx.bind(this);
   }
 
   componentDidMount() {
@@ -253,6 +252,16 @@ class VideoComponent extends Component {
       });
   }
 
+  getIdx(connectionId) {
+    for (let idx = 0; idx < this.state.subscribers.length; idx++) {
+      if (
+        this.state.subscribers[idx].stream.connection.connectionId ===
+        connectionId
+      )
+        return idx;
+    }
+  }
+
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
@@ -298,11 +307,18 @@ class VideoComponent extends Component {
         mySession.on('signal:ttsChat', (event) => {
           let json = JSON.parse(event.data);
           //로그 li태그
+          let idx = this.getIdx(event.from.connectionId);
+          console.log(idx);
           const log = document.createElement('li');
+          const icons = document.createElement('img');
+          if (idx === undefined) idx = 5;
+          icons.src = `/asset/img/${this.state.icons[idx]}.png`;
+          icons.width = 20;
           log.id = event.from.connectionId;
           log.className = 'log_item';
-          log.textContent = json.name + ' : ' + json.comment;
 
+          log.innerText = json.name + ' : ' + json.comment;
+          log.prepend(icons);
           root.appendChild(log);
 
           let subtitle = document.getElementById(
@@ -328,20 +344,35 @@ class VideoComponent extends Component {
         });
         mySession.on('signal:sttStart', (event) => {
           // let json = JSON.parse(event.data);
-          const el = document.createElement('li');
-          el.id = event.from.connectionId;
-          el.textContent = '변환중';
-          root.appendChild(el);
+          let idx = this.getIdx(event.from.connectionId);
+          const log = document.createElement('li');
+          const icons = document.createElement('img');
+          if (idx === undefined) idx = 5;
+          icons.src = `/asset/img/${this.state.icons[idx]}.png`;
+          icons.width = 20;
+          log.id = event.from.connectionId;
+          log.className = 'log_item';
+
+          log.innerText = '변환중입니다!';
+          log.prepend(icons);
+          root.appendChild(log);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
         });
 
         mySession.on('signal:sttEnd', (event) => {
           let json = JSON.parse(event.data);
+          let idx = this.getIdx(event.from.connectionId);
+          const icons = document.createElement('img');
+          if (idx === undefined) idx = 5;
+          icons.src = `/asset/img/${this.state.icons[idx]}.png`;
+          icons.width = 20;
           //변환 후 로그 수정
           let getel = document.querySelectorAll(`#${event.from.connectionId}`);
           let ln = getel.length;
           let last = getel.item(ln - 1);
-          last.textContent = json.name + ' : ' + json.comment;
+          last.innerText = json.name + ' : ' + json.comment;
+          last.prepend(icons);
+
           //자막 변경
           let subtitle = document.getElementById(
             `subtitle_${event.from.connectionId}`
@@ -501,7 +532,7 @@ class VideoComponent extends Component {
               <div id="feature">
                 <button id="feature-cc">
                   <img
-                    src={CCImg}
+                    src="/asset/img/cc.png"
                     alt="cc"
                     width={50}
                     onClick={this.handleCC}
@@ -509,7 +540,7 @@ class VideoComponent extends Component {
                 </button>
                 <button id="feature-sound">
                   <img
-                    src={SoundImg}
+                    src="/asset/img/sound.png"
                     alt="sound"
                     width={50}
                     onClick={this.handleSound}
@@ -521,7 +552,11 @@ class VideoComponent extends Component {
                   alt="mute"
                 >
                   <img
-                    src={this.props.bigMouth ? BigMouthImg : MouthImg}
+                    src={
+                      this.props.bigMouth
+                        ? '/asset/img/mouth.png'
+                        : '/asset/img/silent.png'
+                    }
                     alt="mouth"
                     width={50}
                   />{' '}

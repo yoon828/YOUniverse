@@ -20,6 +20,7 @@ const UserVideoComponent = (props) => {
           <OpenViduVideoComponent streamManager={props.streamManager} />
           <div className="stream-text">
             <img
+              width={20}
               src={`/asset/img/${icons[props.icon]}.png`}
               alt={icons[props.icon]}
             />
