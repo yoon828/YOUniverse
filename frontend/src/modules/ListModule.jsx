@@ -33,7 +33,7 @@ export const Item = ({ type, data, items }) => {
   return (
     <li>
       {items.map((item, index) => (
-        <span key={index}>{check(type, item, data[item])} | </span>
+        <span key={index}>{check(type, item, data[item])} </span>
       ))}
     </li>
   );

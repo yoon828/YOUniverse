@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteUser, getUser } from 'api/user';
-import { storeHistory } from 'api/history';
 import { logout } from 'redux/auth';
 import { resetUser, insertUser } from 'redux/user';
 import { List } from 'modules/ListModule';
@@ -29,18 +28,18 @@ const MyPage = () => {
   };
 
   // 히스토리 테스트용 임의 등록 함수
-  const addHistory = () => {
-    const content = {
-      filePath: '로컬어딘가겠지',
-      hostName: name,
-      participants: '최싸피,박싸피,집싸피',
-      roomName: '싸피모임',
-      uuid: uuid
-    };
-    storeHistory(content)
-      .then((res) => console.log(res))
-      .catch((res) => console.log(res));
-  };
+  // const addHistory = () => {
+  //   const content = {
+  //     filePath: '로컬어딘가겠지',
+  //     hostName: name,
+  //     participants: '최싸피,박싸피,집싸피',
+  //     roomName: '싸피모임',
+  //     uuid: uuid
+  //   };
+  //   storeHistory(content)
+  //     .then((res) => console.log(res))
+  //     .catch((res) => console.log(res));
+  // };
 
   useEffect(() => {
     getUser()
@@ -54,16 +53,24 @@ const MyPage = () => {
   return (
     <div className="my_page">
       <div className="profile">
-        <p>{name}님의 마이페이지</p>
-        <p>{email}</p>
+        <div>
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/1203/1203317.png"
+            alt=""
+          />
+          <p>{name}님의 마이페이지</p>
+          <p>{email}</p>
+        </div>
         <button onClick={onDeleteUser}>회원탈퇴</button>
       </div>
 
       <div className="info">
-        <div>
-          <h2>쉐어룸 히스토리</h2>
-          <button onClick={addHistory}>히스토리 임의 등록</button>
-          <Link to="/history">더보기</Link>
+        <div className="item">
+          <div>
+            <h2>쉐어룸 히스토리</h2>
+            {/* <button onClick={addHistory}>히스토리 임의 등록</button> */}
+            <Link to="/history">더보기</Link>
+          </div>
           {!_.isEmpty(shareRoomHistoryList) ? (
             <List
               type="/history"
@@ -73,14 +80,17 @@ const MyPage = () => {
           ) : null}
         </div>
 
-        <div>
-          <h2>1:1 문의내역</h2>
-          <Link to="/question">더보기</Link>
+        <div className="item">
+          <div>
+            <h2>1:1 문의내역</h2>
+            <Link to="/question">더보기</Link>
+          </div>
+
           {!_.isEmpty(qnAList) ? (
             <List
               type="/question"
               data={qnAList}
-              items={['question_date', 'title']}
+              items={['question_date', 'title', 'isAnswered']}
             />
           ) : null}
         </div>
