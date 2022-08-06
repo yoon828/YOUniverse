@@ -22,6 +22,9 @@ const Invite = () => {
         <div>
           <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
         </div>
+        <div>
+          <Link to="/guest">게스트로 참가</Link>
+        </div>
       </div>
     </div>
   );
