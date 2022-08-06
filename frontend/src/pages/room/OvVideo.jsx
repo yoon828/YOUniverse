@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import * as faceapi from 'face-api.js';
 import './OvVideo.scss';
 import { connect, useSelector } from 'react-redux';
+import { useState } from 'react';
 
 const MODEL_URL = '/models';
 
@@ -17,6 +18,15 @@ const OpenViduVideoComponent = (props) => {
   const videoRef2 = React.createRef();
   const canvasRef = React.createRef();
   const bigMouth = useSelector((state) => state.feature.value.bigMouth);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  useEffect(() => {
+    console.log('======================================');
+    console.log(props);
+    console.log(videoRef1);
+    console.log('--------------------------------------');
+    setIsSpeaking(props);
+  });
 
   useEffect(() => {
     if (props && !!videoRef1) {
@@ -76,6 +86,7 @@ const OpenViduVideoComponent = (props) => {
         autoPlay={true}
         ref={videoRef1}
         // onPlay={!bigMouth ? handleVideoOnPlay : null}
+        className={`${isSpeaking ? '' : 'not-'}speaking`}
       />
       <canvas ref={canvasRef} style={{ position: 'absolute' }} />
       {/* {bigMouth ? ( */}

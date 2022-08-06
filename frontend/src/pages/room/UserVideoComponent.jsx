@@ -21,7 +21,7 @@ const UserVideoComponent = (props) => {
           <div className="stream-text">
             <span>{nickname}</span>
             {props.isCC && (
-              <span id={`subtitle_${nickname}`} className="subtitle"></span>
+              <span id={`subtitle_${nickname}`} className="subtitle" />
             )}
           </div>
         </div>

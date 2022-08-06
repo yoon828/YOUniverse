@@ -267,13 +267,25 @@ class VideoComponent extends Component {
       });
   }
 
+  //stream change
+  updatePublisherSpeaking(streamManager) {
+    streamManager.updatePublisherSpeaking({
+      interval: 100,
+      threshold: -50
+    })
+  }
+
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
     this.OV = new OpenVidu();
-
+    this.OV.setAdvancedConfiguration({
+      publisherSpeakingEventsOptions: {
+          interval: 100,   // Frequency of the polling of audio streams in ms (default 100)
+          threshold: -50  // Threshold volume in dB (default -50)
+      }
+  });
     // --- 2) Init a session ---
-
     this.setState(
       {
         session: this.OV.initSession()
@@ -307,6 +319,13 @@ class VideoComponent extends Component {
           console.warn(exception);
         });
 
+        mySession.on('publisherStartSpeaking', (event) => {
+          console.log('User ' + event.connection.connectionId + ' start speaking');
+        });
+      
+        mySession.on('publisherStopSpeaking', (event) => {
+          console.log('User ' + event.connection.connectionId + ' stop speaking');
+        });
         const root = document.getElementById('log_list');
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
