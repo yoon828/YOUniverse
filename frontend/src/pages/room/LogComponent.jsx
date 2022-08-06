@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './LogComponent.scss';
 
-const LogComponent = () => {
+const LogComponent = (props) => {
   const [fontSize, setFontSize] = useState(15);
 
+  const icons = ['diamond', 'heart', 'round', 'square', 'start', 'triangle'];
+
   useEffect(() => {
+    console.log(props);
     setLogFontSize(fontSize);
   }, []);
 
@@ -26,7 +29,22 @@ const LogComponent = () => {
     <div className="log">
       <h3>로그창</h3>
       <div className="log_body">
-        <ul id="log_list" />
+        <ul id="log_list">
+          {props.logList.map((log, idx) => (
+            <li key={idx}>
+              <img
+                width={20}
+                src={`/asset/img/${icons[log.icon]}.png`}
+                alt={`${icons[log.icon]}`}
+              />
+              <span>
+                {log.name} : {log.comment}
+              </span>
+              <br />
+              <span>{log.time}</span>
+            </li>
+          ))}
+        </ul>
       </div>
       <div className="log_footer">
         <button className="font_btn" id="minus" onClick={() => changeFont(-3)}>

@@ -15,6 +15,7 @@ import {
 } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { toggleMouth } from '../../redux/feature';
+import LogComponent from './LogComponent';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
@@ -72,6 +73,7 @@ class VideoComponent extends Component {
   }
 
   componentDidMount() {
+    // console.log(props);
     window.addEventListener('beforeunload', this.onbeforeunload);
     this.joinSession();
 
@@ -305,22 +307,21 @@ class VideoComponent extends Component {
         const root = document.getElementById('log_list');
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
-          let json = JSON.parse(event.data);
-          //로그 li태그
           let idx = this.getIdx(event.from.connectionId);
-          console.log(idx);
-          const log = document.createElement('li');
-          const icons = document.createElement('img');
           if (idx === undefined) idx = 5;
-          icons.src = `/asset/img/${this.state.icons[idx]}.png`;
-          icons.width = 20;
-          log.id = event.from.connectionId;
-          log.className = 'log_item';
+          console.log(this.props);
+          let json = JSON.parse(event.data);
+          let list = [...this.props.logList];
+          console.log(list);
+          list.push({
+            icon: idx,
+            name: json.name,
+            comment: json.comment,
+            time: json.time
+          });
+          this.props.setLogList(list);
 
-          log.innerText = json.name + ' : ' + json.comment;
-          log.prepend(icons);
-          root.appendChild(log);
-
+          //자막 내용 변경
           let subtitle = document.getElementById(
             `subtitle_${event.from.connectionId}`
           );
@@ -344,34 +345,41 @@ class VideoComponent extends Component {
         });
         mySession.on('signal:sttStart', (event) => {
           // let json = JSON.parse(event.data);
-          let idx = this.getIdx(event.from.connectionId);
-          const log = document.createElement('li');
-          const icons = document.createElement('img');
-          if (idx === undefined) idx = 5;
-          icons.src = `/asset/img/${this.state.icons[idx]}.png`;
-          icons.width = 20;
-          log.id = event.from.connectionId;
-          log.className = 'log_item';
+          // const log = document.createElement('li');
+          // const icons = document.createElement('img');
+          // if (idx === undefined) idx = 5;
+          // icons.src = `/asset/img/${this.state.icons[idx]}.png`;
+          // icons.width = 20;
+          // log.id = event.from.connectionId;
+          // log.className = 'log_item';
 
-          log.innerText = '변환중입니다!';
-          log.prepend(icons);
-          root.appendChild(log);
+          // log.innerText = '변환중입니다!';
+          // log.prepend(icons);
+          // root.appendChild(log);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
+          let idx = this.getIdx(event.from.connectionId);
+          if (idx === undefined) idx = 5;
+          let json = JSON.parse(event.data);
+          let list = [...this.props.logList];
+          list.push({
+            icon: idx,
+            name: json.name,
+            comment: '변환중입니다!',
+            time: json.time
+          });
+          this.props.setLogList(list);
         });
 
         mySession.on('signal:sttEnd', (event) => {
           let json = JSON.parse(event.data);
-          let idx = this.getIdx(event.from.connectionId);
-          const icons = document.createElement('img');
-          if (idx === undefined) idx = 5;
-          icons.src = `/asset/img/${this.state.icons[idx]}.png`;
-          icons.width = 20;
-          //변환 후 로그 수정
-          let getel = document.querySelectorAll(`#${event.from.connectionId}`);
-          let ln = getel.length;
-          let last = getel.item(ln - 1);
-          last.innerText = json.name + ' : ' + json.comment;
-          last.prepend(icons);
+          let list = [...this.props.logList];
+
+          let arrName = list.map((el) => el.name);
+          console.log(arrName);
+          let idx = arrName.lastIndexOf(json.name);
+          list[idx].comment = json.comment;
+
+          this.props.setLogList(list);
 
           //자막 변경
           let subtitle = document.getElementById(
