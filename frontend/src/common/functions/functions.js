@@ -30,6 +30,12 @@ export const setRefreshToken = (refreshToken) => {
   return localStorage.setItem('refreshToken', refreshToken);
 };
 
+// token 삭제
 export const deleteToken = () => {
   localStorage.clear();
+};
+
+// refreshToken 만료 확인
+export const isTokenExpired = (message) => {
+  return message === 'refreshToken 을 찾을 수 없습니다.' ? true : false;
 };
