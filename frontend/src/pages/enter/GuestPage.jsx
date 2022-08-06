@@ -25,10 +25,11 @@ const Guest = () => {
         </Link>
       </div>
       <form>
+        <div>이름을 입력해주세요.</div>
         <input
           type="text"
           name="guest"
-          placeholder="이름을 입력해주세요."
+          // placeholder="이름을 입력해주세요."
           ref={guestNameInputRef}
           defaultValue={localStorage.getItem('guestName')}
         ></input>
