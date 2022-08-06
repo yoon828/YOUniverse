@@ -1,4 +1,28 @@
 @import 'common/style/all.scss';
 
 .history_detail {
+  > :nth-child(1) {
+    @include flex(row, space-between, center);
+  }
+  span {
+    border: 1px solid black;
+  }
+  .content {
+    background-color: $themeFourth;
+    min-height: 500px;
+    width: 1385px;
+  }
+  .outline {
+    @include flex(row, space-around, center);
+  }
+  .log {
+  }
+  button,
+  a {
+    @include blue_button;
+  }
+  a {
+    @include text_vertical;
+    margin-left: auto;
+  }
 }

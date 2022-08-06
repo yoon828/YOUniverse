@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useHistory } from 'react-router-dom';
 import { getHistory } from 'api/history';
 import { transform } from 'common/functions/functions';
-
+import './HistoryDetail.scss';
 const HistoryDetail = () => {
   const { historyId } = useParams();
   const [historyItem, setHistoryItem] = useState({});
@@ -29,12 +29,28 @@ const HistoryDetail = () => {
 
   return (
     <div className="page_container history_detail">
-      <p className="title">모임제목: {history.roomName}</p>
-      <p>방주인: {historyItem.hostName}</p>
-      <p>참여자: {historyItem.participants}</p>
-      <p>일시: {transform(historyItem.date)}</p>
-      <p>로그: {historyItem.filePath}</p>
-      <button onClick={handleDownLoad}>다운로드</button>
+      <div>
+        <h2 className="title">{historyItem.roomName}</h2>
+        <button onClick={handleDownLoad}>다운로드</button>
+      </div>
+      <div className="content">
+        <div className="outline">
+          <p>
+            <span>방주인</span>
+            <span>{historyItem.hostName}</span>
+          </p>
+          <p>
+            <span>참여자</span>
+            <span>{historyItem.participants}</span>
+          </p>
+          <p>
+            <span>일시</span>
+            <span>{transform(historyItem.date)}</span>
+          </p>
+        </div>
+        <p className="log">로그: {historyItem.filePath}</p>
+      </div>
+
       <Link to="/history">목록</Link>
     </div>
   );
