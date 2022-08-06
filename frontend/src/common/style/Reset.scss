@@ -87,3 +87,12 @@ video {
   font-size: 15px;
   box-sizing: border-box;
 }
+
+button,
+input,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
