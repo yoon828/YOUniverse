@@ -15,26 +15,39 @@ const QnA = () => {
     clearInterval(qnaContent.current);
   };
 
-  const handleSubmit = () => {
-    const payload = {
-      title: qnaTitle.current.value,
-      content: qnaContent.current.value,
-      uuid: uuid
-    };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const title = qnaTitle.current.value.trim();
+    const content = qnaContent.current.value.trim();
 
-    registerQnA(payload)
-      .then(({ data }) => {
-        alert('문의글이 등록되었습니다.');
-        console.log(`/question/${data.data.id}`);
-        history.push(`/question/${data.data.id}`);
-        clearQnA();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!!title && !!content) {
+      const payload = {
+        title: title,
+        content: qnaContent.current.value,
+        uuid: uuid
+      };
+
+      registerQnA(payload)
+        .then(({ data }) => {
+          alert('문의글이 등록되었습니다.');
+          console.log(`/question/${data.data.id}`);
+          history.push(`/question/${data.data.id}`);
+          clearQnA();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (!title) {
+      alert('제목을 작성해주세요.');
+      qnaTitle.current.value = '';
+    } else if (!content) {
+      alert('내용을 작성해주세요.');
+      qnaContent.current.value = '';
+    }
   };
 
-  const handleCancle = () => {
+  const handleCancle = (event) => {
+    // event.preventDefault();
     if (
       window.confirm(
         '문의하기 페이지에서 나가시겠습니까?\n작성 사항이 저장되지 않습니다.'
@@ -51,17 +64,30 @@ const QnA = () => {
 
   return (
     <div className="qna_page page_container">
-      <h1 className="title">1:1 문의하기</h1>
+      <h1 className="title" aria-label="일대일 문의하기">
+        1:1 문의하기
+      </h1>
       <div>
-        <input ref={qnaTitle} type="text" placeholder="문의 제목" />
-        <textarea
-          ref={qnaContent}
-          cols="30"
-          rows="10"
-          placeholder="문의 내용"
-        />
-        <button onClick={() => handleCancle()}>취소하기</button>
-        <button onClick={() => handleSubmit()}>질문하기</button>
+        <form onSubmit={(event) => handleSubmit(event)}>
+          <input
+            ref={qnaTitle}
+            type="text"
+            placeholder="문의 제목을 입력해주세요"
+            required
+          />
+          <textarea
+            ref={qnaContent}
+            rows="15"
+            placeholder="문의 내용을 입력해주세요"
+            required
+          />
+          <div className="button_container">
+            <button type="submit">등록</button>
+            <button type="button" onClick={() => handleCancle()}>
+              취소
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

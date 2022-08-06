@@ -14,6 +14,11 @@ a {
   @include text_vertical;
   .title {
     color: $themeSecond;
-    font-size: x-large;
+    font-size: 50px; // 페이지 제목 사이즈
   }
+}
+
+.button_container {
+  display: flex;
+  justify-content: end;
 }

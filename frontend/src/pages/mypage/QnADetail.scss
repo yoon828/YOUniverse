@@ -1,4 +1,11 @@
 @import 'common/style/all.scss';
 
 .qna_detail {
+  button,
+  a {
+    @include blue_button;
+  }
+  a {
+    @include text_vertical;
+  }
 }

@@ -36,18 +36,20 @@ const QnADetail = () => {
 
   return (
     <div className="qna_detail page_container">
-      <h1 className="title">QnA디테일</h1>
-      <p>제목: {qna.title}</p>
-      <p>내용: {qna.content}</p>
-      <p>(답변상황) {qna.isAnswered ? '답변완료' : '답변대기'}</p>
+      <h1 className="title">{qna.title}</h1>
+      {/* <p>제목: {qna.title}</p> */}
+      <button onClick={() => handleDelete()}>삭제</button>
+
       <p>(문의날짜) {transform(qna.question_date)}</p>
-      {!qna.isAnswered ? (
+      <p>(진행상황) {qna.isAnswered ? '답변완료' : '답변대기'}</p>
+      <p>내용: {qna.content}</p>
+      {!!qna.isAnswered ? (
         <>
           <p>(답변날짜) {qna.answer_date}</p>
           <p>(답변내용) {qna.answer}</p>
         </>
       ) : null}
-      <button onClick={() => handleDelete()}>삭제</button>
+
       <Link to="/question">목록</Link>
     </div>
   );

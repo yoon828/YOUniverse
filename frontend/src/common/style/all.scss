@@ -2,6 +2,7 @@
 $themeFirst: #f6f6f6;
 $themeSecond: #211b72;
 $themeThird: #ffeb00;
+$themeFourth: #e9e9e9;
 
 // 흰 박스 남색 글씨(높이, 너비)
 @mixin box($height, $width) {
@@ -31,4 +32,21 @@ $themeThird: #ffeb00;
 @mixin font($size, $weight) {
   font-size: $size;
   font-weight: $weight;
+}
+
+// 파란색 버튼
+@mixin blue_button {
+  background-color: $themeSecond;
+  color: $themeFirst;
+  height: 63px;
+  width: 183px;
+  margin: 3px;
+}
+
+// 플렉스 설정
+@mixin flex($direction, $justify, $align) {
+  display: flex;
+  flex-direction: #{$direction};
+  justify-content: #{$justify};
+  align-items: #{$align};
 }

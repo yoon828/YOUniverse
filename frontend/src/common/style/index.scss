@@ -22,3 +22,17 @@ code {
   font-family: 'Noto Sans KR', source-code-pro, Menlo, Monaco, Consolas,
     'Courier New', monospace;
 }
+
+// 문의하기
+button {
+  border: none;
+}
+button:hover {
+  cursor: pointer;
+}
+
+// 문의하기
+textarea {
+  font: inherit;
+  resize: none;
+}
