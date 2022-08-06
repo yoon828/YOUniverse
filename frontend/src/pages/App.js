@@ -19,58 +19,34 @@ import PrivateRoute from 'routes/PrivateRoute';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { insertUser } from 'redux/user';
-import {} from 'redux/auth';
+import { logout } from 'redux/auth';
 import _ from 'lodash';
 import { getUser } from 'api/user';
-import { setApiHeaders, renewToken } from 'api/api';
+import { isTokenExpired } from 'common/functions/functions';
 
 const App = () => {
-  const expiredMsg = '만료된 JWT 토큰입니다.';
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const uuid = useSelector((state) => state.user.value.uuid);
   const dispatch = useDispatch();
-  const isTokenExpired = (message) => {
-    if (message === expiredMsg) {
-      return true;
-    }
-    return false;
-  };
 
-  /* 
-  유저 정보 받아오는 useEffect
-  콜백 지옥 그 자체.... 후에 리팩토링 하겠습니다.
-  */
   useEffect(() => {
     console.log('로그인상태', isLoggedIn);
     console.log(typeof uuid, uuid);
 
     if (isLoggedIn && !uuid) {
-      // setApiHeaders();
-      console.log('내정보내놔');
+      console.log('정보받으러 가기');
       getUser()
         .then(({ data }) => {
           console.log(data.data);
           dispatch(insertUser(data.data));
         })
         .catch(({ response }) => {
+          console.log(response.data.message);
           if (isTokenExpired(response.data.message)) {
-            console.log('다시 쏘러감');
-            renewToken()
-              .then(({ data }) => {
-                console.log(data, '드디어 갱신 성공');
-
-                getUser().then(({ data }) => {
-                  dispatch(insertUser(data.data));
-                  console.log(data);
-                });
-              })
-              .catch(({ response }) => {
-                console.log(response);
-                if (response.data.msg === expiredMsg) {
-                }
-              });
+            dispatch(logout());
+          } else {
+            alert('에러가 발생하였습니다..ㅜㅜ');
           }
-          console.log('에러발생: ', response);
         });
       console.log('로그인상태입니다.');
     } else {

@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
+
+import { useDispatch } from 'react-redux';
+import { logout } from 'redux/auth';
+
 import { getQnAList } from 'api/qna';
+import { isTokenExpired } from 'common/functions/functions';
 import Page from 'modules/Pagination';
+
 import './QnAList.scss';
 
 const QnAList = () => {
   const [qnaList, setQnAList] = useState([]);
+  const { dispatch } = useDispatch();
 
   useEffect(() => {
     getQnAList()
@@ -12,7 +19,14 @@ const QnAList = () => {
         console.log(data.data);
         setQnAList(data.data);
       })
-      .catch((err) => console.log(err));
+      .catch(({ response }) => {
+        console.log(response.data.message);
+        if (isTokenExpired(response.data.message)) {
+          dispatch(logout());
+        } else {
+          alert('에러가 발생하였습니다..ㅜㅜ');
+        }
+      });
   }, []);
 
   return (
