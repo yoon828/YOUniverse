@@ -5,7 +5,7 @@ import '../room/VideoComponent.scss';
 
 const UserVideoComponent = (props) => {
   const [nickname, setNickname] = useState('');
-  const icons = ['diamond', 'heart', 'round', 'square', 'start', 'triangle'];
+  const icons = ['diamond', 'heart', 'round', 'square', 'star', 'triangle'];
 
   useEffect(() => {
     setNickname(

@@ -35,7 +35,7 @@ class VideoComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mySessionId: 'sessionA123', //세션 이름 (방이름)
+      mySessionId: 'sessionA12', //세션 이름 (방이름)
       myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
@@ -49,7 +49,7 @@ class VideoComponent extends Component {
 
       isCC: true, //자막 on/off 확인
 
-      icons: ['diamond', 'heart', 'round', 'square', 'start', 'triangle']
+      icons: ['diamond', 'heart', 'round', 'square', 'star', 'triangle'] //앞에 도형으로 사용자 식별
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -134,12 +134,13 @@ class VideoComponent extends Component {
   }
 
   componentWillUnmount() {
-    // window.removeEventListener('beforeunload', this.onbeforeunload);
-    this.onbeforeunload();
+    recognition.stop();
+    window.removeEventListener('beforeunload', this.onbeforeunload);
+    // this.onbeforeunload();
   }
 
   onbeforeunload(event) {
-    window.location.reload();
+    // window.location.reload();
     this.leaveSession();
   }
 
@@ -287,6 +288,13 @@ class VideoComponent extends Component {
           this.setState({
             subscribers: subscribers
           });
+          // console.log(subscribers);
+          // if (subscribers?.length >= 5) {
+          //   alert('인원 초과!');
+          //   console.log('6명 이상');
+          //   this.leaveSession();
+          //   this.props.props.push('/');
+          // }
         });
 
         // On every Stream destroyed...
@@ -339,18 +347,6 @@ class VideoComponent extends Component {
           }
         });
         mySession.on('signal:sttStart', (event) => {
-          // let json = JSON.parse(event.data);
-          // const log = document.createElement('li');
-          // const icons = document.createElement('img');
-          // if (idx === undefined) idx = 5;
-          // icons.src = `/asset/img/${this.state.icons[idx]}.png`;
-          // icons.width = 20;
-          // log.id = event.from.connectionId;
-          // log.className = 'log_item';
-
-          // log.innerText = '변환중입니다!';
-          // log.prepend(icons);
-          // root.appendChild(log);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
           let idx = this.getIdx(event.from.connectionId);
           if (idx === undefined) idx = 5;
@@ -470,7 +466,9 @@ class VideoComponent extends Component {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;
 
+    console.log(mySession);
     if (mySession) {
+      console.log('나가기');
       mySession.disconnect();
     }
 
