@@ -38,7 +38,7 @@ public class ShareRoomServiceImpl implements ShareRoomService {
                 .hostName(shareRoomInsertDto.getHostName())
                 .participants(shareRoomInsertDto.getParticipants())
                 .user(user)
-                .date(new Timestamp(System.currentTimeMillis())).build();
+                .date(shareRoomInsertDto.getCreateTime()).build();
 
         ShareRoomHistory shareRoomHistoryResponse = shareRoomHistoryRepository.save(shareRoomHistory);
         ShareRoomHistoryResponseDto shareRoomHistoryResponseDto = ShareRoomHistoryResponseDto.builder()
