@@ -5,9 +5,16 @@ import '../../common/style/Reset.scss';
 import '../../common/style/all.scss';
 import '../../common/style/guest.scss';
 
+import { useDispatch } from 'react-redux';
+import { useMainHeader } from 'redux/mainHeader';
+
 const Guest = () => {
   const history = useHistory();
   const guestNameInputRef = useRef();
+
+  const dispatch = useDispatch();
+
+  dispatch(useMainHeader(false));
 
   const submit = () => {
     localStorage.setItem('guestName', guestNameInputRef.current.value);
