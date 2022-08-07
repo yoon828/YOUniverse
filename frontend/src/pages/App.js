@@ -97,20 +97,24 @@ const App = () => {
           <div>
             <MyPageModule />
           </div>
-          <div>
-            <Link to="/login">로그인</Link>
-          </div>
-          <div>
-            <LogoutModule />
-          </div>
+          {localStorage.getItem('accessToken') && (
+            <div>
+              <LogoutModule />
+            </div>
+          )}
+          {!localStorage.getItem('accessToken') && (
+            <div>
+              <Link to="/login">로그인</Link>
+            </div>
+          )}
         </div>
       </header>
       <Switch>
         <PrivateRoute exact path="/" component={MainPage} />
         <Route path="/login" component={Login} />
         <Route path="/oauth/callback" component={CallBack} />
-        <PrivateRoute path="/invite" component={Invite} />
-        <PrivateRoute path="/guest" component={Guest} />
+        <Route path="/invite" component={Invite} />
+        <Route path="/guest" component={Guest} />
         <PrivateRoute path="/history/:historyId" component={HistoryDetail} />
         <PrivateRoute path="/history" component={HistoryList} />
         <PrivateRoute path="/questionlist" component={QnAList} />
