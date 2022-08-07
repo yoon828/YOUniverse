@@ -54,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             /* custom oauth api */
             "/oauth2/authorization/kakao",
             "/test",
+            "/error",
             "/health_check",
             "/logout",
             "/token/reissuance/*"

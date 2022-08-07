@@ -46,7 +46,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
         redisService.setValues(uuid, refreshToken, Duration.ofSeconds(
-                Long.parseLong(env.getProperty("jwt.refresh-token-validity-in-seconds")))
+                Long.parseLong(env.getProperty("jwt.refresh-token-validity-in-seconds")) * 1000)
         );
 
         String url = makeRedirectUrl(accessToken, refreshToken);
