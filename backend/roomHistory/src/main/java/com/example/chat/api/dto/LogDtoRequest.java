@@ -1,7 +1,6 @@
 package com.example.chat.api.dto;
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -11,11 +10,12 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class LogDto {
+public class LogDtoRequest {
 
-    private String id;
+    private String hostName;
+    private String participants;
+    private String roomName;
     private String sessionId;
     private Timestamp createTime;
-    private String participants;
     private List<ChatDto> chats = new ArrayList<>();
 }

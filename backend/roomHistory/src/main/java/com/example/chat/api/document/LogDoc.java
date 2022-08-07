@@ -20,7 +20,7 @@ public class LogDoc {
     private String id;
     private String sessionId;
     private LocalDateTime createTime;
-    private String participant;
+    private String participants;
     private List<Chat> chats = new ArrayList<>();
 
 }
