@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ShareRoomInsertDto {
-    private String filePath;
+    private String id;
     private String hostName;
     private String participants;
     private String roomName;

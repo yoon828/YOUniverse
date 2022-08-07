@@ -36,7 +36,7 @@ public class ShareRoomServiceImpl implements ShareRoomService {
 
         ShareRoomHistory shareRoomHistory = ShareRoomHistory.builder()
                 .roomName(shareRoomInsertDto.getRoomName())
-                .filePath(shareRoomInsertDto.getFilePath())
+                .filePath(shareRoomInsertDto.getId())
                 .hostName(shareRoomInsertDto.getHostName())
                 .participants(shareRoomInsertDto.getParticipants())
                 .user(user)

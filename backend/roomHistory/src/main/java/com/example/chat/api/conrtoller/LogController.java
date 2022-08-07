@@ -1,6 +1,6 @@
 package com.example.chat.api.conrtoller;
 
-import com.example.chat.api.dto.LogDto;
+import com.example.chat.api.dto.LogDtoRequest;
 import com.example.chat.api.exception.LogDuplicationException;
 import com.example.chat.api.exception.LogNotFoundException;
 import com.example.chat.api.service.LogService;
@@ -31,9 +31,9 @@ public class LogController {
 
 
     @PostMapping
-    public ResponseEntity<?> insertLog(@RequestBody LogDto logDto) {
+    public ResponseEntity<?> insertLog(@RequestHeader("authorization") String authorization, @RequestBody LogDtoRequest logDto) {
         try {
-            logService.insertLog(logDto);
+            logService.insertLog(authorization.replace("Bearer ", ""), logDto);
 
             return new ResponseEntity<>(responseService.getSuccessResult(
                     "대화 로그를 정상적으로 입력했습니다."), HttpStatus.OK);

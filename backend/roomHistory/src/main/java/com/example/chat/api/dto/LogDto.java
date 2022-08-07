@@ -13,10 +13,9 @@ import java.util.List;
 @Builder
 public class LogDto {
 
-    @Id
     private String id;
     private String sessionId;
     private Timestamp createTime;
-    private String participant;
+    private String participants;
     private List<ChatDto> chats = new ArrayList<>();
 }
