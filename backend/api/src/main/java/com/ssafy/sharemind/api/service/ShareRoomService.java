@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface ShareRoomService {
 
-    ShareRoomHistoryResponseDto insertShareRoomHistory(ShareRoomInsertDto shareRoomInsertDto);
+    ShareRoomHistoryResponseDto insertShareRoomHistory(String accessToken, ShareRoomInsertDto shareRoomInsertDto);
 
     List<ShareRoomHistoryResponseDto> getShareRoomHistoryByUuid(String accessToken);
 

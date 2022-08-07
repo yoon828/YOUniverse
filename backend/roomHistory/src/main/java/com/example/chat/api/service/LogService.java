@@ -66,9 +66,8 @@ public class LogService {
         httpHeaders.set("authorization", "Bearer " + accessToken);
 
         HttpEntity<Object> request = new HttpEntity<>(HistoryDto.builder()
-                .id(id)
+                .logId(id)
                 .hostName(logDto.getHostName())
-                .uuid(uuid)
                 .roomName(logDto.getRoomName())
                 .participants(logDto.getParticipants())
                 .build(), httpHeaders);

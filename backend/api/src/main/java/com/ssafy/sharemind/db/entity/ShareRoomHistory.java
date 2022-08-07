@@ -20,8 +20,7 @@ public class ShareRoomHistory {
     @Column(nullable = false)
     private String roomName;
 
-    @Column(nullable = false)
-    private String filePath;
+    private String logId;
 
     @Column(nullable = false)
     private String hostName;

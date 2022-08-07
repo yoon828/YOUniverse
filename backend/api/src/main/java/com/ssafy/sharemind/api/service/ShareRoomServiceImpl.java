@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,12 +29,12 @@ public class ShareRoomServiceImpl implements ShareRoomService {
     private final TokenProvider tokenProvider;
 
 
-    public ShareRoomHistoryResponseDto insertShareRoomHistory(ShareRoomInsertDto shareRoomInsertDto) {
-        User user = userRepository.findByUuid(shareRoomInsertDto.getUuid()).orElseThrow(NotFindUuidException::new);
+    public ShareRoomHistoryResponseDto insertShareRoomHistory(String accessToken, ShareRoomInsertDto shareRoomInsertDto) {
+        User user = userRepository.findByUuid(tokenProvider.getUserUuid(accessToken)).orElseThrow(NotFindUuidException::new);
 
         ShareRoomHistory shareRoomHistory = ShareRoomHistory.builder()
+                .logId(shareRoomInsertDto.getLogId())
                 .roomName(shareRoomInsertDto.getRoomName())
-                .filePath(shareRoomInsertDto.getId())
                 .hostName(shareRoomInsertDto.getHostName())
                 .participants(shareRoomInsertDto.getParticipants())
                 .user(user)
@@ -48,7 +46,7 @@ public class ShareRoomServiceImpl implements ShareRoomService {
                 .roomName(shareRoomInsertDto.getRoomName())
                 .participants(shareRoomInsertDto.getParticipants())
                 .hostName(shareRoomInsertDto.getHostName())
-                .filePath(shareRoomHistoryResponse.getFilePath())
+                .logId(shareRoomHistoryResponse.getLogId())
                 .date(shareRoomHistory.getDate())
                 .id(shareRoomHistory.getId()).build();
         return shareRoomHistoryResponseDto;
@@ -62,7 +60,7 @@ public class ShareRoomServiceImpl implements ShareRoomService {
         List<ShareRoomHistoryResponseDto> roomList = user.getShareRoomHistoryList().stream()
                 .map(shareRoomHistory -> ShareRoomHistoryResponseDto.builder().roomName(shareRoomHistory.getRoomName())
                         .date(shareRoomHistory.getDate())
-                        .filePath(shareRoomHistory.getFilePath())
+                        .logId(shareRoomHistory.getLogId())
                         .hostName(shareRoomHistory.getHostName())
                         .id(shareRoomHistory.getId())
                         .participants(shareRoomHistory.getParticipants())
@@ -83,7 +81,7 @@ public class ShareRoomServiceImpl implements ShareRoomService {
                 .roomName(shareRoomHistory.getRoomName())
                 .participants(shareRoomHistory.getParticipants())
                 .hostName(shareRoomHistory.getHostName())
-                .filePath(shareRoomHistory.getFilePath())
+                .logId(shareRoomHistory.getLogId())
                 .date(shareRoomHistory.getDate())
                 .id(shareRoomHistory.getId()).build();
 

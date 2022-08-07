@@ -16,9 +16,9 @@ public class ShareRoomController {
     private final ShareRoomService shareRoomService;
 
     @PostMapping
-    public ResponseEntity<?> insert(@RequestBody ShareRoomInsertDto shareRoomInsertDto){
+    public ResponseEntity<?> insert(@RequestHeader("authorization") String authorization, @RequestBody ShareRoomInsertDto shareRoomInsertDto){
         return new ResponseEntity<>(new Response<>(true,"쉐어룸히스토리 정보 등룍 완료",
-                shareRoomService.insertShareRoomHistory(shareRoomInsertDto)), HttpStatus.CREATED);
+                shareRoomService.insertShareRoomHistory(authorization.replace("Bearer ", ""), shareRoomInsertDto)), HttpStatus.CREATED);
     }
 
     @GetMapping("/list")

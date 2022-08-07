@@ -77,13 +77,12 @@ public class UserServiceImpl implements UserService {
         List<ShareRoomHistoryResponseDto> roomList = user.getShareRoomHistoryList().stream().map(shareRoomHistory
                 -> ShareRoomHistoryResponseDto.builder().roomName(shareRoomHistory.getRoomName())
                 .date(shareRoomHistory.getDate())
-                .filePath(shareRoomHistory.getFilePath())
+                .logId(shareRoomHistory.getLogId())
                 .hostName(shareRoomHistory.getHostName())
                 .id(shareRoomHistory.getId())
                 .participants(shareRoomHistory.getParticipants())
                 .uuid(shareRoomHistory.getUser().getUuid())
-                .build()).collect(Collectors.toList());
-        Collections.sort(roomList, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+                .build()).sorted((o1, o2) -> o2.getDate().compareTo(o1.getDate())).collect(Collectors.toList());
 
         List<ShareRoomHistoryResponseDto> roomResponseList = new ArrayList<>();
         for (int i = 0; i < roomList.size(); i++) {

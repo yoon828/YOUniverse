@@ -14,7 +14,7 @@ public class ShareRoomHistoryResponseDto {
 
     private long id;
     private Timestamp date;
-    private String filePath;
+    private String logId;
     private String hostName;
     private String participants;
     private String roomName;
