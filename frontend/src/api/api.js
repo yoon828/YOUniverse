@@ -10,6 +10,17 @@ export const api = axios.create({
   }
 });
 
+//로그 전용 api
+export const logApi = axios.create({
+  baseURL: 'http://cjswltjr.shop:8000/',
+  headers: {
+    Authorization: `Bearer ${
+      sessionStorage.getItem('access-token') ||
+      localStorage.getItem('access-token')
+    }`
+  }
+});
+
 // 코드 참고용
 export const setApiHeaders = () => {
   api.interceptors.request.use(function (config) {

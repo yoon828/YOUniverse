@@ -15,7 +15,7 @@ import {
 } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { toggleMouth } from '../../redux/feature';
-import LogComponent from './LogComponent';
+import { postLogs } from 'api/room';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
@@ -73,7 +73,6 @@ class VideoComponent extends Component {
   }
 
   componentDidMount() {
-    // console.log(props);
     window.addEventListener('beforeunload', this.onbeforeunload);
     this.joinSession();
 
@@ -100,9 +99,7 @@ class VideoComponent extends Component {
         flag = true;
       }
       for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
-        // console.log("e.resultIndex: "+e.resultIndex +"  e.results.length: "+e.results.length);
         let transcript = e.results[i][0].transcript;
-        // console.log(i);
         if (e.results[i].isFinal) {
           this.state.session
             .signal({
@@ -116,7 +113,6 @@ class VideoComponent extends Component {
             })
             .then(() => {
               console.log('Comment successfully sent');
-              //여기서 데이터 보내면 될 듯
             })
             .catch((error) => {
               console.error(error);
@@ -312,7 +308,6 @@ class VideoComponent extends Component {
           console.log(this.props);
           let json = JSON.parse(event.data);
           let list = [...this.props.logList];
-          console.log(list);
           list.push({
             icon: idx,
             name: json.name,
@@ -375,7 +370,6 @@ class VideoComponent extends Component {
           let list = [...this.props.logList];
 
           let arrName = list.map((el) => el.name);
-          console.log(arrName);
           let idx = arrName.lastIndexOf(json.name);
           list[idx].comment = json.comment;
 
@@ -445,6 +439,29 @@ class VideoComponent extends Component {
   }
 
   exitRoom() {
+    console.log(this.state.session);
+    let sessionId = this.state.session.sessionId;
+    let createTime = this.state.session.connection.creationTime;
+    let participant = this.state.myUserName;
+    this.state.subscribers.map((el, idx) => {
+      let name = JSON.parse(el.stream.connection.data).clientData;
+      participant += `,${name}`;
+    });
+    let chats = [];
+    this.props.logList.map((log, idx) => {
+      chats.push({
+        Time: log.time,
+        name: log.name,
+        content: log.comment
+      });
+    });
+    console.log(chats);
+    if (window.confirm('로그를 저장하시겠습니까?')) {
+      let logTitle;
+      postLogs({})
+        .then(alert('로그를 저장했습니다'))
+        .catch((err) => console.log(err));
+    } else return;
     this.leaveSession();
     this.props.props.push('/');
   }

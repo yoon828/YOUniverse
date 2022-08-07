@@ -41,7 +41,7 @@ const LogComponent = (props) => {
                 {log.name} : {log.comment}
               </span>
               <br />
-              <span>{log.time}</span>
+              <span>{log.chatTime}</span>
             </li>
           ))}
         </ul>
