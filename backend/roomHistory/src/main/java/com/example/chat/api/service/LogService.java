@@ -66,10 +66,11 @@ public class LogService {
         httpHeaders.set("authorization", "Bearer " + accessToken);
 
         HttpEntity<Object> request = new HttpEntity<>(HistoryDto.builder()
-                .logId(id)
+                .logId(logDto.getSessionId() != null ? id : null)
                 .hostName(logDto.getHostName())
                 .roomName(logDto.getRoomName())
                 .participants(logDto.getParticipants())
+                .createTime(logDto.getCreateTime())
                 .build(), httpHeaders);
 
         // RestTemplate 사용
@@ -77,21 +78,23 @@ public class LogService {
         ResponseEntity<Result> result = restTemplate.exchange(env.getProperty("history.url"),
                 HttpMethod.POST, request, Result.class);
 
+        if (logDto.getSessionId() != null) {
+            logRepository.insert(LogDoc.builder()
+                    .id(id)
+                    .sessionId(logDto.getSessionId())
+                    .createTime(logDto.getCreateTime().toLocalDateTime())
+                    .participants(logDto.getParticipants())
+                    .chats(logDto.getChats()
+                            .stream()
+                            .map(chat -> Chat.builder()
+                                    .name(chat.getName())
+                                    .chatTime(chat.getChatTime().toLocalDateTime())
+                                    .content(chat.getContent())
+                                    .build())
+                            .collect(Collectors.toList()))
+                    .build());
+        }
 
-        logRepository.insert(LogDoc.builder()
-                .id(id)
-                .sessionId(logDto.getSessionId())
-                .createTime(logDto.getCreateTime().toLocalDateTime())
-                .participants(logDto.getParticipants())
-                .chats(logDto.getChats()
-                        .stream()
-                        .map(chat -> Chat.builder()
-                                .name(chat.getName())
-                                .chatTime(chat.getChatTime().toLocalDateTime())
-                                .content(chat.getContent())
-                                .build())
-                        .collect(Collectors.toList()))
-                .build());
     }
 
     public void deleteLog(String id) {

@@ -2,6 +2,8 @@ package com.example.chat.api.dto;
 
 import lombok.*;
 
+import java.sql.Timestamp;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -12,4 +14,5 @@ public class HistoryDto {
     private String hostName;
     private String participants;
     private String roomName;
+    private Timestamp createTime;
 }
