@@ -1,4 +1,4 @@
-import { Route, Redirect } from 'react-router';
+import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 

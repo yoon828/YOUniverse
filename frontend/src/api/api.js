@@ -7,13 +7,13 @@ import {
 
 const baseURL = 'http://i7c204.p.ssafy.io:8080';
 
+// 기본 api
 export const api = axios.create({
   baseURL: baseURL,
-  headers: {
-    Authorization: `Bearer ${getAccessToken()}`
-  }
+  headers: { Authorization: `Bearer ${getAccessToken()}` }
 });
 
+// 로그 전용 api
 export const logApi = axios.create({
   baseURL: 'http://cjswltjr.shop:8000',
   headers: {
@@ -21,71 +21,14 @@ export const logApi = axios.create({
   }
 });
 
-// api 인스턴스 요청 인터셉터 설정
+// api 요청 인터셉터
 api.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${getAccessToken()}`;
   console.log('SET_API_HEADERS:', config);
   return config;
 });
 
-// api 인스턴스 응답 인터셉터 설정
-// 1. 버전
-// let isTokenRefreshing = false;
-// let refreshSubscribers = [];
-
-// const onTokenRefreshed = (accessToken) => {
-//   refreshSubscribers.map((callback) => callback(accessToken));
-// };
-
-// const addRefreshSubsciber = (callback) => {
-//   refreshSubscribers.push(callback);
-// };
-
-// api.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   async (error) => {
-//     console.log('무시', error);
-//     const { config, response } = error;
-//     const originalRequest = config;
-//     if (response.data?.message.includes('만료')) {
-//       if (!isTokenRefreshing) {
-//         isTokenRefreshing = true;
-//         console.log(error.config, '내가 먼저 헀다.');
-//         const { data, status } = await axios.get(
-//           baseURL + `/token/reissuance/${getRefreshToken()}`,
-//           {
-//             headers: {
-//               Authorization: `Bearer ${getAccessToken()}`
-//             }
-//           }
-//         );
-
-//         if (status === 200 || status === 201) {
-//           console.log('accessToken 교체완료');
-//           setAccessToken(data.accessToken);
-//           isTokenRefreshing = false;
-//           axios.defaults.headers.common.Authorization = `Bearer ${getAccessToken()}`;
-//           onTokenRefreshed(getAccessToken());
-//         } else {
-//           console.log('큰일이다 리프레쉬 만료다');
-//         }
-//       }
-//       const retryOriginalRequest = new Promise((resolve) => {
-//         console.log('추가되는 중..?');
-//         addRefreshSubsciber(() => {
-//           originalRequest.headers.Authorization = `Bearer ${getAccessToken()}`;
-//           resolve(axios(originalRequest));
-//         });
-//       });
-//       return retryOriginalRequest;
-//     }
-//     return Promise.reject(error);
-//   }
-// );
-
-// 2. 버전
+// api 응답 인터셉터
 api.interceptors.response.use(
   // 성공 응답일 때,
   (response) => {
@@ -128,26 +71,8 @@ api.interceptors.response.use(
   }
 );
 
-/*
-1. 코드 참고용
-export const fileApi = axios.create({
-  baseURL: 'http://i7c204.p.ssafy.io:8080/',
-  headers: {
-    Authorization: `Bearer ${
-      sessionStorage.getItem('access-token') ||
-      localStorage.getItem('access-token')
-    }`
-  }
+// 로그 전용 Api 요청 인터셉터
+logApi.interceptors.request.use((config) => {
+  config.headers.Authorization = `Bearer ${getAccessToken()}`;
+  return config;
 });
-
-2. 코드 참고용
-export const setFileApiHeaders = () => {
-  fileApi.interceptors.request.use(function (config) {
-    config.headers.Authorization = `Bearer ${
-      sessionStorage.getItem('access-token') ||
-      localStorage.getItem('access-token')
-    }`;
-    return config;
-  });
-};
-*/

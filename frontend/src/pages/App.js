@@ -8,24 +8,23 @@ import { logout } from 'redux/auth';
 import MainPage from './MainPage';
 import Login from './enter/LoginPage';
 import LogoutModule from '../modules/LogoutModule';
+import MyPageModule from 'modules/MyPageModule';
 import Guest from './enter/GuestPage';
 import Invite from './enter/InvitePage';
 import CallBack from './enter/CallBackPage';
 import MyPage from './mypage/MyPage';
 import HistoryList from './mypage/HistoryList';
 import HistoryDetail from './mypage/HistoryDetail';
+import Room from './room/RoomPage';
 import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
 import QnADetail from './mypage/QnADetail';
-import Share from './room/SharePage';
-
+import Share from './room/ShareModal';
 import { getUser } from 'api/user';
 import PrivateRoute from 'routes/PrivateRoute';
-import MyPageModule from 'modules/MyPageModule';
 import { isTokenExpired } from 'common/functions/functions';
 
 import '../common/style/app.scss';
-
 
 const App = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -35,7 +34,6 @@ const App = () => {
   const checkMainHeaderValue = useSelector(
     (state) => state.mainHeader.mainHeader
   );
-
 
   useEffect(() => {
     if (isLoggedIn && !uuid) {
@@ -70,7 +68,7 @@ const App = () => {
           </div>
           <div className="main_header_menu">
             <div>
-              <Link to="/share">쉐어룸</Link>
+              <Link to="/room">쉐어룸</Link>
             </div>
             <div>
               <Link to="/question">1:1문의하기</Link>
@@ -100,6 +98,7 @@ const App = () => {
         <Route path="/oauth/callback" component={CallBack} />
         <Route path="/invite" component={Invite} />
         <Route path="/guest" component={Guest} />
+        <Route path="/room/:sessionId" component={Room} />
         <PrivateRoute path="/history/:historyId" component={HistoryDetail} />
         <PrivateRoute path="/history" component={HistoryList} />
         <PrivateRoute path="/question/:questionId" component={QnADetail} />
