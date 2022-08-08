@@ -1,4 +1,12 @@
-//여기가 게스트페이지
+@import 'common/style/all.scss';
+
+.guest_form {
+  @include space_evenly;
+  @include box(468px, 753px);
+  @include text_vertical;
+  // min-width: 352px;
+}
+
 .guest_page {
   display: flex;
   flex-direction: column;

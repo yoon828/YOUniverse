@@ -26,7 +26,6 @@ import { isTokenExpired } from 'common/functions/functions';
 
 import '../common/style/app.scss';
 
-
 const App = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const uuid = useSelector((state) => state.user.value.uuid);
@@ -35,7 +34,6 @@ const App = () => {
   const checkMainHeaderValue = useSelector(
     (state) => state.mainHeader.mainHeader
   );
-
 
   useEffect(() => {
     if (isLoggedIn && !uuid) {

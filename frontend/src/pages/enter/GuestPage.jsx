@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
@@ -15,6 +15,10 @@ const Guest = () => {
 
   dispatch(useMainHeader(false));
 
+  useEffect(() => {
+    guestNameInputRef.current.focus();
+  }, []);
+
   const submit = () => {
     localStorage.setItem('guestName', guestNameInputRef.current.value);
     history.replace('/');
@@ -30,7 +34,7 @@ const Guest = () => {
           />
         </Link>
       </div>
-      <form>
+      <form className="guest_form">
         <div>이름을 입력해주세요.</div>
         <input
           type="text"
