@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import '../../common/style/Reset.scss';
-import '../../common/style/all.scss';
-import '../../common/style/invite.scss';
+
 import { KAKAO_AUTH_URL } from 'api/oauth';
 
 import { useDispatch } from 'react-redux';
 import { useMainHeader } from 'redux/mainHeader';
+import './InvitePage.scss';
 
 const Invite = () => {
   const { userId } = useParams();

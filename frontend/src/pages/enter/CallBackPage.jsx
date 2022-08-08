@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { saveToken } from 'redux/auth';
-
+import { login } from 'redux/auth';
+import { setAccessToken, setRefreshToken } from 'common/functions/functions';
 const CallBackPage = () => {
   const { search } = useLocation();
   const history = useHistory();
@@ -15,9 +15,9 @@ const CallBackPage = () => {
 
   useEffect(() => {
     if (accessToken && refreshToken) {
-      dispatch(
-        saveToken({ accessToken: accessToken, refreshToken: refreshToken })
-      );
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+      dispatch(login());
       history.replace('/');
       // 로그인 후 메인페이지로 이동
     }

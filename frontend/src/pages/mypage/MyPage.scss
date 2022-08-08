@@ -1,63 +1,67 @@
-// 공통
-$themeFirst: #f6f6f6;
-$themeSecond: #8785a2;
-$themeThird: #211b72;
+@import 'common/style/all.scss';
 
-body {
-  background-color: $themeSecond;
+// 마이페이지 전체 영역
+.my_page {
+  @include space-evenly;
 }
 
-a {
-  text-decoration: none;
-}
+// 프로필 영역
+.profile {
+  @include box(863px, 501px);
+  @include flex(column, space-around, center);
 
-// 흰 박스(배경과 대비)
-@mixin box($height, $width) {
-  background-color: $themeFirst;
-  border-radius: 60px;
-  color: $themeThird;
-  height: $height;
-  width: $width;
-  margin: auto;
-}
+  > div {
+    @include flex(column, space-around, center);
+    :nth-child(2) {
+      font-size: 25px;
+      font-weight: bold;
+    }
+  }
 
-@mixin inner_text_vertical {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-}
-
-@mixin font($style, $size, $weight) {
-  font-style: #{$style};
-  font-size: $size;
-  font-weight: $weight;
-}
-
-@mixin space_evenly {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.box {
-  @include box(700px, 1500px);
-}
-
-// 개별 - 메인 페이지
-.main_page_link {
-  @include space_evenly;
-  > a {
-    @include box(468px, 352px);
-    @include inner_text_vertical;
-    @include font(normal, 64px, 400);
+  img {
+    background-color: $themeSecond;
+    width: 300px;
+    border-radius: 50%;
+    object-fit: scale-down;
+    margin: 5px;
+  }
+  p {
+    margin: 3px;
+  }
+  > button {
+    @include blue_button;
   }
 }
 
-.my_page {
-  @include space-evenly;
-  > .box {
-    @include inner-text-vertical;
-    @include box(468px, 751px);
-    @include font(normal, 32px, 400);
+// 히스토리, 문의 내역 영역
+.info {
+  @include box(863px, 1232px);
+  @include flex(column, space-around, center);
+}
+
+// 각 영역
+.item {
+  width: 1040px;
+
+  > div {
+    // 영역별 타이틀과 '더보기'
+    @include flex(row, space-between, flex-end);
+    margin-bottom: 1rem;
+
+    > :nth-child(1) {
+      // 타이틀
+      font-size: 30px;
+    }
+  }
+
+  ul {
+    // 영역별 최신 5개
+    background-color: $themeFourth;
+    padding: 0.5rem;
+    a {
+      display: block;
+      padding: 5px 1rem 5px;
+      @include flex(row, space-between, center);
+    }
   }
 }

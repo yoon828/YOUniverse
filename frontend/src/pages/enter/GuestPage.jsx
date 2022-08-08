@@ -1,9 +1,8 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import '../../common/style/Reset.scss';
-import '../../common/style/all.scss';
-import '../../common/style/guest.scss';
+
+import './GuestPage.scss';
 
 import { useDispatch } from 'react-redux';
 import { useMainHeader } from 'redux/mainHeader';

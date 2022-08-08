@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../common/style/Reset.scss';
-import '../../common/style/all.scss';
-import '../../common/style/login.scss';
+import './LoginPage.scss';
 import { KAKAO_AUTH_URL } from 'api/oauth';
 
 import { useDispatch } from 'react-redux';

@@ -1,68 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Item } from 'modules/ListModule';
 import Pagination from 'react-js-pagination';
 import './Pagination.scss';
+import 'pages/mypage/QnAList.scss';
 
-/*
-Pagination 모듈 임포트 구문
-import Page from 'modules/Pagination'
-*/
-
-const Page = ({ data }) => {
+const Page = ({ type, data, headers, items }) => {
   const [page, setPage] = useState(1);
-  const [items, setItems] = useState(5);
+  const [units, setUnits] = useState(5);
 
   const handlePageChange = (page) => {
     setPage(page);
   };
+
   const itemChange = (e) => {
-    setItems(Number(e.target.value));
+    setUnits(Number(e.target.value));
   };
 
+  useEffect(() => {
+    setPage(1);
+  }, [units]);
   /*
   디버깅 용
-  console.log(items * (page - 1), items * (page - 1) + items);
+  console.log(units * (page - 1), units * (page - 1) + units);
   */
 
   if (!data) {
     return null;
   }
   return (
-    <div>
-      <h2>API 연습</h2>
-      <div>
-        <select name="items" onChange={itemChange}>
-          <option value="5">5개</option>
-          <option value="10">10개</option>
-          <option value="15">15개</option>
-          <option value="20">20개</option>
-        </select>
-      </div>
-      {data
-        .slice(items * (page - 1), items * (page - 1) + items)
-        .map((v, i) => {
-          return (
-            <div key={i}>
-              <h1>{v.roomName}</h1>
-              <div>
-                <span>id: {v.id}</span>
-                <span>data: {v.data}</span>
-                <span>filePath: {v.filePath}</span>
-                <span>hostName: {v.hostName}</span>
-                <span>participants: {v.participants}</span>
-                <span>uuid: {v.uuid}</span>
-              </div>
-            </div>
-          );
+    <>
+      <select name="units" onChange={itemChange}>
+        <option value="5">5개</option>
+        <option value="7">7개</option>
+        <option value="10">10개</option>
+      </select>
+      <p className="item_header">
+        {headers.map((header, index) => {
+          return <span key={index}>{header}</span>;
         })}
+      </p>
+      <ul>
+        {data
+          .slice(units * (page - 1), units * (page - 1) + units)
+          .map((v, i) => {
+            return (
+              <li key={i} className="pagination_item">
+                <Link to={`${type}/${v.id}`}>
+                  <Item type={type} data={v} items={items} />
+                </Link>
+              </li>
+            );
+          })}
+      </ul>
 
       <Pagination
+        prevPageText="❮"
+        nextPageText="❯"
+        firstPageText="❮❮"
+        lastPageText="❯❯"
         activePage={page}
-        itemsCountPerPage={items}
+        itemsCountPerPage={units}
         totalItemsCount={data.length - 1}
         pageRangeDisplayed={5}
         onChange={handlePageChange}
       />
-    </div>
+    </>
   );
 };
 export default Page;
