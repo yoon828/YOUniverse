@@ -1,10 +1,16 @@
 @import 'common/style/all.scss';
 
-.login_box {
+.invite_box {
   @include space_evenly;
   @include box(468px, 753px);
   @include text_vertical;
   // min-width: 352px;
+}
+
+.invite_kakao {
+  background-color: #ffeb00;
+  text-align: center;
+  width: 100%;
 }
 
 .invite_page {
