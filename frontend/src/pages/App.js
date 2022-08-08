@@ -25,6 +25,9 @@ import { getUser } from 'api/user';
 import { setApiHeaders, renewToken } from 'api/api';
 import { deleteToken, renewToken as renewAccessToken } from 'redux/auth';
 
+import { useHistory } from 'react-router-dom';
+import { useMainHeader } from 'redux/mainHeader';
+
 const App = () => {
   const expiredMsg = '만료된 JWT 토큰입니다.';
   const isLoggedIn = useSelector(
@@ -37,6 +40,17 @@ const App = () => {
     }
     return false;
   };
+
+  // 여기가 메인헤더
+  // const useMainHeader = useMainHeader();
+
+  const checkMainHeaderValue = useSelector(
+    (state) => state.mainHeader.mainHeader
+  );
+  console.log(checkMainHeaderValue);
+  // const checkMainHeaderValue= () => {
+  //   if mainHeader
+  // }
 
   /* 
   유저 정보 받아오는 useEffect
@@ -78,37 +92,39 @@ const App = () => {
 
   return (
     <div className="App">
-      <header className="main_header">
-        <div className="main_header_logo">
-          <Link to="/">
-            <img
-              src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
-              alt="logo"
-            />
-          </Link>
-        </div>
-        <div className="main_header_menu">
-          <div>
-            <Link to="/share">쉐어룸</Link>
+      {checkMainHeaderValue && (
+        <header className="main_header">
+          <div className="main_header_logo">
+            <Link to="/">
+              <img
+                src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
+                alt="logo"
+              />
+            </Link>
           </div>
-          <div>
-            <Link to="/question">1:1문의하기</Link>
-          </div>
-          <div>
-            <MyPageModule />
-          </div>
-          {localStorage.getItem('accessToken') && (
+          <div className="main_header_menu">
             <div>
-              <LogoutModule />
+              <Link to="/share">쉐어룸</Link>
             </div>
-          )}
-          {!localStorage.getItem('accessToken') && (
             <div>
-              <Link to="/login">로그인</Link>
+              <Link to="/question">1:1문의하기</Link>
             </div>
-          )}
-        </div>
-      </header>
+            <div>
+              <MyPageModule />
+            </div>
+            {localStorage.getItem('accessToken') && (
+              <div>
+                <LogoutModule />
+              </div>
+            )}
+            {!localStorage.getItem('accessToken') && (
+              <div>
+                <Link to="/login">로그인</Link>
+              </div>
+            )}
+          </div>
+        </header>
+      )}
       <Switch>
         <PrivateRoute exact path="/" component={MainPage} />
         <Route path="/login" component={Login} />
