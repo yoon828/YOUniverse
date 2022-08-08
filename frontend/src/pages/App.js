@@ -26,7 +26,6 @@ import { isTokenExpired } from 'common/functions/functions';
 
 import '../common/style/app.scss';
 
-
 const App = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const uuid = useSelector((state) => state.user.value.uuid);
@@ -35,7 +34,6 @@ const App = () => {
   const checkMainHeaderValue = useSelector(
     (state) => state.mainHeader.mainHeader
   );
-
 
   useEffect(() => {
     if (isLoggedIn && !uuid) {
@@ -73,7 +71,7 @@ const App = () => {
               <Link to="/share">쉐어룸</Link>
             </div>
             <div>
-              <Link to="/question">1:1문의하기</Link>
+              <Link to="/quest">1:1문의하기</Link>
             </div>
             <div>
               <MyPageModule />
