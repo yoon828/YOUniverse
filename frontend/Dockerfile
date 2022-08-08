@@ -4,4 +4,4 @@ WORKDIR "/usr/src/app"
 COPY package.json ./
 RUN npm install
 COPY ./ ./
-CMDbon  ["npm","run","start"]
+CMD  ["npm","run","start"]
