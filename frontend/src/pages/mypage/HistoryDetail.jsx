@@ -12,12 +12,7 @@ const HistoryDetail = () => {
   const [historyItem, setHistoryItem] = useState({});
   const [log, setLog] = useState(null);
   const { historyId } = useParams();
-  const history = useHistory();
   const { dispatch } = useDispatch();
-
-  const handleDownLoad = () => {
-    console.log('다운로드됩니다~~');
-  };
 
   const isLogId = (logId) => !!logId;
   const fetchLog = (logId) => {
@@ -54,7 +49,6 @@ const HistoryDetail = () => {
     <div className="page_container history_detail">
       <div className="history_detail_header">
         <h2 className="title">{historyItem.roomName}</h2>
-        <button onClick={handleDownLoad}>다운로드</button>
       </div>
       <div className="content">
         <div className="outline">
@@ -64,7 +58,7 @@ const HistoryDetail = () => {
           </p>
           <p>
             <span>참여자</span>
-            <span>{historyItem.participants}</span>
+            <span>{historyItem.participants?.slice(1)}</span>
           </p>
           <p>
             <span>일시</span>
@@ -75,7 +69,11 @@ const HistoryDetail = () => {
           로그:{' '}
           {log ? (
             log.map((chat, index) => {
-              return <p key={index}>{chat.content}</p>;
+              return (
+                <p key={index}>
+                  {chat.name} {chat.chatTime} {chat.content}
+                </p>
+              );
             })
           ) : (
             <p>저장된 로그 내용이 없습니다.</p>
