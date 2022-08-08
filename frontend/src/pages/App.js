@@ -86,9 +86,6 @@ const App = () => {
                 <Link to="/login">로그인</Link>
               </div>
             )}
-            <div>
-              <Link to="/quest">1:1문의하기</Link>
-            </div>
           </div>
         </header>
       )}
