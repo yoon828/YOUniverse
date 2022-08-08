@@ -71,7 +71,7 @@ const App = () => {
               <Link to="/room">쉐어룸</Link>
             </div>
             <div>
-              <Link to="/question">1:1문의하기</Link>
+              <Link to="/quest">1:1문의하기</Link>
             </div>
             <div>
               <MyPageModule />
@@ -86,9 +86,6 @@ const App = () => {
                 <Link to="/login">로그인</Link>
               </div>
             )}
-            <div>
-              <Link to="/quest">1:1문의하기</Link>
-            </div>
           </div>
         </header>
       )}
