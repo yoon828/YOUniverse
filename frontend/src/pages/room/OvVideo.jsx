@@ -90,7 +90,8 @@ const OpenViduVideoComponent = (props) => {
         autoPlay={true}
         ref={videoRef1}
         // onPlay={!bigMouth ? handleVideoOnPlay : null}
-        className={`${isSpeaking ? '' : 'not-'}speaking`}
+        // className={`${isSpeaking ? '' : 'not-'}speaking`}
+        className={props.streamManager.stream.connection.connectionId}
       />
       <canvas ref={canvasRef} style={{ position: 'absolute' }} />
       {/* {bigMouth ? ( */}

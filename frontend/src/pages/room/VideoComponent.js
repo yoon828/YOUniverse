@@ -56,7 +56,7 @@ class VideoComponent extends Component {
       isCC: true, //자막 on/off 확인
       subtitle: '',
       talker: '',
-      speaker: 'speaker',
+      speaker: 'speaker'
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -84,6 +84,7 @@ class VideoComponent extends Component {
 
     let flag = false;
     recognition.addEventListener('result', (e) => {
+      console.log(e);
       let interimTranscript = '';
       if (!flag) {
         console.log('start');
@@ -273,19 +274,19 @@ class VideoComponent extends Component {
     streamManager.updatePublisherSpeaking({
       interval: 100,
       threshold: -50
-    })
+    });
   }
 
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
     this.OV = new OpenVidu();
-    this.OV.setAdvancedConfiguration({
-      publisherSpeakingEventsOptions: {
-          interval: 100,   // Frequency of the polling of audio streams in ms (default 100)
-          threshold: -50  // Threshold volume in dB (default -50)
-      }
-  });
+    //   this.OV.setAdvancedConfiguration({
+    //     publisherSpeakingEventsOptions: {
+    //         interval: 100,   // Frequency of the polling of audio streams in ms (default 100)
+    //         threshold: -50  // Threshold volume in dB (default -50)
+    //     }
+    // });
     // --- 2) Init a session ---
     this.setState(
       {
@@ -320,15 +321,15 @@ class VideoComponent extends Component {
           console.warn(exception);
         });
 
-        mySession.on('publisherStartSpeaking', (event) => {
-          this.setState({speaker: event.connection.connectionId});
-          console.log('User ' + event.connection.connectionId + ' start speaking');
-        });
-      
-        mySession.on('publisherStopSpeaking', (event) => {
-          this.setState({speaker: 'speaker'});
-          console.log('User ' + event.connection.connectionId + ' stop speaking');
-        });
+        // mySession.on('publisherStartSpeaking', (event) => {
+        //   this.setState({speaker: event.connection.connectionId});
+        //   console.log('User ' + event.connection.connectionId + ' start speaking');
+        // });
+
+        // mySession.on('publisherStopSpeaking', (event) => {
+        //   this.setState({speaker: 'speaker'});
+        //   console.log('User ' + event.connection.connectionId + ' stop speaking');
+        // });
         const root = document.getElementById('log_list');
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
@@ -359,6 +360,12 @@ class VideoComponent extends Component {
           }
         });
         mySession.on('signal:sttStart', (event) => {
+          this.setState({ speaker: event.from.connectionId });
+          let video = document.getElementsByClassName(
+            event.from.connectionId
+          )[0];
+          console.log(video);
+          video.classList.add('speaking');
           let json = JSON.parse(event.data);
           const el = document.createElement('li');
           el.id = json.name;
@@ -369,6 +376,13 @@ class VideoComponent extends Component {
         });
 
         mySession.on('signal:sttEnd', (event) => {
+          this.setState({ speaker: 'speaker' });
+          let video = document.getElementsByClassName(
+            event.from.connectionId
+          )[0];
+          console.log(video);
+          video.classList.remove('speaking');
+
           let json = JSON.parse(event.data);
           let getel = document.querySelectorAll(`#${json.name}`);
           let ln = getel.length;
