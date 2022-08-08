@@ -1,35 +1,58 @@
 import React, { useState, useEffect } from 'react';
+
 import { useParams, Link, useHistory } from 'react-router-dom';
-import { getHistory } from 'api/history';
-import { transform } from 'common/functions/functions';
+import { useDispatch } from 'react-redux';
+import { logout } from 'redux/auth';
+
+import { getHistory, getLog } from 'api/history';
+import { transform, isTokenExpired } from 'common/functions/functions';
 import './HistoryDetail.scss';
+
 const HistoryDetail = () => {
-  const { historyId } = useParams();
   const [historyItem, setHistoryItem] = useState({});
+  const [log, setLog] = useState(null);
+  const { historyId } = useParams();
   const history = useHistory();
+  const { dispatch } = useDispatch();
 
   const handleDownLoad = () => {
     console.log('다운로드됩니다~~');
   };
 
+  const isLogId = (logId) => !!logId;
+  const fetchLog = (logId) => {
+    getLog(logId)
+      .then(({ data }) => {
+        console.log(data.data.chats);
+        setLog(data.data.chats);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
     getHistory(historyId)
       // 조회 성공
       .then(({ data }) => {
         setHistoryItem(data.data);
+        if (isLogId(data.data.logId)) {
+          fetchLog(data.data.logId);
+        }
       })
-
       // 조회 실패
-      .catch((err) => {
-        console.log(err);
-        alert('오류가 발생했습니다. 메인페이지로 돌아갑니다');
-        // history.replace('/');
+      .catch(({ response }) => {
+        console.log(response.data.message);
+        if (isTokenExpired(response.data.message)) {
+          dispatch(logout());
+        } else {
+          alert('에러가 발생하였습니다..ㅜㅜ');
+        }
       });
   }, []);
 
   return (
     <div className="page_container history_detail">
-      <div>
+      <div className="history_detail_header">
         <h2 className="title">{historyItem.roomName}</h2>
         <button onClick={handleDownLoad}>다운로드</button>
       </div>
@@ -48,9 +71,18 @@ const HistoryDetail = () => {
             <span>{transform(historyItem.date)}</span>
           </p>
         </div>
-        <p className="log">로그: {historyItem.filePath}</p>
+        <p className="log">
+          로그:{' '}
+          {log ? (
+            log.map((chat, index) => {
+              return <p key={index}>{chat.content}</p>;
+            })
+          ) : (
+            <p>저장된 로그 내용이 없습니다.</p>
+          )}
+        </p>
       </div>
-
+      {/* <button onClick={addLog}>로그임시등록</button> */}
       <Link to="/history">목록</Link>
     </div>
   );
