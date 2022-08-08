@@ -10,6 +10,7 @@ spring:
 #    host: localhost
     host: redis
     port: 6379
+    password: c204
 
 
   jpa:
