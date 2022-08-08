@@ -3,9 +3,16 @@ import { Link, useParams } from 'react-router-dom';
 import '../../common/style/Reset.scss';
 import '../../common/style/all.scss';
 import '../../common/style/invite.scss';
+import { KAKAO_AUTH_URL } from 'api/oauth';
+
+import { useDispatch } from 'react-redux';
+import { useMainHeader } from 'redux/mainHeader';
 
 const Invite = () => {
   const { userId } = useParams();
+  const dispatch = useDispatch();
+
+  dispatch(useMainHeader(false));
   return (
     <div className="invite_page">
       <div className="MainLogo">
@@ -18,7 +25,9 @@ const Invite = () => {
       </div>
       <div className="LoginBox">
         <div className="LoginBoxText">{userId}님의 share room</div>
-        <div className="KaKaoLogin">카카오 로그인</div>
+        <div>
+          <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
+        </div>
         <div>
           <Link to="/guest">게스트로 참가</Link>
         </div>
