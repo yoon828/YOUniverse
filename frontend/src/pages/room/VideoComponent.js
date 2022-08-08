@@ -437,7 +437,7 @@ class VideoComponent extends Component {
   exitRoom() {
     let sessionId = this.state.session.sessionId;
     let createTime = this.state.session.connection.creationTime;
-    let participant = [];
+    let participant = '';
     this.state.subscribers.map((el, idx) => {
       let name = JSON.parse(el.stream.connection.data).clientData;
       participant += `,${name}`;
@@ -450,29 +450,30 @@ class VideoComponent extends Component {
         "hostName": this.state.myUserName,
         "participants": participant,
         "roomName": roomName,
-        "sessionId": sessionId,
         "createTime": createTime
       }
       if (isLogSave) {
         let chats = [];
         this.props.logList.map((log, idx) => {
           chats.push({
-            Time: log.time,
+            chatTime: log.time,
             name: log.name,
             content: log.comment
           });
         });
+        data.sessionId = sessionId;
         data.chats = chats;
       }
       console.log(data);
       postHistory(data)
-        .then((result) => {
-          alert(result.message);
-          if (!result.success) return
+        .then(({ data }) => {
+          console.log(data);
+          alert(data.message);
+          if (!data.success) return
+          this.leaveSession();
+          this.props.props.push('/');
         }
         ).catch((err) => console.log(err))
-      this.leaveSession();
-      this.props.props.push('/');
     }
   }
 

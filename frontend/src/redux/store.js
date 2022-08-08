@@ -8,7 +8,7 @@ import mainHeaderReducer from './mainHeader';
 export default configureStore({
   reducer: {
     user: userReducer,
-    feature: featureReducer
+    feature: featureReducer,
     auth: authReducer,
     mainHeader: mainHeaderReducer
   }

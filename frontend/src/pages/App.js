@@ -105,7 +105,7 @@ const App = () => {
           </div>
           <div className="main_header_menu">
             <div>
-              <Link to="/share">쉐어룸</Link>
+              <Link to="/room">쉐어룸</Link>
             </div>
             <div>
               <Link to="/question">1:1문의하기</Link>
@@ -126,20 +126,22 @@ const App = () => {
           </div>
         </header>
       )}
-      <Switch>
-        <PrivateRoute exact path="/" component={MainPage} />
-        <Route path="/login" component={Login} />
-        <Route path="/oauth/callback" component={CallBack} />
-        <Route path="/invite" component={Invite} />
-        <Route path="/guest" component={Guest} />
-        <Route path="/room/:sessionId" component={Room} />
-        <PrivateRoute path="/history/:historyId" component={HistoryDetail} />
-        <PrivateRoute path="/history" component={HistoryList} />
-        <PrivateRoute path="/questionlist" component={QnAList} />
-        <PrivateRoute path="/question" component={QnA} />
-        <PrivateRoute path="/share" component={Share} />
-        <PrivateRoute path="/:uuid" component={MyPage} />
-      </Switch>
+      <Route>
+        <Switch>
+          <PrivateRoute exact path="/" component={MainPage} />
+          <Route path="/login" component={Login} />
+          <Route path="/oauth/callback" component={CallBack} />
+          <Route path="/invite" component={Invite} />
+          <Route path="/guest" component={Guest} />
+          <Route path="/room/:sessionId" component={Room} />
+          <PrivateRoute path="/history/:historyId" component={HistoryDetail} />
+          <PrivateRoute path="/history" component={HistoryList} />
+          <PrivateRoute path="/questionlist" component={QnAList} />
+          <PrivateRoute path="/question" component={QnA} />
+          <PrivateRoute path="/share" component={Share} />
+          <PrivateRoute path="/:uuid" component={MyPage} />
+        </Switch>
+      </Route>
     </div>
   );
 };

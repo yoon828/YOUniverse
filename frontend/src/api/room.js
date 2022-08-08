@@ -1,9 +1,5 @@
-import { logApi, api } from 'api/api';
-
-export const postLogs = async (content) => {
-  return await logApi.post('/logs', content);
-};
+import { logApi } from 'api/api';
 
 export const postHistory = async (content) => {
-  return await api.post('/history', content);
+  return await logApi.post('/logs', content);
 };

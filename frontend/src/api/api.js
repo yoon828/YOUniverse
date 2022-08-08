@@ -19,10 +19,8 @@ export const api = axios.create({
 export const logApi = axios.create({
   baseURL: 'http://cjswltjr.shop:8000/',
   headers: {
-    // eslint-disable-next-line prettier/prettier
-    Authorization: `Bearer ${sessionStorage.getItem('access-token') ||
-      localStorage.getItem('access-token')
-      }`
+    // Authorization: `Bearer ${getAccessToken()}`
+    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
   }
 });
 
@@ -36,6 +34,10 @@ export const renewToken = async (sucess, fail) => {
 
 export const setApiHeaders = () => {
   api.interceptors.request.use(function (config) {
+    config.headers.Authorization = `Bearer ${getAccessToken()}`;
+    return config;
+  });
+  logApi.interceptors.request.use(function (config) {
     config.headers.Authorization = `Bearer ${getAccessToken()}`;
     return config;
   });
