@@ -1,3 +1,5 @@
+@import 'common/style/all.scss';
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -5,6 +7,8 @@
 }
 
 ul {
+  display: block;
+  width: 100%;
   list-style: none;
   padding: 0;
 }
@@ -19,37 +23,85 @@ ul.pagination li {
   justify-content: center;
   align-items: center;
   font-size: 1rem;
-}
-
-ul.pagination li:first-child {
-  border-radius: 5px 0 0 5px;
-}
-
-ul.pagination li:last-child {
-  border-radius: 0 5px 5px 0;
-}
-
-ul.pagination li a {
-  text-decoration: none;
-  color: #337ab7;
-  font-size: 1rem;
-}
-
-ul.pagination li.active a {
-  color: white;
+  :first-child {
+    border-radius: 5px 0 0 5px;
+  }
+  :last-child {
+    border-radius: 0 5px 5px 0;
+  }
+  a {
+    text-decoration: none;
+    color: $themeSecond;
+    :hover {
+      color: $themeSecond;
+    }
+    a.active {
+      color: $themeSecond;
+    }
+  }
 }
 
 ul.pagination li.active {
-  background-color: #337ab7;
-}
-
-ul.pagination li a:hover,
-ul.pagination li a.active {
-  color: blue;
+  background-color: $themeSecond;
+  a {
+    color: white;
+  }
 }
 
 .page-selection {
   width: 48px;
   height: 30px;
-  color: #337ab7;
+  color: $themeSecond;
+}
+
+select {
+  display: block;
+  border: 2.5px solid black;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.pagination_item {
+  @include list_item;
+  a {
+    @include flex(row, space-around, center);
+    span {
+      display: inline-block;
+      text-align: center;
+      &:nth-child(1) {
+        width: 75%;
+      }
+      &:nth-child(2) {
+        width: 15%;
+      }
+      &:nth-child(3) {
+        width: 10%;
+      }
+    }
+  }
+  margin: 10px 0px;
+  padding: 10px 0px;
+}
+
+.item_header {
+  @include list_item;
+  @include flex(row, space-around, center);
+  font-weight: bold;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 0px;
+  span {
+    text-align: center;
+    display: inline-block;
+    &:nth-child(1) {
+      width: 75%;
+    }
+    &:nth-child(2) {
+      width: 15%;
+    }
+    &:nth-child(3) {
+      width: 10%;
+    }
+  }
 }

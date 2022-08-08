@@ -7,9 +7,11 @@ export const List = ({ type, data, items }) => {
   return (
     <ul>
       {data.map((obj) => (
-        <Link to={`${type}/${obj.id}`} key={obj.id}>
-          <Item data={obj} items={items} type={type} />
-        </Link>
+        <li key={obj.id}>
+          <Link to={`${type}/${obj.id}`}>
+            <Item data={obj} items={items} type={type} />
+          </Link>
+        </li>
       ))}
     </ul>
   );
@@ -31,10 +33,10 @@ export const Item = ({ type, data, items }) => {
   };
 
   return (
-    <li>
+    <>
       {items.map((item, index) => (
         <span key={index}>{check(type, item, data[item])} </span>
       ))}
-    </li>
+    </>
   );
 };
