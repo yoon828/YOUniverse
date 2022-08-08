@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
+
 import { Route, Link, Switch } from 'react-router-dom';
-import '../common/style/app.scss';
+import { useSelector, useDispatch } from 'react-redux';
+import { insertUser } from 'redux/user';
+import { logout } from 'redux/auth';
+
 import MainPage from './MainPage';
 import Login from './enter/LoginPage';
 import LogoutModule from '../modules/LogoutModule';
@@ -14,15 +18,13 @@ import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
 import QnADetail from './mypage/QnADetail';
 import Share from './room/SharePage';
-import MyPageModule from 'modules/MyPageModule';
-import PrivateRoute from 'routes/PrivateRoute';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { insertUser } from 'redux/user';
-import { logout } from 'redux/auth';
-import _ from 'lodash';
 import { getUser } from 'api/user';
+import PrivateRoute from 'routes/PrivateRoute';
+import MyPageModule from 'modules/MyPageModule';
 import { isTokenExpired } from 'common/functions/functions';
+
+import '../common/style/app.scss';
 
 const App = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -30,9 +32,6 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('로그인상태', isLoggedIn);
-    console.log(typeof uuid, uuid);
-
     if (isLoggedIn && !uuid) {
       console.log('정보받으러 가기');
       getUser()
@@ -48,9 +47,6 @@ const App = () => {
             alert('에러가 발생하였습니다..ㅜㅜ');
           }
         });
-      console.log('로그인상태입니다.');
-    } else {
-      console.log('로그아웃상태입니다.');
     }
   }, [isLoggedIn, dispatch, uuid]);
 
