@@ -1,4 +1,18 @@
-//여기가 로그인페이지
+@import 'common/style/all.scss';
+
+.login_box {
+  @include space_evenly;
+  @include box(468px, 753px);
+  @include text_vertical;
+  // min-width: 352px;
+}
+
+.login_kakao {
+  background-color: #ffeb00;
+  text-align: center;
+  width: 100%;
+}
+
 .login_page {
   display: flex;
   flex-direction: column;
