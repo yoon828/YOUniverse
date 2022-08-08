@@ -22,9 +22,9 @@ const Invite = () => {
           />
         </Link>
       </div>
-      <div className="login_box">
-        <div className="login_box_text">{userId}님의 share room</div>
-        <div>
+      <div className="invite_box">
+        <div className="invite_box_text">{userId}님의 share room</div>
+        <div className="invite_kakao">
           <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
         </div>
         <div>

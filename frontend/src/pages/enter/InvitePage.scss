@@ -1,4 +1,12 @@
-//여기가 초대페이지
+@import 'common/style/all.scss';
+
+.login_box {
+  @include space_evenly;
+  @include box(468px, 753px);
+  @include text_vertical;
+  // min-width: 352px;
+}
+
 .invite_page {
   display: flex;
   flex-direction: column;
