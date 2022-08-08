@@ -2,7 +2,7 @@
 export const transform = (timestamp) => {
   const date = new Date(timestamp);
   const Y = date.getFullYear();
-  const M = date.getMonth();
+  const M = date.getMonth() + 1;
   const D = date.getDate();
   const h = date.getHours();
   const m = date.getMinutes();
