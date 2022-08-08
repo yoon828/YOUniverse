@@ -5,21 +5,17 @@ import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideoComponent from './UserVideoComponent';
 import './VideoComponent.scss';
-import CCImg from '../../asset/img/cc.png';
-import SoundImg from '../../asset/img/sound.png';
-import MouthImg from '../../asset/img/silent.png';
-import BigMouthImg from '../../asset/img/mouth.png';
 import {
   Mic,
   MicOff,
   Videocam,
   VideocamOff,
   Logout,
-  Share,
-  TurnedIn
+  Share
 } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { toggleMouth } from '../../redux/feature';
+import { postHistory, postLogs } from 'api/room';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
@@ -35,13 +31,11 @@ recognition.continuous = true;
 // 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
 // maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
 recognition.maxAlternatives = 100000;
-let speechToText = '';
-console.log(recognition);
 class VideoComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mySessionId: 'sessionA', //세션 이름 (방이름)
+      mySessionId: 'sessionA12', //세션 이름 (방이름)
       myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
@@ -54,8 +48,8 @@ class VideoComponent extends Component {
       inputComment: '', //채팅내용
 
       isCC: true, //자막 on/off 확인
-      subtitle: '',
-      talker: ''
+
+      icons: ['diamond', 'heart', 'round', 'square', 'star', 'triangle'] //앞에 도형으로 사용자 식별
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -75,6 +69,7 @@ class VideoComponent extends Component {
     this.comment = this.comment.bind(this);
 
     this.handleCC = this.handleCC.bind(this);
+    this.getIdx = this.getIdx.bind(this);
   }
 
   componentDidMount() {
@@ -83,9 +78,7 @@ class VideoComponent extends Component {
 
     let flag = false;
     recognition.addEventListener('result', (e) => {
-      let interimTranscript = '';
       if (!flag) {
-        console.log('start');
         this.state.session
           .signal({
             data: JSON.stringify({
@@ -106,15 +99,8 @@ class VideoComponent extends Component {
         flag = true;
       }
       for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
-        // console.log("e.resultIndex: "+e.resultIndex +"  e.results.length: "+e.results.length);
         let transcript = e.results[i][0].transcript;
-        // console.log(i);
         if (e.results[i].isFinal) {
-          console.log(transcript);
-          // console.log(interimTranscript);
-          speechToText += transcript;
-
-          console.log('end');
           this.state.session
             .signal({
               data: JSON.stringify({
@@ -127,7 +113,6 @@ class VideoComponent extends Component {
             })
             .then(() => {
               console.log('Comment successfully sent');
-              //여기서 데이터 보내면 될 듯
             })
             .catch((error) => {
               console.error(error);
@@ -136,14 +121,12 @@ class VideoComponent extends Component {
           // 여기다가 서버로 닉네임 + interimTranscript 보내기
           // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
         } else {
-          interimTranscript += transcript;
+          // interimTranscript += transcript;
         }
       }
 
       // speechToText : 지금까지 누적으로 대화한 내용 ( 처음부터... 발화가 끊기기 전 것도)
       // interimTranscript : 방금 전의 발화 (한 문장)
-      // console.log(speechToText);
-      // console.log(speechToText + interimTranscript);
       // 여기다가 서버로 닉네임 + interimTranscript 보내기
       // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
     });
@@ -151,12 +134,13 @@ class VideoComponent extends Component {
   }
 
   componentWillUnmount() {
-    // window.removeEventListener('beforeunload', this.onbeforeunload);
-    this.onbeforeunload();
+    recognition.stop();
+    window.removeEventListener('beforeunload', this.onbeforeunload);
+    // this.onbeforeunload();
   }
 
   onbeforeunload(event) {
-    window.location.reload();
+    // window.location.reload();
     this.leaveSession();
   }
 
@@ -182,7 +166,6 @@ class VideoComponent extends Component {
 
   //mouth 확대  on/off 함수
   handleMouth() {
-    console.log(this);
     this.props.dispatch(toggleMouth());
   }
 
@@ -248,6 +231,7 @@ class VideoComponent extends Component {
 
   //채팅 남기기
   comment() {
+    console.log(this.state.session);
     this.state.session
       .signal({
         data: JSON.stringify({
@@ -265,6 +249,16 @@ class VideoComponent extends Component {
       .catch((error) => {
         console.error(error);
       });
+  }
+
+  getIdx(connectionId) {
+    for (let idx = 0; idx < this.state.subscribers.length; idx++) {
+      if (
+        this.state.subscribers[idx].stream.connection.connectionId ===
+        connectionId
+      )
+        return idx;
+    }
   }
 
   joinSession() {
@@ -294,6 +288,13 @@ class VideoComponent extends Component {
           this.setState({
             subscribers: subscribers
           });
+          // console.log(subscribers);
+          // if (subscribers?.length >= 5) {
+          //   alert('인원 초과!');
+          //   console.log('6명 이상');
+          //   this.leaveSession();
+          //   this.props.props.push('/');
+          // }
         });
 
         // On every Stream destroyed...
@@ -310,17 +311,26 @@ class VideoComponent extends Component {
         const root = document.getElementById('log_list');
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
+          let idx = this.getIdx(event.from.connectionId);
+          if (idx === undefined) idx = 5;
+          console.log(this.props);
           let json = JSON.parse(event.data);
-          //로그 li태그
-          const log = document.createElement('li');
-          log.id = json.name;
-          log.className = 'log_item';
-          log.textContent = json.name + ' : ' + json.comment;
+          let list = [...this.props.logList];
+          list.push({
+            icon: idx,
+            name: json.name,
+            comment: json.comment,
+            time: json.time
+          });
+          this.props.setLogList(list);
 
-          root.appendChild(log);
-
-          let subtitle = document.getElementById(`subtitle_${json.name}`);
+          //자막 내용 변경
+          let subtitle = document.getElementById(
+            `subtitle_${event.from.connectionId}`
+          );
           subtitle.innerText = json.comment;
+
+          //자막이 7초뒤에 사라지도록
           setTimeout(() => {
             subtitle.innerText = '';
           }, 7000);
@@ -337,39 +347,38 @@ class VideoComponent extends Component {
           }
         });
         mySession.on('signal:sttStart', (event) => {
-          let json = JSON.parse(event.data);
-          const el = document.createElement('li');
-          el.id = json.name;
-          el.textContent = '변환중';
-          console.log(el);
-          root.appendChild(el);
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
+          let idx = this.getIdx(event.from.connectionId);
+          if (idx === undefined) idx = 5;
+          let json = JSON.parse(event.data);
+          let list = [...this.props.logList];
+          list.push({
+            icon: idx,
+            name: json.name,
+            comment: '변환중입니다!',
+            time: json.time
+          });
+          this.props.setLogList(list);
         });
 
         mySession.on('signal:sttEnd', (event) => {
           let json = JSON.parse(event.data);
-          let getel = document.querySelectorAll(`#${json.name}`);
-          let ln = getel.length;
-          let last = getel.item(ln - 1);
-          last.textContent = json.name + ' : ' + json.comment;
-          console.log('====================변환 완료 : ');
-          console.log(last);
-          this.setState({
-            subtitle: json.comment,
-            talker: json.name
-          });
+          let list = [...this.props.logList];
 
-          // if (!this.state.isCC) {
-          let ell = document.getElementById(`subtitle_${json.name}`);
-          console.log(ell);
-          ell.innerText = json.comment;
+          let arrName = list.map((el) => el.name);
+          let idx = arrName.lastIndexOf(json.name);
+          list[idx].comment = json.comment;
+
+          this.props.setLogList(list);
+
+          //자막 변경
+          let subtitle = document.getElementById(
+            `subtitle_${event.from.connectionId}`
+          );
+          subtitle.innerText = json.comment;
           setTimeout(() => {
-            ell.innerText = '';
+            subtitle.innerText = '';
           }, 7000);
-          // }
-
-          // console.log(event.from.session.sessionId);
-          //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
         });
 
         // --- 4) Connect to the session with a valid user token ---
@@ -426,15 +435,54 @@ class VideoComponent extends Component {
   }
 
   exitRoom() {
-    this.leaveSession();
-    this.props.props.push('/');
+    let sessionId = this.state.session.sessionId;
+    let createTime = this.state.session.connection.creationTime;
+    let participant = [];
+    this.state.subscribers.map((el, idx) => {
+      let name = JSON.parse(el.stream.connection.data).clientData;
+      participant += `,${name}`;
+    });
+    if (window.confirm('방을 나가시겠습니까?')) {
+      let roomName = window.prompt('방 제목을 입력해주세요');
+      let isLogSave = false;
+      if (window.confirm('로그를 저장하시겠습니까?')) isLogSave = true;
+      let data = {
+        "hostName": this.state.myUserName,
+        "participants": participant,
+        "roomName": roomName,
+        "sessionId": sessionId,
+        "createTime": createTime
+      }
+      if (isLogSave) {
+        let chats = [];
+        this.props.logList.map((log, idx) => {
+          chats.push({
+            Time: log.time,
+            name: log.name,
+            content: log.comment
+          });
+        });
+        data.chats = chats;
+      }
+      console.log(data);
+      postHistory(data)
+        .then((result) => {
+          alert(result.message);
+          if (!result.success) return
+        }
+        ).catch((err) => console.log(err))
+      this.leaveSession();
+      this.props.props.push('/');
+    }
   }
 
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;
 
+    console.log(mySession);
     if (mySession) {
+      console.log('나가기');
       mySession.disconnect();
     }
 
@@ -502,7 +550,6 @@ class VideoComponent extends Component {
 
   render() {
     const mySessionId = this.state.mySessionId;
-    const myUserName = this.state.myUserName;
 
     return (
       <div className="container">
@@ -522,15 +569,15 @@ class VideoComponent extends Component {
               <div id="feature">
                 <button id="feature-cc">
                   <img
-                    src={CCImg}
+                    src="/asset/img/cc.png"
                     alt="cc"
                     width={50}
                     onClick={this.handleCC}
                   />
                 </button>
-                <button id="feature-sound ">
+                <button id="feature-sound">
                   <img
-                    src={SoundImg}
+                    src="/asset/img/sound.png"
                     alt="sound"
                     width={50}
                     onClick={this.handleSound}
@@ -542,7 +589,11 @@ class VideoComponent extends Component {
                   alt="mute"
                 >
                   <img
-                    src={this.props.bigMouth ? BigMouthImg : MouthImg}
+                    src={
+                      this.props.bigMouth
+                        ? '/asset/img/mouth.png'
+                        : '/asset/img/silent.png'
+                    }
                     alt="mouth"
                     width={50}
                   />{' '}
@@ -553,30 +604,32 @@ class VideoComponent extends Component {
             <div id="video-container" className={this.chooseCase()}>
               {this.state.publisher !== undefined ? (
                 <div
-                  className="stream-container col-md-6 col-xs-6"
+                  className="stream-container"
                   onClick={() =>
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
                   <UserVideoComponent
                     streamManager={this.state.publisher}
-                    subtitle={this.state.subtitle}
-                    talker={this.state.talker}
+                    connectionId={
+                      this.state.publisher.session.connection.connectionId
+                    }
                     isCC={this.state.isCC}
+                    icon="5"
                   />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
-                  className="stream-container col-md-6 col-xs-6"
+                  className="stream-container"
                   onClick={() => this.handleMainVideoStream(sub)}
                 >
                   <UserVideoComponent
                     streamManager={sub}
-                    subtitle={this.state.subtitle}
-                    talker={this.state.talker}
+                    connectionId={sub.stream.connection.connectionId}
                     isCC={this.state.isCC}
+                    icon={i}
                   />
                 </div>
               ))}
@@ -621,10 +674,6 @@ class VideoComponent extends Component {
               <button className="round-button" alt="공유하기">
                 <Share />
               </button>
-            </div>
-            <div>
-              <h2>log test</h2>
-              <ul id="logs"></ul>
             </div>
           </div>
         ) : null}
@@ -673,16 +722,16 @@ class VideoComponent extends Component {
             console.log(error);
             console.warn(
               'No connection to OpenVidu Server. This may be a certificate error at ' +
-                OPENVIDU_SERVER_URL
+              OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  OPENVIDU_SERVER_URL +
-                  '"'
+                OPENVIDU_SERVER_URL +
+                '"\n\nClick OK to navigate and accept it. ' +
+                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                OPENVIDU_SERVER_URL +
+                '"'
               )
             ) {
               window.location.assign(
@@ -700,9 +749,9 @@ class VideoComponent extends Component {
       axios
         .post(
           OPENVIDU_SERVER_URL +
-            '/openvidu/api/sessions/' +
-            sessionId +
-            '/connection',
+          '/openvidu/api/sessions/' +
+          sessionId +
+          '/connection',
           data,
           {
             headers: {
