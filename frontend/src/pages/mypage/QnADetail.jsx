@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
+
 import { useParams, useHistory, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from 'redux/auth';
+
 import { getQnA, deleteQnA } from 'api/qna';
-import { transform } from 'common/functions/functions';
+import { transform, isTokenExpired } from 'common/functions/functions';
 import './QnADetail.scss';
 
 const QnADetail = () => {
+  const [qna, setQnA] = useState({});
   const history = useHistory();
   const { questionId } = useParams();
-  const [qna, setQnA] = useState({});
+  const { dispatch } = useDispatch();
 
   // 문의 삭제 함수
   const handleDelete = () => {
@@ -17,8 +22,13 @@ const QnADetail = () => {
           console.log(data);
           history.replace('/question');
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(({ response }) => {
+          console.log(response.data.message);
+          if (isTokenExpired(response.data.message)) {
+            dispatch(logout());
+          } else {
+            alert('에러가 발생하였습니다..ㅜㅜ');
+          }
         });
     }
   };

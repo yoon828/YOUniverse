@@ -1,14 +1,20 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from 'redux/auth';
+
 import { registerQnA } from 'api/qna';
+import { isTokenExpired } from 'common/functions/functions';
+
 import './QnAPage.scss';
 
 const QnA = () => {
   const qnaTitle = useRef(null);
   const qnaContent = useRef(null);
-  const { uuid } = useSelector((state) => state.user.value);
   const history = useHistory();
+  const { uuid } = useSelector((state) => state.user.value);
+  const { dispatch } = useDispatch();
 
   const clearQnA = () => {
     clearInterval(qnaTitle.current);
@@ -34,8 +40,13 @@ const QnA = () => {
           history.push(`/question/${data.data.id}`);
           clearQnA();
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(({ response }) => {
+          console.log(response.data.message);
+          if (isTokenExpired(response.data.message)) {
+            dispatch(logout());
+          } else {
+            alert('에러가 발생하였습니다..ㅜㅜ');
+          }
         });
     } else if (!title) {
       alert('제목을 작성해주세요.');
@@ -47,7 +58,6 @@ const QnA = () => {
   };
 
   const handleCancle = (event) => {
-    // event.preventDefault();
     if (
       window.confirm(
         '문의하기 페이지에서 나가시겠습니까?\n작성 사항이 저장되지 않습니다.'
