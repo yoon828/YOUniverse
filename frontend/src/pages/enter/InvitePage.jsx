@@ -14,7 +14,7 @@ const Invite = () => {
   dispatch(useMainHeader(false));
   return (
     <div className="invite_page">
-      <div className="MainLogo">
+      <div className="main_logo">
         <Link to="/">
           <img
             src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
@@ -22,9 +22,9 @@ const Invite = () => {
           />
         </Link>
       </div>
-      <div className="LoginBox">
-        <div className="LoginBoxText">{userId}님의 share room</div>
-        <div>
+      <div className="invite_box">
+        <div className="invite_box_text">{userId}님의 share room</div>
+        <div className="invite_kakao">
           <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
         </div>
         <div>
