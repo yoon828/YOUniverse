@@ -15,7 +15,7 @@ import {
 } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { toggleMouth } from '../../redux/feature';
-import { postLogs } from 'api/room';
+import { postHistory, postLogs } from 'api/room';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
@@ -435,31 +435,45 @@ class VideoComponent extends Component {
   }
 
   exitRoom() {
-    console.log(this.state.session);
     let sessionId = this.state.session.sessionId;
     let createTime = this.state.session.connection.creationTime;
-    let participant = this.state.myUserName;
+    let participant = [];
     this.state.subscribers.map((el, idx) => {
       let name = JSON.parse(el.stream.connection.data).clientData;
       participant += `,${name}`;
     });
-    let chats = [];
-    this.props.logList.map((log, idx) => {
-      chats.push({
-        Time: log.time,
-        name: log.name,
-        content: log.comment
-      });
-    });
-    console.log(chats);
-    if (window.confirm('로그를 저장하시겠습니까?')) {
-      let logTitle;
-      postLogs({})
-        .then(alert('로그를 저장했습니다'))
-        .catch((err) => console.log(err));
-    } else return;
-    this.leaveSession();
-    this.props.props.push('/');
+    if (window.confirm('방을 나가시겠습니까?')) {
+      let roomName = window.prompt('방 제목을 입력해주세요');
+      let isLogSave = false;
+      if (window.confirm('로그를 저장하시겠습니까?')) isLogSave = true;
+      let data = {
+        "hostName": this.state.myUserName,
+        "participants": participant,
+        "roomName": roomName,
+        "sessionId": sessionId,
+        "createTime": createTime
+      }
+      if (isLogSave) {
+        let chats = [];
+        this.props.logList.map((log, idx) => {
+          chats.push({
+            Time: log.time,
+            name: log.name,
+            content: log.comment
+          });
+        });
+        data.chats = chats;
+      }
+      console.log(data);
+      postHistory(data)
+        .then((result) => {
+          alert(result.message);
+          if (!result.success) return
+        }
+        ).catch((err) => console.log(err))
+      this.leaveSession();
+      this.props.props.push('/');
+    }
   }
 
   leaveSession() {
@@ -708,16 +722,16 @@ class VideoComponent extends Component {
             console.log(error);
             console.warn(
               'No connection to OpenVidu Server. This may be a certificate error at ' +
-                OPENVIDU_SERVER_URL
+              OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  OPENVIDU_SERVER_URL +
-                  '"'
+                OPENVIDU_SERVER_URL +
+                '"\n\nClick OK to navigate and accept it. ' +
+                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                OPENVIDU_SERVER_URL +
+                '"'
               )
             ) {
               window.location.assign(
@@ -735,9 +749,9 @@ class VideoComponent extends Component {
       axios
         .post(
           OPENVIDU_SERVER_URL +
-            '/openvidu/api/sessions/' +
-            sessionId +
-            '/connection',
+          '/openvidu/api/sessions/' +
+          sessionId +
+          '/connection',
           data,
           {
             headers: {
