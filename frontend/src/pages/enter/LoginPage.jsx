@@ -23,7 +23,9 @@ const Login = () => {
       </div>
       <div className="login_box">
         <div className="login_box_text">지금 너, 나, 우리</div>
-        <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
+        <div className="login_kakao">
+          <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
+        </div>
       </div>
     </div>
   );
