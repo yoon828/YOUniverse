@@ -55,7 +55,8 @@ class VideoComponent extends Component {
 
       isCC: true, //자막 on/off 확인
       subtitle: '',
-      talker: ''
+      talker: '',
+      speaker: 'speaker',
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -320,10 +321,12 @@ class VideoComponent extends Component {
         });
 
         mySession.on('publisherStartSpeaking', (event) => {
+          this.setState({speaker: event.connection.connectionId});
           console.log('User ' + event.connection.connectionId + ' start speaking');
         });
       
         mySession.on('publisherStopSpeaking', (event) => {
+          this.setState({speaker: 'speaker'});
           console.log('User ' + event.connection.connectionId + ' stop speaking');
         });
         const root = document.getElementById('log_list');
@@ -582,6 +585,7 @@ class VideoComponent extends Component {
                     subtitle={this.state.subtitle}
                     talker={this.state.talker}
                     isCC={this.state.isCC}
+                    speaker={this.state.speaker}
                   />
                 </div>
               ) : null}
@@ -596,6 +600,7 @@ class VideoComponent extends Component {
                     subtitle={this.state.subtitle}
                     talker={this.state.talker}
                     isCC={this.state.isCC}
+                    speaker={this.state.speaker}
                   />
                 </div>
               ))}

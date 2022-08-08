@@ -21,11 +21,15 @@ const OpenViduVideoComponent = (props) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
-    console.log('======================================');
-    console.log(props);
-    console.log(videoRef1);
-    console.log('--------------------------------------');
-    setIsSpeaking(props);
+    let videoName = videoRef1.current.id;
+    let speaker = props.speaker;
+    if (videoName === 'local-video-undefined') {
+      setIsSpeaking(
+        props.streamManager.stream.connection.connectionId === speaker
+      );
+    } else {
+      setIsSpeaking(videoName.includes(speaker));
+    }
   });
 
   useEffect(() => {

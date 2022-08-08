@@ -17,7 +17,10 @@ const UserVideoComponent = (props) => {
     <div className="stream">
       {props.streamManager !== undefined ? (
         <div className="streamcomponent">
-          <OpenViduVideoComponent streamManager={props.streamManager} />
+          <OpenViduVideoComponent
+            streamManager={props.streamManager}
+            speaker={props.speaker}
+          />
           <div className="stream-text">
             <span>{nickname}</span>
             {props.isCC && (
