@@ -260,14 +260,25 @@ class VideoComponent extends Component {
         return idx;
     }
   }
+  //stream change
+  updatePublisherSpeaking(streamManager) {
+    streamManager.updatePublisherSpeaking({
+      interval: 100,
+      threshold: -50
+    });
+  }
 
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
     this.OV = new OpenVidu();
-
+    //   this.OV.setAdvancedConfiguration({
+    //     publisherSpeakingEventsOptions: {
+    //         interval: 100,   // Frequency of the polling of audio streams in ms (default 100)
+    //         threshold: -50  // Threshold volume in dB (default -50)
+    //     }
+    // });
     // --- 2) Init a session ---
-
     this.setState(
       {
         session: this.OV.initSession()
@@ -308,6 +319,15 @@ class VideoComponent extends Component {
           console.warn(exception);
         });
 
+        // mySession.on('publisherStartSpeaking', (event) => {
+        //   this.setState({speaker: event.connection.connectionId});
+        //   console.log('User ' + event.connection.connectionId + ' start speaking');
+        // });
+
+        // mySession.on('publisherStopSpeaking', (event) => {
+        //   this.setState({speaker: 'speaker'});
+        //   console.log('User ' + event.connection.connectionId + ' stop speaking');
+        // });
         const root = document.getElementById('log_list');
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
@@ -347,6 +367,12 @@ class VideoComponent extends Component {
           }
         });
         mySession.on('signal:sttStart', (event) => {
+          // this.setState({ speaker: event.from.connectionId });
+          let video = document.getElementsByClassName(
+            event.from.connectionId
+          )[0];
+          video.classList.add('speaking');
+
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
           let idx = this.getIdx(event.from.connectionId);
           if (idx === undefined) idx = 5;
@@ -362,6 +388,13 @@ class VideoComponent extends Component {
         });
 
         mySession.on('signal:sttEnd', (event) => {
+          this.setState({ speaker: 'speaker' });
+          let video = document.getElementsByClassName(
+            event.from.connectionId
+          )[0];
+          console.log(video);
+          video.classList.remove('speaking');
+
           let json = JSON.parse(event.data);
           let list = [...this.props.logList];
 
@@ -447,11 +480,11 @@ class VideoComponent extends Component {
       let isLogSave = false;
       if (window.confirm('로그를 저장하시겠습니까?')) isLogSave = true;
       let data = {
-        "hostName": this.state.myUserName,
-        "participants": participant,
-        "roomName": roomName,
-        "createTime": createTime
-      }
+        hostName: this.state.myUserName,
+        participants: participant,
+        roomName: roomName,
+        createTime: createTime
+      };
       if (isLogSave) {
         let chats = [];
         this.props.logList.map((log, idx) => {
@@ -469,11 +502,11 @@ class VideoComponent extends Component {
         .then(({ data }) => {
           console.log(data);
           alert(data.message);
-          if (!data.success) return
+          if (!data.success) return;
           this.leaveSession();
           this.props.props.push('/');
-        }
-        ).catch((err) => console.log(err))
+        })
+        .catch((err) => console.log(err));
     }
   }
 
@@ -723,16 +756,16 @@ class VideoComponent extends Component {
             console.log(error);
             console.warn(
               'No connection to OpenVidu Server. This may be a certificate error at ' +
-              OPENVIDU_SERVER_URL
+                OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                OPENVIDU_SERVER_URL +
-                '"\n\nClick OK to navigate and accept it. ' +
-                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                OPENVIDU_SERVER_URL +
-                '"'
+                  OPENVIDU_SERVER_URL +
+                  '"\n\nClick OK to navigate and accept it. ' +
+                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                  OPENVIDU_SERVER_URL +
+                  '"'
               )
             ) {
               window.location.assign(
@@ -750,9 +783,9 @@ class VideoComponent extends Component {
       axios
         .post(
           OPENVIDU_SERVER_URL +
-          '/openvidu/api/sessions/' +
-          sessionId +
-          '/connection',
+            '/openvidu/api/sessions/' +
+            sessionId +
+            '/connection',
           data,
           {
             headers: {
