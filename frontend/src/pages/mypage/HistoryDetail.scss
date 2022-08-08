@@ -1,7 +1,10 @@
 @import 'common/style/all.scss';
 
 .history_detail {
-  > :nth-child(1) {
+  .history_detail_header {
+    width: 100%;
+    color: red;
+    border: 1px dotted purple;
     @include flex(row, space-between, center);
   }
   span {
@@ -13,7 +16,17 @@
     width: 1385px;
   }
   .outline {
-    @include flex(row, space-around, center);
+    @include flex(row, space-between, center);
+    width: 100%;
+    p:nth-child(1) {
+      width: 30%;
+    }
+    p:nth-child(2) {
+      width: 30%;
+    }
+    p:nth-child(3) {
+      width: 40%;
+    }
   }
   .log {
   }
