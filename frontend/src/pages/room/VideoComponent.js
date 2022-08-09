@@ -597,7 +597,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {myUserName}님의 쉐어룸({this.countUser()}
+                쉐어룸({this.countUser()}
                 명)
               </h1>
               <h1
