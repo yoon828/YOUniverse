@@ -31,12 +31,13 @@ recognition.continuous = true;
 // 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
 // maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
 recognition.maxAlternatives = 100000;
+
 class VideoComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mySessionId: 'sessionA12', //세션 이름 (방이름)
-      myUserName: '김모씨' + Math.floor(Math.random() * 100), //사용자 이름
+      mySessionId: props.storeSessionId, //세션 이름 (방이름)
+      myUserName: props.storename, //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined, //본인을 다른 사람에게 송출할 때
@@ -583,7 +584,8 @@ class VideoComponent extends Component {
   }
 
   render() {
-    const mySessionId = this.state.mySessionId;
+    //const mySessionId = this.state.mySessionId;
+    const myUserName = this.state.myUserName;
 
     return (
       <div className="container">
@@ -591,7 +593,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {mySessionId}님의 쉐어룸({this.countUser()}명)
+                {myUserName}님의 쉐어룸({this.countUser()}명)
               </h1>
               <h1
                 id="session-title"
