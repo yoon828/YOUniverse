@@ -3,6 +3,7 @@ import featureReducer from './feature';
 import userReducer from './user';
 import authReducer from './auth';
 import mainHeaderReducer from './mainHeader';
+import shareModalReducer from './share';
 
 //만든 reducer 추가해주기
 export default configureStore({
@@ -10,6 +11,7 @@ export default configureStore({
     user: userReducer,
     feature: featureReducer,
     auth: authReducer,
-    mainHeader: mainHeaderReducer
+    mainHeader: mainHeaderReducer,
+    share: shareModalReducer
   }
 });

@@ -15,6 +15,7 @@ import {
 } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { toggleMouth } from '../../redux/feature';
+import { toggleModal } from '../../redux/share';
 import { postHistory, postLogs } from 'api/room';
 
 // const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
@@ -705,7 +706,11 @@ class VideoComponent extends Component {
                 placeholder="대화 내용을 입력해주세요"
               />
 
-              <button className="round-button" alt="공유하기">
+              <button
+                className="round-button"
+                alt="공유하기"
+                onClick={() => this.props.dispatch(toggleModal())}
+              >
                 <Share />
               </button>
             </div>

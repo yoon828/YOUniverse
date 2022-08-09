@@ -15,11 +15,11 @@ import CallBack from './enter/CallBackPage';
 import MyPage from './mypage/MyPage';
 import HistoryList from './mypage/HistoryList';
 import HistoryDetail from './mypage/HistoryDetail';
+import Share from './enter/SharePage';
 import Room from './room/RoomPage';
 import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
 import QnADetail from './mypage/QnADetail';
-import Share from './room/ShareModal';
 import { getUser } from 'api/user';
 import PrivateRoute from 'routes/PrivateRoute';
 import { isTokenExpired } from 'common/functions/functions';
@@ -96,12 +96,12 @@ const App = () => {
         <Route path="/invite" component={Invite} />
         <Route path="/guest" component={Guest} />
         <Route path="/room/:sessionId" component={Room} />
+        <PrivateRoute path="/share" component={Share} />
         <PrivateRoute path="/history/:historyId" component={HistoryDetail} />
         <PrivateRoute path="/history" component={HistoryList} />
         <PrivateRoute path="/question/:questionId" component={QnADetail} />
         <PrivateRoute path="/question" component={QnAList} />
         <PrivateRoute path="/quest" component={QnA} />
-        <PrivateRoute path="/share" component={Share} />
         <PrivateRoute path="/:uuid" component={MyPage} />
       </Switch>
     </div>
