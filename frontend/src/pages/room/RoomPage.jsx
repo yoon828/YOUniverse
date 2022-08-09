@@ -20,6 +20,8 @@ const RoomPage = () => {
           props={history}
           logList={logList}
           setLogList={setLogList}
+          storeSessionId={storeSessionId}
+          storename={storename}
         />
       </div>
       <div id="main_right">

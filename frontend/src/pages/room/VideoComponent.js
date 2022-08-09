@@ -35,6 +35,10 @@ recognition.maxAlternatives = 100000;
 class VideoComponent extends Component {
   constructor(props) {
     super(props);
+    console.log('여기 밑에 확인해보기');
+    console.log(props);
+    console.log(props.storeSessionId);
+    console.log(props.storename);
     this.state = {
       mySessionId: props.storeSessionId, //세션 이름 (방이름)
       myUserName: props.storename, //사용자 이름
@@ -593,7 +597,8 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {myUserName}님의 쉐어룸({this.countUser()}명)
+                {myUserName}님의 쉐어룸({this.countUser()}
+                명)
               </h1>
               <h1
                 id="session-title"
