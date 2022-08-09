@@ -8,3 +8,7 @@ export const loginUser = async (user, success, fail) => {
 export const renewToken = async () => {
   return await api.get(`/token/reissuance/${getRefreshToken()}`);
 };
+
+export const logoutUser = async () => {
+  return await api.get('/logout');
+};
