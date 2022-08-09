@@ -1,6 +1,7 @@
 package com.example.chat.api.conrtoller;
 
 import com.example.chat.api.dto.LogDtoRequest;
+import com.example.chat.api.exception.HistoryException;
 import com.example.chat.api.exception.LogDuplicationException;
 import com.example.chat.api.exception.LogNotFoundException;
 import com.example.chat.api.service.LogService;
@@ -36,10 +37,13 @@ public class LogController {
             logService.insertLog(authorization.replace("Bearer ", ""), logDto);
 
             return new ResponseEntity<>(responseService.getSuccessResult(
-                    "대화 로그를 정상적으로 입력했습니다."), HttpStatus.OK);
+                    "히스토리를 정상적으로 저장했습니다."), HttpStatus.OK);
         } catch (LogDuplicationException e) {
             return new ResponseEntity<>(
                     responseService.getFailureResult("해당하는 id의 대화 로그가 존재합니다."), HttpStatus.BAD_REQUEST);
+        } catch (HistoryException e) {
+            return new ResponseEntity<>(
+                    responseService.getFailureResult("히스토리를 저장하지 못했습니다."), HttpStatus.BAD_REQUEST);
         }
     }
 

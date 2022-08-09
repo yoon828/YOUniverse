@@ -3,6 +3,7 @@ package com.example.chat.api.document;
 
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Chat {
 
-    private LocalDateTime chatTime;
+    private Timestamp chatTime;
     private String name;
     private String content;
 }

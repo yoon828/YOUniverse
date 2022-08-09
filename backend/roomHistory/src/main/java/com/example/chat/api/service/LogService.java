@@ -3,6 +3,7 @@ package com.example.chat.api.service;
 import com.example.chat.api.document.Chat;
 import com.example.chat.api.document.LogDoc;
 import com.example.chat.api.dto.*;
+import com.example.chat.api.exception.HistoryException;
 import com.example.chat.api.exception.LogDuplicationException;
 import com.example.chat.api.exception.LogNotFoundException;
 import com.example.chat.api.jwt.TokenProvider;
@@ -10,10 +11,7 @@ import com.example.chat.api.repository.LogRepository;
 import com.mongodb.MongoWriteException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,13 +36,13 @@ public class LogService {
         return LogDto.builder()
                 .id(logDoc.getId())
                 .sessionId(logDoc.getSessionId())
-                .createTime(Timestamp.valueOf(logDoc.getCreateTime()))
+                .createTime(logDoc.getCreateTime())
                 .participants(logDoc.getParticipants())
                 .chats(logDoc.getChats()
                         .stream()
                         .map(chat -> ChatDto.builder()
                                 .name(chat.getName())
-                                .chatTime(Timestamp.valueOf(chat.getChatTime()))
+                                .chatTime(chat.getChatTime())
                                 .content(chat.getContent())
                                 .build())
                         .collect(Collectors.toList()))
@@ -78,17 +76,21 @@ public class LogService {
         ResponseEntity<Result> result = restTemplate.exchange(env.getProperty("history.url"),
                 HttpMethod.POST, request, Result.class);
 
+        if (result.getStatusCode() != HttpStatus.CREATED) {
+            throw new HistoryException();
+        }
+
         if (logDto.getSessionId() != null) {
             logRepository.insert(LogDoc.builder()
                     .id(id)
                     .sessionId(logDto.getSessionId())
-                    .createTime(logDto.getCreateTime().toLocalDateTime())
+                    .createTime(logDto.getCreateTime())
                     .participants(logDto.getParticipants())
                     .chats(logDto.getChats()
                             .stream()
                             .map(chat -> Chat.builder()
                                     .name(chat.getName())
-                                    .chatTime(chat.getChatTime().toLocalDateTime())
+                                    .chatTime(chat.getChatTime())
                                     .content(chat.getContent())
                                     .build())
                             .collect(Collectors.toList()))
@@ -98,8 +100,8 @@ public class LogService {
     }
 
     public void deleteLog(String id) {
-        logRepository.findById(id).orElseThrow(() -> new LogNotFoundException("대화 로그를 찾을 수 없습니다."));
 
+        logRepository.findById(id).orElseThrow(() -> new LogNotFoundException("대화 로그를 찾을 수 없습니다."));
         logRepository.deleteById(id);
     }
 

@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class LogDoc {
     @Id
     private String id;
     private String sessionId;
-    private LocalDateTime createTime;
+    private Timestamp createTime;
     private String participants;
     private List<Chat> chats = new ArrayList<>();
 
