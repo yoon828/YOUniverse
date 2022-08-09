@@ -1,0 +1,13 @@
+@import 'common/style/all.scss';
+
+.share {
+  @include box(468px, 753px);
+  @include text_vertical;
+  button {
+    display: inline-block;
+  }
+  a {
+    @include blue_button;
+    @include text_vertical;
+  }
+}

@@ -1,3 +1,5 @@
+@import 'common/style/all.scss';
+
 #main {
   display: flex;
   width: 100%;
@@ -12,5 +14,26 @@
   &_right {
     width: 14vw;
     margin: 20px 40px 20px 20px;
+  }
+
+  .modal {
+    @include box(468px, 753px);
+    @include text_vertical;
+    position: absolute;
+    z-index: 200;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    box-shadow: 4px 5px 14px #8785a2;
+    button {
+      display: inline-block;
+    }
+    button:nth-child(4) {
+      @include blue_button;
+    }
+    a {
+      @include blue_button;
+      @include text_vertical;
+    }
   }
 }

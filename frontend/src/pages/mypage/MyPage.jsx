@@ -6,7 +6,6 @@ import { logout } from 'redux/auth';
 import { resetUser, insertUser } from 'redux/user';
 
 import { deleteUser, getUser } from 'api/user';
-import { storeHistory } from 'api/history';
 import { isTokenExpired } from 'common/functions/functions';
 import { List } from 'modules/ListModule';
 import _ from 'lodash';
@@ -40,18 +39,18 @@ const MyPage = () => {
   };
 
   // 히스토리 테스트용 임의 등록 함수
-  const addHistory = () => {
-    const content = {
-      filePath: '로컬어딘가겠지',
-      hostName: name,
-      participants: '최싸피,박싸피,집싸피',
-      roomName: '싸피모임',
-      uuid: uuid
-    };
-    storeHistory(content)
-      .then((res) => console.log(res))
-      .catch((res) => console.log(res));
-  };
+  // const addHistory = () => {
+  //   const content = {
+  //     filePath: '로컬어딘가겠지',
+  //     hostName: name,
+  //     participants: '최싸피,박싸피,집싸피',
+  //     roomName: '싸피모임',
+  //     uuid: uuid
+  //   };
+  //   storeHistory(content)
+  //     .then((res) => console.log(res))
+  //     .catch((res) => console.log(res));
+  // };
 
   useEffect(() => {
     getUser()
@@ -87,7 +86,7 @@ const MyPage = () => {
         <div className="item">
           <div>
             <h2>쉐어룸 히스토리</h2>
-            <button onClick={addHistory}>히스토리 임의 등록</button>
+            {/* <button onClick={addHistory}>히스토리 임의 등록</button> */}
             <Link to="/history">더보기</Link>
           </div>
           {!_.isEmpty(shareRoomHistoryList) ? (
