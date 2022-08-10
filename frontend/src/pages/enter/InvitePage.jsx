@@ -16,20 +16,20 @@ const Invite = () => {
     <div className="invite_page">
       <div className="main_logo">
         <Link to="/">
-          <img
-            src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
-            alt="logo"
-          />
+          <img src="asset/img/logo.png" alt="logo" className="logo_img" />
         </Link>
       </div>
       <div className="invite_box">
-        <div className="invite_box_text">{userId}님의 share room</div>
-        <div className="invite_kakao">
-          <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
-        </div>
+        <div className="invite_box_text">{userId}님의 SPACE</div>
+        <a href={KAKAO_AUTH_URL} className="login_kakao">
+          <div className="login_kakao_div">
+            <img src="/asset/img/main/kakao_login.png" alt="카카오로그인" />
+          </div>
+        </a>
         <div>
           <Link to="/guest">게스트로 참가</Link>
         </div>
+        <img src="asset/img/main/meteor.png" alt="로켓" className="meteor" />
       </div>
     </div>
   );
