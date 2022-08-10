@@ -2,7 +2,7 @@
 
 .invite_box {
   @include space_evenly;
-  @include box(468px, 753px);
+  @include box(420px, 720px);
   @include text_vertical;
   // min-width: 352px;
 }

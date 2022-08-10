@@ -1,20 +1,34 @@
 import React from 'react';
 import ShareModule from 'modules/ShareModule';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useMainHeader } from 'redux/mainHeader';
 
 import './SharePage.scss';
 
 const Share = () => {
+  const dispatch = useDispatch();
+
+  dispatch(useMainHeader(false));
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
   console.log(storeSessionId);
   const storename = useSelector((state) => state.user.value.name);
   console.log(storename);
   return (
-    <div className="share">
-      <h1>공유하기</h1>
-      <ShareModule />
-      <Link to={`/room/${storeSessionId}/${storename}`}>다음</Link>
+    <div className="share_wrap">
+      <div className="main_logo">
+        <Link to="/">
+          <img src="asset/img/logo.png" alt="logo" className="logo_img" />
+        </Link>
+      </div>
+      <div className="share">
+        <h1 className="title">공유하기</h1>
+        <ShareModule />
+        <Link to={`/room/${storeSessionId}/${storename}`} className="next">
+          다음
+        </Link>
+        <img src="asset/img/main/rocket.png" alt="로켓" className="rocket" />
+      </div>
     </div>
   );
 };
