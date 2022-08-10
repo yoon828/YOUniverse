@@ -17,8 +17,8 @@ const RoomPage = () => {
   // 스토어 값 가져오기 - 서희
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
   console.log(storeSessionId);
-  const storename = useSelector((state) => state.user.value.name);
-  console.log(storename);
+  const storeName = useSelector((state) => state.user.value.name);
+  console.log(storeName);
   return (
     <div id="main">
       {shareModal ? (
@@ -34,7 +34,7 @@ const RoomPage = () => {
           logList={logList}
           setLogList={setLogList}
           storeSessionId={storeSessionId}
-          storename={storename}
+          storename={storeName}
         />
       </div>
       <div id="main_right">
