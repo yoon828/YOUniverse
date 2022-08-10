@@ -600,12 +600,12 @@ class VideoComponent extends Component {
                 쉐어룸({this.countUser()}
                 명)
               </h1>
-              <h1
+              {/* <h1
                 id="session-title"
                 onClick={() => console.log(this.state.session)}
               >
                 시간
-              </h1>
+              </h1> */}
 
               <div id="feature">
                 <button id="feature-cc">
