@@ -14,6 +14,11 @@ const RoomPage = () => {
   const [logList, setLogList] = useState([]);
   const dispatch = useDispatch();
 
+  // 스토어 값 가져오기 - 서희
+  const storeSessionId = useSelector((state) => state.user.value.sessionId);
+  console.log(storeSessionId);
+  const storename = useSelector((state) => state.user.value.name);
+  console.log(storename);
   return (
     <div id="main">
       {shareModal ? (
@@ -28,6 +33,8 @@ const RoomPage = () => {
           props={history}
           logList={logList}
           setLogList={setLogList}
+          storeSessionId={storeSessionId}
+          storename={storename}
         />
       </div>
       <div id="main_right">
