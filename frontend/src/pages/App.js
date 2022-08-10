@@ -68,7 +68,7 @@ const App = () => {
           </div>
           <div className="main_header_menu">
             <div>
-              <Link to="/room">쉐어룸</Link>
+              <Link to="/share">쉐어룸</Link>
             </div>
             <div>
               <Link to="/quest">1:1문의하기</Link>
