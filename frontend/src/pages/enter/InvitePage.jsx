@@ -1,20 +1,15 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
-
+import { Link, useLocation } from 'react-router-dom';
 import { KAKAO_AUTH_URL } from 'api/oauth';
-
 import { useDispatch } from 'react-redux';
 import { useMainHeader } from 'redux/mainHeader';
 import './InvitePage.scss';
 
 const Invite = () => {
-  const { userId } = useParams();
   const dispatch = useDispatch();
-  const url = window.location.search;
-  console.log(url);
-  const searchParams = new URLSearchParams(url);
-  console.log(searchParams);
-  const hostName = searchParams.get('name');
+  const { search } = useLocation();
+  const url = new URLSearchParams(search);
+  const hostName = url.get('name');
 
   dispatch(useMainHeader(false));
   return (
