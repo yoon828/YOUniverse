@@ -2,16 +2,17 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { KAKAO_AUTH_URL } from 'api/oauth';
 import { useDispatch } from 'react-redux';
-import { useMainHeader } from 'redux/mainHeader';
+import { myMainHeader } from 'redux/mainHeader';
 import './InvitePage.scss';
 
 const Invite = () => {
   const dispatch = useDispatch();
   const { search } = useLocation();
   const url = new URLSearchParams(search);
+  const hostId = url.get('id');
   const hostName = url.get('name');
 
-  dispatch(useMainHeader(false));
+  dispatch(myMainHeader(false));
   return (
     <div className="invite_page">
       <div className="main_logo">
@@ -28,7 +29,7 @@ const Invite = () => {
           <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
         </div>
         <div>
-          <Link to="/guest">게스트로 참가</Link>
+          <Link to={`/guest?id=${hostId}&name=${hostName}`}>게스트로 참가</Link>
         </div>
       </div>
     </div>
