@@ -9,10 +9,10 @@ export const mainHeaderReducer = createSlice({
   name: 'mainHeader',
   initialState: initialState,
   reducers: {
-    useMainHeader: (state, action) => {
+    myMainHeader: (state, action) => {
       state.mainHeader = action.payload;
     }
   }
 });
-export const { useMainHeader } = mainHeaderReducer.actions;
+export const { myMainHeader } = mainHeaderReducer.actions;
 export default mainHeaderReducer.reducer;

@@ -4,12 +4,12 @@ import './LoginPage.scss';
 import { KAKAO_AUTH_URL } from 'api/oauth';
 
 import { useDispatch } from 'react-redux';
-import { useMainHeader } from 'redux/mainHeader';
+import { myMainHeader } from 'redux/mainHeader';
 
 const Login = () => {
   const dispatch = useDispatch();
 
-  dispatch(useMainHeader(false));
+  dispatch(myMainHeader(false));
 
   return (
     <div className="login_page">

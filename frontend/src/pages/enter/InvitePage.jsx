@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { KAKAO_AUTH_URL } from 'api/oauth';
 import { useDispatch } from 'react-redux';
-import { useMainHeader } from 'redux/mainHeader';
+import { myMainHeader } from 'redux/mainHeader';
 import './InvitePage.scss';
 
 const Invite = () => {
@@ -12,7 +12,7 @@ const Invite = () => {
   const hostId = url.get('id');
   const hostName = url.get('name');
 
-  dispatch(useMainHeader(false));
+  dispatch(myMainHeader(false));
   return (
     <div className="invite_page">
       <div className="main_logo">

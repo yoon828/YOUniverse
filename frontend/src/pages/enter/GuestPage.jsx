@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import './GuestPage.scss';
 
 import { useDispatch } from 'react-redux';
-import { useMainHeader } from 'redux/mainHeader';
+import { myMainHeader } from 'redux/mainHeader';
 
 const Guest = () => {
   const history = useHistory();
@@ -13,7 +13,7 @@ const Guest = () => {
 
   const dispatch = useDispatch();
 
-  dispatch(useMainHeader(false));
+  dispatch(myMainHeader(false));
 
   useEffect(() => {
     guestNameInputRef.current.focus();
@@ -21,7 +21,7 @@ const Guest = () => {
 
   const submit = () => {
     localStorage.setItem('guestName', guestNameInputRef.current.value);
-    history.replace('/');
+    history.replace('/room/');
   };
 
   return (
