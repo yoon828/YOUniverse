@@ -65,7 +65,7 @@ const HistoryDetail = () => {
             <span>{transform(historyItem.date)}</span>
           </p>
         </div>
-        <p className="log">
+        <div className="log">
           로그:{' '}
           {log ? (
             log.map((chat, index) => {
@@ -80,7 +80,7 @@ const HistoryDetail = () => {
           ) : (
             <p>저장된 로그 내용이 없습니다.</p>
           )}
-        </p>
+        </div>
       </div>
       {/* <button onClick={addLog}>로그임시등록</button> */}
       <Link to="/history">목록</Link>
