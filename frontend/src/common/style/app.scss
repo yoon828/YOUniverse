@@ -25,7 +25,7 @@ a {
   @include box(863px, 1561px);
   @include flex(column, flex-start, center);
   .title {
-    color: $themeSecond;
+    color: $themeFirst;
     font-size: 50px; // 페이지 제목 사이즈
   }
   padding: 3rem 8rem;
@@ -34,4 +34,21 @@ a {
 .button_container {
   display: flex;
   justify-content: end;
+}
+
+.main_header {
+  display: flex;
+  padding: 30px;
+  &_logo {
+    margin-right: 30px;
+  }
+  &_menu {
+    display: flex;
+    align-items: center;
+    a,
+    button {
+      padding: 0 30px;
+      color: $themeFourth;
+    }
+  }
 }
