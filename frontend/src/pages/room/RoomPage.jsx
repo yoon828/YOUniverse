@@ -17,7 +17,8 @@ const RoomPage = () => {
   // 스토어 값 가져오기 - 서희
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
   console.log(storeSessionId);
-  const storeName = useSelector((state) => state.user.value.name);
+  storeName = useSelector((state) => state.user.value.name);
+  const storeName = storeName ? storeName : localStorage.getItem('guestName');
   console.log(storeName);
   return (
     <div id="main">
@@ -35,7 +36,7 @@ const RoomPage = () => {
             logList={logList}
             setLogList={setLogList}
             storeSessionId={storeSessionId}
-            storename={storeName}
+            storeName={storeName}
           />
         ) : null}
       </div>
