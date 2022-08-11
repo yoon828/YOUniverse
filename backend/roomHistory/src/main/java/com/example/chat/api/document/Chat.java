@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Chat {
 
-    private Timestamp chatTime;
+    private LocalDateTime chatTime;
     private String name;
     private String content;
 }
