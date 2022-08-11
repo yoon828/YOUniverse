@@ -3,7 +3,6 @@
 .login_box {
   @include box(420px, 720px);
   @include text_vertical;
-  margin-top: 0;
   position: relative;
   // min-width: 352px;
   &_text {
