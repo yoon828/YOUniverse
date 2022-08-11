@@ -14,7 +14,7 @@ const Share = () => {
     <div className="share">
       <h1>공유하기</h1>
       <ShareModule />
-      <Link to={`/room/id=${storeSessionId}/name=${storeName}`}>다음</Link>
+      <Link to={`/room?id=${storeSessionId}&name=${storeName}`}>다음</Link>
     </div>
   );
 };

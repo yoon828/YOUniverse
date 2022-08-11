@@ -95,7 +95,7 @@ const App = () => {
         <Route path="/oauth/callback" component={CallBack} />
         <Route path="/invite" component={Invite} />
         <Route path="/guest" component={Guest} />
-        <Route path="/room/:sessionId" component={Room} />
+        <Route path="/room" component={Room} />
         <PrivateRoute path="/share" component={Share} />
         <PrivateRoute path="/history/:historyId" component={HistoryDetail} />
         <PrivateRoute path="/history" component={HistoryList} />
