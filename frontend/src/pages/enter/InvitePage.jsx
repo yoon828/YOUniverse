@@ -9,6 +9,7 @@ const Invite = () => {
   const dispatch = useDispatch();
   const { search } = useLocation();
   const url = new URLSearchParams(search);
+  const hostId = url.get('id');
   const hostName = url.get('name');
 
   dispatch(useMainHeader(false));
@@ -28,7 +29,7 @@ const Invite = () => {
           <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
         </div>
         <div>
-          <Link to="/guest">게스트로 참가</Link>
+          <Link to={`/guest?id=${hostId}/name=${hostName}`}>게스트로 참가</Link>
         </div>
       </div>
     </div>

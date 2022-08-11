@@ -17,8 +17,10 @@ const RoomPage = () => {
   // 스토어 값 가져오기 - 서희
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
   console.log(storeSessionId);
-  storeName = useSelector((state) => state.user.value.name);
-  const storeName = storeName ? storeName : localStorage.getItem('guestName');
+  const userName = useSelector((state) => state.user.value.name);
+  const storeName = useSelector((state) => state.user.value.name)
+    ? userName
+    : localStorage.getItem('guestName');
   console.log(storeName);
   return (
     <div id="main">
