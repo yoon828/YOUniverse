@@ -35,7 +35,7 @@ const RoomPage = () => {
             logList={logList}
             setLogList={setLogList}
             storeSessionId={storeSessionId}
-            storename={storeName}
+            storeName={storeName}
           />
         ) : null}
       </div>
