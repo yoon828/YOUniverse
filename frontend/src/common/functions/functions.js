@@ -1,12 +1,19 @@
 // 날짜 변환
-export const transform = (timestamp) => {
-  const date = new Date(timestamp);
+export const transform = (data, type = 'list') => {
+  const date = new Date(data);
   const Y = date.getFullYear();
   const M = date.getMonth() + 1;
   const D = date.getDate();
   const h = date.getHours();
   const m = date.getMinutes();
   const s = date.getSeconds();
+
+  // 로그 페이지에 들어갈 date 형식
+  if (type === 'chat') {
+    return `${Y}.${M}.${D}.${h}:${m}:${s}`;
+  }
+
+  // 그 외 페이지에 들어갈 date 형식
   return `${Y}년 ${M}월 ${D}일`;
 };
 
@@ -35,7 +42,15 @@ export const deleteToken = () => {
   localStorage.clear();
 };
 
-// refreshToken 만료 확인
+// Token 만료 확인
 export const isTokenExpired = (message) => {
-  return message === 'refreshToken 을 찾을 수 없습니다.' ? true : false;
+  console.log('저 위 함수----', message);
+  if (
+    message === 'refreshToken 을 찾을 수 없습니다.' ||
+    message.includes('만료')
+  ) {
+    console.log('로그아웃시킬거야!!!!!!');
+    return true;
+  }
+  return false;
 };

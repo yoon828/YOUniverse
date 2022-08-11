@@ -44,8 +44,8 @@ const App = () => {
           dispatch(insertUser(data.data));
         })
         .catch(({ response }) => {
-          console.log(response.data.message);
           if (isTokenExpired(response.data.message)) {
+            window.alert('인증 시간이 만료되어 로그아웃됩니다.');
             dispatch(logout());
           } else {
             alert('에러가 발생하였습니다..ㅜㅜ');

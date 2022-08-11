@@ -8,7 +8,7 @@
     @include flex(row, space-between, center);
   }
   span {
-    border: 1px solid black;
+    // border: 1px solid black; 테스트할라고 border 넣었는데, 충돌날까봐 주석으로 지웠어요...
   }
   .content {
     background-color: $themeFourth;
