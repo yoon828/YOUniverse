@@ -39,10 +39,10 @@ class VideoComponent extends Component {
     console.log('여기 밑에 확인해보기');
     console.log(props);
     console.log(props.storeSessionId);
-    console.log(props.storename);
+    console.log(props.storeName);
     this.state = {
       mySessionId: props.storeSessionId, //세션 이름 (방이름)
-      myUserName: props.storename, //사용자 이름
+      myUserName: props.storeName, //사용자 이름
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined, //본인을 다른 사람에게 송출할 때
