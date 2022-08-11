@@ -1,5 +1,11 @@
 @import 'common/style/all.scss';
 
+.share_page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .share {
   @include box(468px, 753px);
   @include text_vertical;
