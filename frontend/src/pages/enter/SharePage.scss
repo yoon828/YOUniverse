@@ -4,12 +4,12 @@
   @include background_setting('../../asset/img/background/share.png');
 }
 .share {
-  @include box(420px, 720px);
+  @include box(50vh, 50vw);
   @include text_vertical;
   position: relative;
   justify-content: space-evenly;
   .title {
-    font-size: 70px;
+    font-size: 2.3rem;
   }
   .next {
     @include blue_button;

@@ -24,7 +24,8 @@ const Login = () => {
         </div>
         <a href={KAKAO_AUTH_URL} className="login_kakao">
           <div className="login_kakao_div">
-            <img src="/asset/img/main/kakao_login.png" alt="카카오로그인" />
+            <img src="/asset/img/main/kakao_log.png" alt="카카오로그인" />
+            카카오로 로그인하기
           </div>
         </a>
         <img src="/asset/img/main/saturn.png" alt="행성" className="saturn" />

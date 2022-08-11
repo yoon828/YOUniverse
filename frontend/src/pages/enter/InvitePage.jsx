@@ -10,8 +10,8 @@ import './InvitePage.scss';
 const Invite = () => {
   const { userId } = useParams();
   const dispatch = useDispatch();
-
   dispatch(useMainHeader(false));
+
   return (
     <div className="invite_page">
       <div className="main_logo">
@@ -23,7 +23,8 @@ const Invite = () => {
         <div className="invite_box_text">{userId}님의 SPACE</div>
         <a href={KAKAO_AUTH_URL} className="login_kakao">
           <div className="login_kakao_div">
-            <img src="/asset/img/main/kakao_login.png" alt="카카오로그인" />
+            <img src="/asset/img/main/kakao_log.png" alt="카카오로그인" />
+            카카오로 로그인하기
           </div>
         </a>
         <div>

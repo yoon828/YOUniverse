@@ -10,14 +10,7 @@
   }
 }
 
-.login_kakao {
-  background-color: #fee500;
-  text-align: center;
-  width: 100%;
-  &_div {
-    @include text_vertical;
-  }
-}
+
 
 .login_page {
   height: 100vh;

@@ -52,3 +52,22 @@ a {
     }
   }
 }
+
+.login_kakao {
+  margin: 24px;
+  background-color: $themeThird;
+  text-align: center;
+  &_div {
+    display: flex;
+    flex-direction: row;
+    color: black;
+    width: 360px;
+    height: 30px;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 45px;
+    }
+  }
+}

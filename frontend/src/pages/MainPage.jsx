@@ -26,7 +26,7 @@ const MainPage = () => {
           />
           <div className="menu_box">
             <Link to="/share" className="menu_text">
-              room 활성화
+              SPACE생성{' '}
             </Link>
           </div>
         </div>
@@ -38,7 +38,7 @@ const MainPage = () => {
           />
           <div className="menu_box">
             <Link to="/quest" className="menu_text">
-              1:1문의하기
+              1:1 문의
             </Link>
           </div>
         </div>
