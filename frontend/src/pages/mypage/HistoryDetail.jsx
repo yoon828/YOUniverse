@@ -70,9 +70,11 @@ const HistoryDetail = () => {
           {log ? (
             log.map((chat, index) => {
               return (
-                <p key={index}>
-                  {chat.name} {chat.chatTime} {chat.content}
-                </p>
+                <div key={index}>
+                  <span>{chat.name}</span>
+                  <span>{transform(chat.chatTime, 'chat')}</span>
+                  <p>{chat.content}</p>
+                </div>
               );
             })
           ) : (
