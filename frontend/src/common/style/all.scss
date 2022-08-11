@@ -58,21 +58,10 @@ $themeFourth: #e9e9e9;
   background-color: $themeFourth;
 }
 
-//폰트 설정
-// @font-face {
-//   font-family: 'RokaMid';
-//   src: url('/public/asset/font/ROKAFMedium.otf');
-// }
-
-// @font-face {
-//   font-family: 'RokaBold';
-//   src: url('/public/asset/font/ROKAFBold.otf');
-// }
-
 // 배경 설정
 @mixin background_setting($url) {
   height: 100vh;
   background-size: cover;
-  background-repeat: round;
+  // background-repeat: round;
   background-image: url($url);
 }

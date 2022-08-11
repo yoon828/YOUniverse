@@ -44,7 +44,6 @@ center,
 dl,
 dt,
 dd,
-menu,
 ol,
 ul,
 li,
@@ -70,7 +69,6 @@ figcaption,
 footer,
 header,
 hgroup,
-main,
 menu,
 nav,
 output,
@@ -80,23 +78,46 @@ summary,
 time,
 mark,
 audio,
-video,
-button,
-input,
-select,
-textarea {
+video {
   margin: 0;
   padding: 0;
   border: 0;
   font-size: 20px;
-  box-sizing: border-box;
+  vertical-align: baseline;
 }
-
-button,
-input,
-select,
-textarea {
-  background-color: inherit;
-  color: inherit;
-  font: inherit;
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }

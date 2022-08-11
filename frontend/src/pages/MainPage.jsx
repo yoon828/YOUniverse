@@ -9,6 +9,7 @@ const MainPage = () => {
   const dispatch = useDispatch();
 
   dispatch(useMainHeader(false));
+
   return (
     <div className="main">
       <div className="main_logo">
