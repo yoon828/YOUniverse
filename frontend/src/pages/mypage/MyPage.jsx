@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,6 +17,7 @@ const MyPage = () => {
   const { name, email, uuid, qnAList, shareRoomHistoryList } = useSelector(
     (state) => state.user.value
   );
+  const [profileImg, setProfileImg] = useState('');
 
   // 회원 탈퇴 함수
   const onDeleteUser = () => {
@@ -38,6 +39,17 @@ const MyPage = () => {
     }
   };
 
+  const randomProfile = () => {
+    const randomIndex = Math.floor(Math.random() * 9) + 1;
+    console.log(randomIndex);
+    const randomImage = `/asset/img/mypage/profile/profile_${
+      // Math.floor(Math.random() * 9) + 1
+      randomIndex
+    }.png`;
+    console.log(randomImage);
+    return randomImage;
+  };
+
   // 히스토리 테스트용 임의 등록 함수
   // const addHistory = () => {
   //   const content = {
@@ -53,6 +65,7 @@ const MyPage = () => {
   // };
 
   useEffect(() => {
+    setProfileImg(randomProfile());
     getUser()
       .then(({ data }) => {
         console.log(data);
@@ -72,10 +85,7 @@ const MyPage = () => {
     <div className="my_page">
       <div className="profile">
         <div>
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/1203/1203317.png"
-            alt=""
-          />
+          <img src={profileImg} alt="" />
           <p>{name}님의 마이페이지</p>
           <p>{email}</p>
         </div>
