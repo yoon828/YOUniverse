@@ -29,13 +29,15 @@ const RoomPage = () => {
         </div>
       ) : null}
       <div id="main_left">
-        <VideoComponent
-          props={history}
-          logList={logList}
-          setLogList={setLogList}
-          storeSessionId={storeSessionId}
-          storename={storeName}
-        />
+        {storeName ? (
+          <VideoComponent
+            props={history}
+            logList={logList}
+            setLogList={setLogList}
+            storeSessionId={storeSessionId}
+            storeName={storeName}
+          />
+        ) : null}
       </div>
       <div id="main_right">
         <LogComponent logList={logList} />
