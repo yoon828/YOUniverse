@@ -42,7 +42,15 @@ export const deleteToken = () => {
   localStorage.clear();
 };
 
-// refreshToken 만료 확인
+// Token 만료 확인
 export const isTokenExpired = (message) => {
-  return message === 'refreshToken 을 찾을 수 없습니다.' ? true : false;
+  console.log('저 위 함수----', message);
+  if (
+    message === 'refreshToken 을 찾을 수 없습니다.' ||
+    message.includes('만료')
+  ) {
+    console.log('로그아웃시킬거야!!!!!!');
+    return true;
+  }
+  return false;
 };
