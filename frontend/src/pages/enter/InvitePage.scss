@@ -22,6 +22,7 @@
 }
 
 .invite_page {
+  @include background_setting('../../asset/img/background/invite.png');
   display: flex;
   flex-direction: column;
   align-items: center;

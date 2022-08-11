@@ -1,7 +1,8 @@
 @import 'common/style/all.scss';
 
 .main {
-  height: 100vh;
+  @include background_setting('../../asset/img/background/main.png');
+
   &_logo {
     display: flex;
     justify-content: center;

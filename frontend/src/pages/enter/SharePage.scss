@@ -1,5 +1,8 @@
 @import 'common/style/all.scss';
 
+.share_wrap {
+  @include background_setting('../../asset/img/background/share.png');
+}
 .share {
   @include box(420px, 720px);
   @include text_vertical;
