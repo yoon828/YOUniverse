@@ -24,7 +24,7 @@ const ShareModule = () => {
     window.Kakao.Share.sendCustom({
       templateId: 80123,
       templateArgs: {
-        Title: `${host}님의 Galaxy`,
+        Title: `${host}님의 Space`,
         Link: link
       }
     });
