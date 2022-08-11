@@ -10,6 +10,11 @@ import './InvitePage.scss';
 const Invite = () => {
   const { userId } = useParams();
   const dispatch = useDispatch();
+  const url = window.location.search;
+  console.log(url);
+  const searchParams = new URLSearchParams(url);
+  console.log(searchParams);
+  const hostName = searchParams.get('name');
 
   dispatch(useMainHeader(false));
   return (
@@ -23,7 +28,7 @@ const Invite = () => {
         </Link>
       </div>
       <div className="invite_box">
-        <div className="invite_box_text">{userId}님의 share room</div>
+        <div className="invite_box_text">{hostName}님의 Space</div>
         <div className="invite_kakao">
           <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
         </div>
