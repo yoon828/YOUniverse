@@ -65,7 +65,7 @@ public class AdminController {
     }
 
     @GetMapping("{uuid}")
-    public Response<?> checkAdmin(@RequestBody String uuid){
+    public Response<?> checkAdmin(@PathVariable String uuid){
         adminService.checkAdmin(uuid);
         return new Response<>(true, "관리자 확인", true);
     }
