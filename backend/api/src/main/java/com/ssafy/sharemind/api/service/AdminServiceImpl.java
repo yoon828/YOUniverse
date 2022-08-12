@@ -116,12 +116,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     public void addAdmin(String uuid){
-        Admin admin = Admin.Builder().uuid(uuid).build();
+        Admin admin = Admin.builder().uuid(uuid).build();
         adminRepository.save(admin);
     }
 
 
-    boolean checkAdmin(String uuid){
+    public boolean checkAdmin(String uuid){
         adminRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
         return true;
     }
