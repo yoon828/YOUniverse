@@ -18,6 +18,7 @@ const LogComponent = (props) => {
     }
   };
   const changeFont = (change) => {
+    console.log(change);
     let size = fontSize + change;
     if (size < 10) size = 10;
     if (size > 40) size = 40;
@@ -37,7 +38,7 @@ const LogComponent = (props) => {
                 src={`/asset/img/room/icon/${icons[log.icon]}.png`}
                 alt={`${icons[log.icon]}`}
               />
-              <span>
+              <span className="log_item">
                 {log.name} : {log.comment}
               </span>
               <br />
