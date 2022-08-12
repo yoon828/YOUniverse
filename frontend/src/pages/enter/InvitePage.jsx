@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { KAKAO_AUTH_URL } from 'api/oauth';
 import { useDispatch } from 'react-redux';
@@ -15,7 +15,9 @@ const Invite = () => {
   localStorage.setItem('hostName', hostName);
   sessionStorage.setItem('isInvited', 'yes');
 
-  dispatch(myMainHeader(false));
+  useEffect(() => {
+    dispatch(myMainHeader(false));
+  }, []);
   return (
     <div className="invite_page">
       <div className="main_logo">

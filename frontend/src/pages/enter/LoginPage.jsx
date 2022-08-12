@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './LoginPage.scss';
 import { KAKAO_AUTH_URL } from 'api/oauth';
@@ -9,7 +9,9 @@ import { myMainHeader } from 'redux/mainHeader';
 const Login = () => {
   const dispatch = useDispatch();
 
-  dispatch(myMainHeader(false));
+  useEffect(() => {
+    dispatch(myMainHeader(false));
+  }, []);
 
   localStorage.setItem('hostId', 'no');
   localStorage.setItem('hostName', 'no');
