@@ -11,6 +11,10 @@ const Login = () => {
 
   dispatch(myMainHeader(false));
 
+  localStorage.setItem('hostId', 'no');
+  localStorage.setItem('hostName', 'no');
+  sessionStorage.setItem('isInvited', 'no');
+
   return (
     <div className="login_page">
       <div className="main_logo">

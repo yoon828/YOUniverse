@@ -18,10 +18,18 @@ const CallBackPage = () => {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
       dispatch(login());
-      history.replace('/');
-      // 로그인 후 메인페이지로 이동
     }
-  }, [url, dispatch, history]);
+  }, [url, dispatch]);
+
+  if (sessionStorage.getItem('isInvited') == 'yes') {
+    history.replace(
+      `/room?id=${localStorage.getItem('hostId')}&name=${localStorage.getItem(
+        'hostName'
+      )}`
+    );
+  } else {
+    history.replace('/');
+  }
 
   return (
     <>

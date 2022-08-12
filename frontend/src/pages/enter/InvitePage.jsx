@@ -11,6 +11,9 @@ const Invite = () => {
   const url = new URLSearchParams(search);
   const hostId = url.get('id');
   const hostName = url.get('name');
+  localStorage.setItem('hostId', hostId);
+  localStorage.setItem('hostName', hostName);
+  sessionStorage.setItem('isInvited', 'yes');
 
   dispatch(myMainHeader(false));
   return (
