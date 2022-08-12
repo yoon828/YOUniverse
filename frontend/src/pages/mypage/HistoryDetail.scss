@@ -1,5 +1,20 @@
 @import 'common/style/all.scss';
 
+.page_container {
+  position: relative;
+}
+
+.astronaut {
+  position: absolute;
+  left: 1600px;
+  top: 400px;
+  width: auto;
+  &_img {
+    width: 300px;
+    height: 300px;
+  }
+}
+
 .history_detail {
   &_header {
     background-color: $themeFourth;
@@ -10,6 +25,10 @@
     // margin: auto;
     line-height: 50px;
     margin-top: 35px;
+    padding: 0 10px;
+    :nth-child(3n + 2) {
+      padding-right: 200px;
+    }
   }
   &_content {
     background-color: $themeFourth;
@@ -56,4 +75,12 @@
 .button_container {
   width: 1214px;
   align-items: flex-end;
+}
+
+.chat_name {
+  font-size: large;
+}
+
+.chat_time {
+  font-size: medium;
 }

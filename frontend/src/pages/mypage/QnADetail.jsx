@@ -45,35 +45,44 @@ const QnADetail = () => {
   }, []);
 
   return (
-    <div className="qna_detail page_container">
-      <div className="button_container">
-        <button onClick={() => handleDelete()}>삭제</button>
+    <>
+      <div className="qna_detail page_container">
+        <div className="button_container">
+          <button onClick={() => handleDelete()}>삭제</button>
+        </div>
+        <div className="qna_detail_header">
+          <span className="qna_detail_header gray">제목</span>
+          <span>{qna.title}</span>
+          <span className="line" />
+          <span>{transform(qna.question_date)}</span>
+          <span className="line" />
+          <span>{qna.isAnswered ? '답변완료' : '답변대기'}</span>
+        </div>
+        <div className="qna_detail_content">
+          <p>{qna.content}</p>
+        </div>
+        <div className="qna_detail_answer">
+          {!!qna.isAnswered ? (
+            <>
+              <p className="gray">관리자 {transform(qna.answer_date)}</p>
+              <p>{qna.answer}</p>
+            </>
+          ) : (
+            <p>답변이 등록되기 전입니다.</p>
+          )}
+        </div>
+        <div className="button_container">
+          <Link to="/question">목록</Link>
+        </div>
       </div>
-      <div className="qna_detail_header">
-        <span className="qna_detail_header gray">제목</span>
-        <span>{qna.title}</span>
-        <span className="line" />
-        <span>{transform(qna.question_date)}</span>
-        <span className="line" />
-        <span>{qna.isAnswered ? '답변완료' : '답변대기'}</span>
+      <div className="astronaut">
+        <img
+          className="astronaut_img"
+          src="/asset/img/mypage/profile/profile_4.png"
+          alt="우주인"
+        />
       </div>
-      <div className="qna_detail_content">
-        <p>{qna.content}</p>
-      </div>
-      <div className="qna_detail_answer">
-        {!!qna.isAnswered ? (
-          <>
-            <p className="gray">관리자 {transform(qna.answer_date)}</p>
-            <p>{qna.answer}</p>
-          </>
-        ) : (
-          <p>답변이 등록되기 전입니다.</p>
-        )}
-      </div>
-      <div className="button_container">
-        <Link to="/question">목록</Link>
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -1,5 +1,20 @@
 @import 'common/style/all.scss';
 
+.page_container {
+  position: relative;
+}
+
+.astronaut {
+  position: absolute;
+  left: 1600px;
+  top: 400px;
+  width: auto;
+  &_img {
+    width: 300px;
+    height: 300px;
+  }
+}
+
 .qna_detail {
   &_header {
     background-color: $themeFourth;
@@ -10,6 +25,13 @@
     // margin: auto;
     line-height: 50px;
     margin-top: 35px;
+    padding: 0 10px;
+    :nth-child(2) {
+      padding-right: 39rem;
+    }
+    :nth-child(n + 3) {
+      padding-right: 1.3rem;
+    }
   }
   &_content {
     background-color: $themeFourth;
