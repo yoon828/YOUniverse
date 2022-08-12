@@ -32,7 +32,6 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   // 성공 응답일 때,
   (response) => {
-    console.log(response);
     return response;
   },
 
