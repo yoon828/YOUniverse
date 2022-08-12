@@ -4,6 +4,7 @@ import MyPageModule from 'modules/MyPageModule';
 import './MainPage.scss';
 import { useDispatch } from 'react-redux';
 import { useMainHeader } from 'redux/mainHeader';
+import LogoutModule from 'modules/LogoutModule';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -53,7 +54,9 @@ const MainPage = () => {
           </div>
         </div>
       </div>
-      <div className="floor" />
+      <div className="floor">
+        <LogoutModule />
+      </div>
     </div>
   );
 };

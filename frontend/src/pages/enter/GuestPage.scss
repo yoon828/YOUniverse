@@ -14,7 +14,7 @@
       @include space_evenly;
       @include text_vertical;
       position: absolute;
-      top: 16vh;
+      top: 20vh;
       // min-width: 352px;
       .title {
         font-size: 30px;
@@ -35,5 +35,6 @@
   }
 }
 .astronaut {
-  width: 45vw;
+  width: 78vh;
+  min-width: 670px;
 }

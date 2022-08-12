@@ -34,8 +34,9 @@
       position: absolute;
       width: 220px;
       height: 125px;
-      top: 30%;
-      left: 20%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background-color: #f6f6f6;
       border-radius: 16px;
       box-shadow: 2px 2px 10px 1px rgb(75, 70, 70);
@@ -52,6 +53,13 @@
   position: absolute;
   bottom: 0;
   background-color: #dce1ec;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  .logout_box {
+    position: absolute;
+    right: 40px;
+  }
 }
 
 // @mixin inner_text_vertical {

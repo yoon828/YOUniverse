@@ -27,7 +27,8 @@ const Share = () => {
         <Link to={`/room/${storeSessionId}/${storename}`} className="next">
           다음
         </Link>
-        <img src="asset/img/main/rocket.png" alt="로켓" className="rocket" />
+        {/* <img src="asset/img/main/rocket.png" alt="로켓" className="rocket" /> */}
+        <img src="asset/img/main/rocket.gif" alt="로켓" className="rocket" />
       </div>
     </div>
   );

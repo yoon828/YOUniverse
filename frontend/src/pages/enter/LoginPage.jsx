@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './LoginPage.scss';
 import { KAKAO_AUTH_URL } from 'api/oauth';
-
 import { useDispatch } from 'react-redux';
 import { useMainHeader } from 'redux/mainHeader';
 
@@ -28,7 +27,8 @@ const Login = () => {
             카카오로 로그인하기
           </div>
         </a>
-        <img src="/asset/img/main/saturn.png" alt="행성" className="saturn" />
+        {/* <img src="/asset/img/main/saturn.png" alt="행성" className="saturn" /> */}
+        <img src="/asset/img/main/planet.gif" alt="행성" className="saturn" />
       </div>
     </div>
   );
