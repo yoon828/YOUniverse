@@ -15,7 +15,10 @@ public interface AdminService {
     AnswerResponseDto writeAnswer(AnswerRegisterDto answerRegisterDto);
     List<QnAResponseDto> getQnAList();
     List<UserRegistResponseDto> getUserList();
-
+    void deleteUser(String uuid);
     void deleteAnswer(AnswerDeleteDto answerDeleteDto);
+    void addAdmin(String uuid);
+
+    boolean checkAdmin(String uuid);
 
 }

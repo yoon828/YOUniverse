@@ -7,10 +7,13 @@ import com.ssafy.sharemind.api.response.QnAResponseDto;
 import com.ssafy.sharemind.api.response.UserRegistResponseDto;
 import com.ssafy.sharemind.common.exception.NotFindQuestionException;
 import com.ssafy.sharemind.common.exception.NotFindUuidException;
+import com.ssafy.sharemind.common.util.RedisService;
 import com.ssafy.sharemind.db.entity.QnA;
 import com.ssafy.sharemind.db.entity.User;
+import com.ssafy.sharemind.db.entity.Admin;
 import com.ssafy.sharemind.db.repository.QnARepository;
 import com.ssafy.sharemind.db.repository.UserRepository;
+import com.ssafy.sharemind.db.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,10 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
     private final QnARepository qnARepository;
     private final UserRepository userRepository;
+
+    private final AdminRepository adminRepository;
+
+    private final RedisService redisService;
 
     public AnswerResponseDto writeAnswer(AnswerRegisterDto answerRegisterDto) {
         QnA fQnA = qnARepository.findById(answerRegisterDto.getId()).orElseThrow(NotFindQuestionException::new);
@@ -98,6 +105,24 @@ public class AdminServiceImpl implements AdminService {
                 .build();
 
         qnARepository.save(qnA);
+    }
+
+    @Transactional
+    public void deleteUser(String uuid) {
+        redisService.deleteValues(uuid);
+        userRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
+        userRepository.deleteByUuid(uuid);
+    }
+
+    public void addAdmin(String uuid){
+        Admin admin = Admin.Builder().uuid(uuid).build();
+        adminRepository.save(admin);
+    }
+
+
+    boolean checkAdmin(String uuid){
+        adminRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
+        return true;
     }
 
 }

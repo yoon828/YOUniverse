@@ -45,9 +45,9 @@ public class AdminController {
                 adminService.getUserList()),HttpStatus.OK);
     }
 
-    @DeleteMapping("/user")
-    public Response<?> deleteUser(@RequestHeader("authorization") String authorization){
-        userService.deleteUser(authorization.replace("Bearer ", ""));
+    @DeleteMapping("/user/{uuid}")
+    public Response<?> deleteUser(@PathVariable String uuid){
+        adminService.deleteUser(uuid);
         return new Response<>(true, " 회원을 탈퇴시켰습니다.", true);
     }
 
@@ -56,5 +56,16 @@ public class AdminController {
         adminService.deleteAnswer(answerDeleteDto);
         return new Response<>(true, answerDeleteDto.getId() + " 답변을 삭제시켰습니다.", true);
 
+    }
+
+    @PostMapping("{uuid}")
+    public Response<?> addAdmin(@PathVariable String uuid){
+        adminService.addAdmin(uuid);
+        return new Response<>(true, uuid + "관리자 등록 성공", true);
+    }
+
+    @GetMapping("{uuid}")
+    public Response<?> checkAdmin(@RequestBody String uuid){
+        return new Response<>(true, adminService.checkAdmin(uuid), true);
     }
 }
