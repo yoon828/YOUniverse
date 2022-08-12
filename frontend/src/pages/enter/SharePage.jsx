@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ShareModule from 'modules/ShareModule';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,7 +8,9 @@ import './SharePage.scss';
 
 const Share = () => {
   const dispatch = useDispatch();
-  dispatch(myMainHeader(false));
+  useEffect(() => {
+    dispatch(myMainHeader(false));
+  }, []);
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
   console.log(storeSessionId);
   const storeName = useSelector((state) => state.user.value.name);
