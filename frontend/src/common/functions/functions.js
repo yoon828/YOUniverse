@@ -1,12 +1,26 @@
 // 날짜 변환
-export const transform = (timestamp) => {
-  const date = new Date(timestamp);
+// export const transform = (timestamp) => {
+//   const date = new Date(timestamp);
+//   const Y = date.getFullYear();
+//   const M = date.getMonth() + 1;
+//   const D = date.getDate();
+//   const h = date.getHours();
+//   const m = date.getMinutes();
+//   const s = date.getSeconds();
+//   return `${Y}년 ${M}월 ${D}일`;
+// };
+
+export const transform = (data, type = 'list') => {
+  const date = new Date(data);
   const Y = date.getFullYear();
   const M = date.getMonth() + 1;
   const D = date.getDate();
   const h = date.getHours();
   const m = date.getMinutes();
   const s = date.getSeconds();
+  if (type === 'chat') {
+    return `${Y}.${M}.${D}.${h}:${m}:${s}`;
+  }
   return `${Y}년 ${M}월 ${D}일`;
 };
 

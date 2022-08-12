@@ -86,7 +86,7 @@ const MyPage = () => {
       <div className="profile">
         <div>
           <img src={profileImg} alt="" />
-          <p>{name}님의 마이페이지</p>
+          <p>{name}</p>
           <p>{email}</p>
         </div>
         <button onClick={onDeleteUser}>회원탈퇴</button>
@@ -105,7 +105,11 @@ const MyPage = () => {
               data={shareRoomHistoryList}
               items={['date', 'roomName', 'hostName']}
             />
-          ) : null}
+          ) : (
+            <ul>
+              <span className="no_list">히스토리가 없습니다.</span>
+            </ul>
+          )}
         </div>
 
         <div className="item">
@@ -120,7 +124,11 @@ const MyPage = () => {
               data={qnAList}
               items={['question_date', 'title', 'isAnswered']}
             />
-          ) : null}
+          ) : (
+            <ul>
+              <span className="no_list">문의 내역이 없습니다.</span>
+            </ul>
+          )}
         </div>
       </div>
     </div>

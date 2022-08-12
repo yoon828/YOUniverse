@@ -4,7 +4,7 @@ import './LogComponent.scss';
 const LogComponent = (props) => {
   const [fontSize, setFontSize] = useState(15);
 
-  const icons = ['diamond', 'heart', 'round', 'square', 'start', 'triangle'];
+  const icons = ['cloud', 'moon', 'planet', 'rocket', 'star', 'ufo'];
 
   useEffect(() => {
     console.log(props);
@@ -34,7 +34,7 @@ const LogComponent = (props) => {
             <li key={idx}>
               <img
                 width={20}
-                src={`/asset/img/${icons[log.icon]}.png`}
+                src={`/asset/img/room/icon/${icons[log.icon]}.png`}
                 alt={`${icons[log.icon]}`}
               />
               <span>

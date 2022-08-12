@@ -1,6 +1,6 @@
 // 색깔
 $themeFirst: #f6f6f6;
-$themeSecond: #211b72;
+$themeSecond: #243a73;
 $themeThird: #ffeb00;
 $themeFourth: #e9e9e9;
 
@@ -41,10 +41,12 @@ $listHeader: 25px;
 @mixin blue_button {
   background-color: $themeSecond;
   color: $themeFirst;
-  height: 63px;
-  width: 183px;
-  margin: 3px;
-  border-radius: 10px;
+  height: 50px;
+  width: 180px;
+  margin: 10px;
+  border-radius: 15px;
+  font-size: 30px;
+  text-align: center;
 }
 
 // 플렉스 설정
@@ -57,4 +59,9 @@ $listHeader: 25px;
 
 @mixin list_item {
   background-color: $themeFourth;
+}
+
+// 세로선
+@mixin line_vertical($color, $weight) {
+  border-left: $weight solid $color;
 }

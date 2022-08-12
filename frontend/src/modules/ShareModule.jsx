@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-
 import { useSelector } from 'react-redux';
+import './ShareModule.scss';
 
 const ShareModule = () => {
   const { name } = useSelector((state) => state.user.value);
@@ -38,8 +38,12 @@ const ShareModule = () => {
 
   return (
     <>
-      <button onClick={onShareKakaoClick}>카카오 친구 초대하기</button>
-      <button onClick={onCopyUrl}>링크복사</button>
+      <button className="invite invite_kakao" onClick={onShareKakaoClick}>
+        카카오 친구 초대하기
+      </button>
+      <button className="invite invite_link" onClick={onCopyUrl}>
+        링크복사
+      </button>
     </>
   );
 };

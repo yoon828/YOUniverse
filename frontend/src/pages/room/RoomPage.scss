@@ -17,7 +17,7 @@
   }
 
   .modal {
-    @include box(468px, 753px);
+    @include box(420px, 720px);
     @include text_vertical;
     position: absolute;
     z-index: 200;

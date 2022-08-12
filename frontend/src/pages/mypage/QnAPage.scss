@@ -7,11 +7,16 @@
   margin: 0.5rem 0rem;
   padding: 1rem;
   color: black;
+  border-radius: 20px;
 }
 
 input:focus,
 textarea:focus {
   outline: 3px solid $themeSecond;
+}
+
+.qna_page > .title {
+  margin-bottom: 2.5rem;
 }
 
 .qna_page {
