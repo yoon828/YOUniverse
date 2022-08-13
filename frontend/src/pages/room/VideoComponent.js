@@ -55,7 +55,7 @@ class VideoComponent extends Component {
 
       isCC: true, //자막 on/off 확인
 
-      icons: ['diamond', 'heart', 'round', 'square', 'star', 'triangle'] //앞에 도형으로 사용자 식별
+      icons: ['cloud', 'moon', 'planet', 'rocket', 'star', 'ufo'] //앞에 도형으로 사용자 식별
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -351,20 +351,22 @@ class VideoComponent extends Component {
           this.props.setLogList(list);
 
           //자막 내용 변경
-          let subtitle = document.getElementById(
-            `subtitle_${event.from.connectionId}`
-          );
-          subtitle.innerText = json.comment;
+          if (this.state.isCC) {
+            let subtitle = document.getElementById(
+              `subtitle_${event.from.connectionId}`
+            );
+            subtitle.innerText = json.comment;
 
-          //자막이 7초뒤에 사라지도록
-          setTimeout(() => {
-            subtitle.innerText = '';
-          }, 7000);
+            //자막이 7초뒤에 사라지도록
+            setTimeout(() => {
+              subtitle.innerText = '';
+            }, 7000);
+          }
 
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
           if (
             this.state.isSound &&
-            JSON.parse(event.from.data).clientData !== this.state.myUserName
+            event.from.connectionId !== event.target.connection.connectionId
           ) {
             let utterance = new SpeechSynthesisUtterance(
               json.name + ' : ' + json.comment
@@ -609,20 +611,34 @@ class VideoComponent extends Component {
               </h1> */}
 
               <div id="feature">
-                <button id="feature-cc">
+                <button
+                  id="feature-cc"
+                  className="round-button"
+                  onClick={this.handleCC}
+                >
                   <img
-                    src="/asset/img/cc.png"
+                    src={
+                      this.state.isCC
+                        ? '/asset/img/room/cc_on.png'
+                        : '/asset/img/room/cc_off.png'
+                    }
                     alt="cc"
                     width={50}
-                    onClick={this.handleCC}
                   />
                 </button>
-                <button id="feature-sound">
+                <button
+                  id="feature-sound"
+                  className="round-button"
+                  onClick={this.handleSound}
+                >
                   <img
-                    src="/asset/img/sound.png"
+                    src={
+                      this.state.isSound
+                        ? '/asset/img/room/sound_on.png'
+                        : '/asset/img/room/sound_off.png'
+                    }
                     alt="sound"
                     width={50}
-                    onClick={this.handleSound}
                   />
                 </button>
                 <button
@@ -633,13 +649,12 @@ class VideoComponent extends Component {
                   <img
                     src={
                       this.props.bigMouth
-                        ? '/asset/img/mouth.png'
-                        : '/asset/img/silent.png'
+                        ? '/asset/img/room/mouth_on.png'
+                        : '/asset/img/room/mouth_off.png'
                     }
                     alt="mouth"
                     width={50}
-                  />{' '}
-                  :
+                  />
                 </button>
               </div>
             </div>

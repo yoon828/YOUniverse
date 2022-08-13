@@ -4,6 +4,9 @@ $themeSecond: #243a73;
 $themeThird: #fee500;
 $themeFourth: #e9e9e9;
 
+// 폰트 사이즈
+$listHeader: 25px;
+
 // 흰 박스 남색 글씨(높이, 너비)
 @mixin box($height, $width) {
   background-color: $themeFirst;
@@ -65,4 +68,9 @@ $themeFourth: #e9e9e9;
   background-size: cover;
   // background-repeat: round;
   background-image: url($url);
+}
+
+// 세로선
+@mixin line_vertical($color, $weight) {
+  border-left: $weight solid $color;
 }

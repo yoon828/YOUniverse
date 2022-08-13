@@ -7,8 +7,9 @@
 
 // 프로필 영역
 .profile {
-  @include box(863px, 501px);
+  @include box(863px, 450px);
   @include flex(column, space-around, center);
+  margin-left: 80px;
 
   > div {
     @include flex(column, space-around, center);
@@ -23,13 +24,14 @@
     width: 300px;
     border-radius: 50%;
     object-fit: scale-down;
-    margin: 5px;
+    margin: 30px 0 50px;
   }
   p {
     margin: 3px;
   }
   > button {
     @include blue_button;
+    margin-bottom: 80px;
   }
 }
 
@@ -37,6 +39,8 @@
 .info {
   @include box(863px, 1232px);
   @include flex(column, space-around, center);
+  padding: 50px 0 80px;
+  margin-right: 80px;
 }
 
 // 각 영역
@@ -58,7 +62,10 @@
     // 영역별 최신 5개
     background-color: $themeFourth;
     padding: 0.5rem;
-    a {
+    border-radius: 20px;
+    height: 11rem;
+    a,
+    .no_list {
       display: block;
       padding: 5px 1rem 5px;
       @include flex(row, space-between, center);
