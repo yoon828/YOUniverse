@@ -22,16 +22,18 @@ a {
 
 // 문의 및 히스토리 페이지 컨테이너
 .page_container {
-  @include box(863px, 1561px);
+  @include box(100%, 90%);
   @include flex(column, flex-start, center);
+  padding: 20px;
   .title {
-    color: $themeFirst;
-    font-size: 50px; // 페이지 제목 사이즈
+    color: $themeSecond;
+    font-size: $listHeader; // 페이지 제목 사이즈
   }
-  padding: 3rem 8rem;
+  // padding: 3rem 8rem;
 }
 
 .button_container {
+  width: 100%;
   display: flex;
   justify-content: end;
 }
@@ -70,4 +72,8 @@ a {
       width: 45px;
     }
   }
+}
+
+.w100 {
+  width: 100%;
 }

@@ -31,13 +31,13 @@ textarea:focus {
 }
 
 .qna_page > .title {
-  margin-bottom: 2.5rem;
+  margin: 1rem 0;
 }
 
 .qna_page {
   input,
   textarea {
-    @include input(1214px);
+    @include input(100%);
   }
   button {
     @include blue_button;

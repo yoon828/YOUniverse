@@ -78,7 +78,7 @@ const QnA = () => {
         <h1 className="title" aria-label="일대일 문의하기">
           1:1 문의하기
         </h1>
-        <div>
+        <div className="w100">
           <form onSubmit={(event) => handleSubmit(event)}>
             <input
               ref={qnaTitle}
@@ -88,7 +88,7 @@ const QnA = () => {
             />
             <textarea
               ref={qnaContent}
-              rows="15"
+              rows="6"
               placeholder="문의 내용을 입력해주세요"
               required
             />

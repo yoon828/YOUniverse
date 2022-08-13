@@ -13,7 +13,7 @@ const Guest = () => {
 
   const dispatch = useDispatch();
 
-  dispatch(useMainHeader(false));
+  dispatch(useMainHeader(true));
 
   useEffect(() => {
     guestNameInputRef.current.focus();
@@ -35,7 +35,7 @@ const Guest = () => {
         <img
           src="asset/img/main/astronaut.png"
           alt="우주인"
-          className="astronaut"
+          className="astronaut_big_img"
         />
         <form className="guest_form">
           <h1 className="title">이름을 입력해주세요.</h1>
