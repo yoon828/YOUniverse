@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from 'redux/auth';
+import { useMainHeader } from 'redux/mainHeader';
 
 import { registerQnA } from 'api/qna';
 import { isTokenExpired } from 'common/functions/functions';
@@ -14,7 +15,9 @@ const QnA = () => {
   const qnaContent = useRef(null);
   const history = useHistory();
   const { uuid } = useSelector((state) => state.user.value);
-  const { dispatch } = useDispatch();
+  const dispatch = useDispatch();
+
+  dispatch(useMainHeader(true));
 
   const clearQnA = () => {
     clearInterval(qnaTitle.current);
@@ -100,13 +103,13 @@ const QnA = () => {
             </div>
           </form>
         </div>
-      </div>
-      <div className="astronaut">
-        <img
-          className="astronaut_img"
-          src="/asset/img/mypage/profile/profile_4.png"
-          alt="우주인"
-        />
+        <div className="astronaut">
+          <img
+            className="astronaut_img"
+            src="/asset/img/mypage/profile/profile_4.png"
+            alt="우주인"
+          />
+        </div>
       </div>
     </>
   );

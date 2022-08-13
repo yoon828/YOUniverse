@@ -22,9 +22,11 @@ a {
 
 // 문의 및 히스토리 페이지 컨테이너
 .page_container {
-  @include box(100%, 90%);
+  @include box(auto, 80%);
   @include flex(column, flex-start, center);
+  position: relative;
   padding: 20px;
+  margin: 0 auto;
   .title {
     color: $themeSecond;
     font-size: $listHeader; // 페이지 제목 사이즈
@@ -76,4 +78,19 @@ a {
 
 .w100 {
   width: 100%;
+}
+
+.astronaut {
+  position: absolute;
+  right: -120px;
+  &_img {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.App {
+  @include background_setting('../../asset/img/background/other.png');
+  display: flex;
+  flex-direction: column;
 }

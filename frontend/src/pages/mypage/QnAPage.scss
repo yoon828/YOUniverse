@@ -4,17 +4,6 @@
   position: relative;
 }
 
-.astronaut {
-  position: absolute;
-  left: 1600px;
-  top: 400px;
-  width: auto;
-  &_img {
-    width: 300px;
-    height: 300px;
-  }
-}
-
 @mixin input($width) {
   background-color: $themeFourth;
   display: block;

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from 'redux/auth';
 import { resetUser, insertUser } from 'redux/user';
+import { useMainHeader } from 'redux/mainHeader';
 
 import { deleteUser, getUser } from 'api/user';
 import { isTokenExpired } from 'common/functions/functions';
@@ -18,6 +19,7 @@ const MyPage = () => {
     (state) => state.user.value
   );
   const [profileImg, setProfileImg] = useState('');
+  dispatch(useMainHeader(true));
 
   // 회원 탈퇴 함수
   const onDeleteUser = () => {
@@ -93,9 +95,9 @@ const MyPage = () => {
       </div>
 
       <div className="info">
-        <div className="item">
+        <div className="info_history item w100">
           <div>
-            <h2>쉐어룸 히스토리</h2>
+            <h2>SPACE 히스토리</h2>
             {/* <button onClick={addHistory}>히스토리 임의 등록</button> */}
             <Link to="/history">더보기</Link>
           </div>
@@ -112,7 +114,7 @@ const MyPage = () => {
           )}
         </div>
 
-        <div className="item">
+        <div className="info_qa item w100">
           <div>
             <h2>1:1 문의내역</h2>
             <Link to="/question">더보기</Link>
@@ -125,9 +127,11 @@ const MyPage = () => {
               items={['question_date', 'title', 'isAnswered']}
             />
           ) : (
-            <ul>
-              <span className="no_list">문의 내역이 없습니다.</span>
-            </ul>
+            <div>
+              <ul>
+                <span className="no_list">문의 내역이 없습니다.</span>
+              </ul>
+            </div>
           )}
         </div>
       </div>
