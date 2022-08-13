@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { useParams, useHistory, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout } from 'redux/auth';
 
-import { getQnA, deleteQnA, postQaAnswer } from 'api/qna';
+import { getQnA } from 'api/qna';
+import { postQaAnswer } from 'api/admin';
 import { transform, isTokenExpired } from 'common/functions/functions';
 import './AdminQaDetailPage.scss';
 
