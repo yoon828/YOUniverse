@@ -32,11 +32,6 @@ const AdminQaPage = () => {
       .catch((err) => console.log(err));
   };
 
-  //회원 탈퇴
-  const deleteUser = (uuid) => {
-    //관리자가 회원 탈퇴 시키기
-  };
-
   const dispatch = useDispatch();
   dispatch(myMainHeader(false));
 

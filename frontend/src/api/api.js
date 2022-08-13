@@ -24,7 +24,7 @@ export const logApi = axios.create({
 // api 요청 인터셉터
 api.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${getAccessToken()}`;
-  console.log('SET_API_HEADERS:', config);
+  // console.log('SET_API_HEADERS:', config);
   return config;
 });
 

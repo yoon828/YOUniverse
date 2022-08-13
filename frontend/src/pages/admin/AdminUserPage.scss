@@ -1,7 +1,7 @@
 @import 'common/style/all.scss';
 
 .admin_user {
-  @include box(80vh, 90vw);
+  @include box(auto, 90vw);
   padding: 30px;
 
   .user_list {
@@ -30,5 +30,8 @@
     color: $themeFirst;
     padding: 10px;
     border-radius: 12px;
+    &_admin {
+      background-color: gray;
+    }
   }
 }

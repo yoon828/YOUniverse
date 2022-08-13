@@ -23,6 +23,7 @@ import QnADetail from './mypage/QnADetail';
 import AdminPage from './admin/AdminPage';
 import AdminUserPage from './admin/AdminUserPage';
 import AdminQaPage from './admin/AdminQaPage';
+import AdminQaDetailPage from './admin/AdminQaDetailPage';
 import NotFound from './NotFoundPage';
 
 import { getUser } from 'api/user';
@@ -103,7 +104,11 @@ const App = () => {
         <Route exact path="/room" component={Room} />
         <PrivateRoute exact path="/admin" component={AdminPage} />
         <PrivateRoute exact path="/admin/users" component={AdminUserPage} />
-        <PrivateRoute exact path="/admin/qa/:id" component={AdminQaPage} />
+        <PrivateRoute
+          exact
+          path="/admin/qa/:questionId"
+          component={AdminQaDetailPage}
+        />
         <PrivateRoute exact path="/admin/qa" component={AdminQaPage} />
         <PrivateRoute exact path="/share" component={Share} />
         <PrivateRoute

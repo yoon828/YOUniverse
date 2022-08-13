@@ -5,8 +5,16 @@ export const getUserList = async () => {
   return await api.get('/admin/user');
 };
 
-export const deleteUser = async () => {
-  return await api.get('/admin/user');
+export const deleteUser = async (uuid) => {
+  return await api.delete(`/admin/user/${uuid}`);
+};
+export const postAdmin = async (uuid) => {
+  return await api.post(`/admin/${uuid}`);
+};
+//관리자인지 확인
+export const getAdmin = async (uuid) => {
+  console.log(uuid);
+  return await api.get(`/admin/${uuid}`);
 };
 
 //QA 관리
