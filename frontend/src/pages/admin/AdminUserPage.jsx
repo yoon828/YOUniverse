@@ -5,9 +5,22 @@ import { myMainHeader } from 'redux/mainHeader';
 import { Link } from 'react-router-dom';
 
 import './AdminUserPage.scss';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TablePagination,
+  TableContainer,
+  Paper
+} from '@mui/material';
 
 const AdminUserPage = () => {
   const [users, setUsers] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const dispatch = useDispatch();
   dispatch(myMainHeader(false));
@@ -19,8 +32,14 @@ const AdminUserPage = () => {
   const getUsers = () => {
     getUserList()
       .then(({ data }) => {
-        console.log(data);
-        setUsers(() => data.data);
+        // console.log(data.data);
+        // let test = [];
+        // for (let i = 0; i < 10; i++) {
+        //   for (let j = 0; j < data.data.length; j++) {
+        //     test.push(data.data[j]);
+        //   }
+        // }
+        setUsers(data.data);
       })
       .catch((err) => console.log(err));
   };
@@ -56,64 +75,88 @@ const AdminUserPage = () => {
   };
   //관리자 확인
   const getAdminApi = (uuid) => {
-    getAdmin(uuid)
-      .then(({ data }) => {
-        if (data.success === true) return true;
-        else return false;
-      })
-      .catch((err) => console.log(err + '에러가 발생했습니다.'));
+    // getAdmin(uuid)
+    //   .then(({ data }) => {
+    //     if (data.success === true) return true;
+    //     else return false;
+    //   })
+    //   .catch((err) => console.log(err + '에러가 발생했습니다.'));
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
 
   return (
     <div className="admin_user">
       <h1>회원 목록</h1>
-      <table className="user_list">
-        <thead>
-          <tr className="table_tr">
-            <th>이름</th>
-            <th>이메일</th>
-            <th>sessionId</th>
-            <th>삭제</th>
-            <th>관리자</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user, idx) => {
-            return (
-              <tr className="table_tr" key={idx}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.sessionId}</td>
-                <td>
-                  <button
-                    className="btn"
-                    onClick={() => deleteUserApi(user.uuid)}
-                  >
-                    삭제
-                  </button>
-                </td>
-                <td>
-                  {getAdminApi(user.uuid) ? (
-                    <button
-                      className="btn_admin"
-                      onClick={() => postAdminApi(user.uuid)}
-                    >
-                      완료
-                    </button>
-                  ) : (
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>이름</TableCell>
+              <TableCell>이메일</TableCell>
+              <TableCell>sessionId</TableCell>
+              <TableCell>삭제</TableCell>
+              <TableCell>관리자</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {(rowsPerPage > 0
+              ? users.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
+              : users
+            ).map((user, idx) => {
+              return (
+                <TableRow key={idx}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.sessionId}</TableCell>
+                  <TableCell>
                     <button
                       className="btn"
-                      onClick={() => postAdminApi(user.uuid)}
+                      onClick={() => deleteUserApi(user.uuid)}
                     >
-                      등록
+                      삭제
                     </button>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  </TableCell>
+                  <TableCell>
+                    {getAdminApi(user.uuid) ? (
+                      <button
+                        className="btn_admin"
+                        onClick={() => postAdminApi(user.uuid)}
+                      >
+                        완료
+                      </button>
+                    ) : (
+                      <button
+                        className="btn"
+                        onClick={() => postAdminApi(user.uuid)}
+                      >
+                        등록
+                      </button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5]}
+                count={users.length}
+                rowsPerPage={5}
+                page={page}
+                onPageChange={handleChangePage}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+
       <div className="btn_div">
         <Link to="/admin" className="btn">
           관리자 메인페이지로

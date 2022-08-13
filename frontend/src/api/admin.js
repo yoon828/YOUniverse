@@ -13,7 +13,6 @@ export const postAdmin = async (uuid) => {
 };
 //관리자인지 확인
 export const getAdmin = async (uuid) => {
-  console.log(uuid);
   return await api.get(`/admin/${uuid}`);
 };
 

@@ -40,7 +40,7 @@ api.interceptors.response.use(
     console.log('ERROR형태보기', error);
 
     // A) 토큰 만료 이슈인 경우
-    if (error.response.data?.message.includes('만료')) {
+    if (error.response.data?.message?.includes('만료')) {
       console.log('accessToken 만료 관련 문제');
 
       // a) 갱신 요청
