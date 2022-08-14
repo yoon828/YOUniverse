@@ -22,6 +22,7 @@ const QnADetail = () => {
   const getQADetail = () => {
     getQnA(questionId)
       .then(({ data }) => {
+        console.log(data.data);
         setQnA(data.data);
         if (data.data.isAnswered) {
           setMode(1);
@@ -33,6 +34,7 @@ const QnADetail = () => {
   };
 
   const postAnswer = () => {
+    console.log(qna);
     postQaAnswer({ id: qna.id, answer: answer.current.value, uuid: qna.uuid })
       .then(({ data }) => {
         if (data.success === true) {
@@ -63,12 +65,13 @@ const QnADetail = () => {
   };
   const deleteQaAnswerApi = () => {
     if (window.confirm('답변을 삭제하시겠습니까?')) {
-      deleteQaAnswer({ id: qna.id, uuid: qna.uuid })
+      deleteQaAnswer(qna.id)
         .then(({ data }) => {
           console.log(data);
           if (data.success === true) {
             alert('답변을 삭제했습니다');
             getQADetail();
+            setMode(0);
           } else {
             console.log('에러가 발생했습니다');
           }

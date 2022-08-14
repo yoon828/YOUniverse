@@ -13,7 +13,12 @@ export const postAdmin = async (uuid) => {
 };
 //관리자인지 확인
 export const getAdmin = async (uuid) => {
-  return await api.get(`/admin/${uuid}`);
+  try {
+    const data = await api.get(`/admin/${uuid}`);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 //QA 관리
@@ -28,6 +33,6 @@ export const postQaAnswer = async (data) => {
 export const putQaAnswer = async (data) => {
   return await api.put('/admin/answer', data);
 };
-export const deleteQaAnswer = async (data) => {
-  return await api.delete('/admin/answer', data);
+export const deleteQaAnswer = async (id) => {
+  return await api.delete(`/admin/answer/${id}`);
 };

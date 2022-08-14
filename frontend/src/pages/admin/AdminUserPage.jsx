@@ -26,25 +26,27 @@ const AdminUserPage = () => {
   dispatch(myMainHeader(false));
 
   useEffect(() => {
-    console.log(getUsers());
+    getUsers();
   }, []);
 
-  const getUsers = () => {
-    getUserList()
+  const getUsers = async () => {
+    const test = getUserList()
       .then(({ data }) => {
-        let _users = [...data.data];
-        console.log(data.data);
-        data.data.map((user, idx) => {
-          let flag = getAdminApi(user.uuid);
-          console.log(flag);
-          _users[idx].isAdmin = flag;
-        });
-        console.log(_users);
-        setUsers(data.data);
-        return true;
+        if (data.success === true) {
+          let _users = [...data.data];
+          console.log(data.data);
+          data.data.map((user, idx) => {
+            // let flag = await Promise.all(getAdminApi(user.uuid));
+            // console.log(flag);
+            // _users[idx].isAdmin = flag;
+          });
+          console.log(_users);
+          setUsers(data.data);
+          return true;
+        } else return false;
       })
       .catch((err) => console.log(err));
-    return false;
+    return test;
   };
 
   //회원 탈퇴
@@ -79,19 +81,22 @@ const AdminUserPage = () => {
   //관리자 확인
   const getAdminApi = (uuid) => {
     // console.log(uuid);
-    getAdmin(uuid)
-      .then(({ data }) => {
-        console.log(data.success);
-        return data.success;
-        // if (data.success === true) {
-        //   console.log(uuid + '관리자임');
-        //   return true;
-        // } else {
-        //   console.log(uuid + '관리자 아님');
-        //   return false;
-        // }
-      })
-      .catch((err) => console.log(err + '에러가 발생했습니다.'));
+    const data = getAdmin(uuid);
+    return data;
+    console.log(data);
+    // getAdmin(uuid)
+    //   .then(({ data }) => {
+    //     console.log(data);
+    //     return data.success;
+    //     // if (data.success === true) {
+    //     //   console.log(uuid + '관리자임');
+    //     //   return true;
+    //     // } else {
+    //     //   console.log(uuid + '관리자 아님');
+    //     //   return false;
+    //     // }
+    //   })
+    //   .catch((err) => console.log(err + '에러가 발생했습니다.'));
   };
 
   const handleChangePage = (event, newPage) => {
