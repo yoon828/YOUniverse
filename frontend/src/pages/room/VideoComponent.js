@@ -205,6 +205,20 @@ class VideoComponent extends Component {
     this.setState({
       isSound: !this.state.isSound
     });
+    this.state.session
+      .signal({
+        data: JSON.stringify({
+          isSound: !this.state.isSound
+        }),
+        to: [],
+        type: 'soundUpdate'
+      })
+      .then(() => {
+        console.log('Sound service successfully updated');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   //자막 on/off
@@ -325,15 +339,17 @@ class VideoComponent extends Component {
           console.warn(exception);
         });
 
-        // mySession.on('publisherStartSpeaking', (event) => {
-        //   this.setState({speaker: event.connection.connectionId});
-        //   console.log('User ' + event.connection.connectionId + ' start speaking');
-        // });
+        // 음성 서비스 off 시 speechSynthesis에 있는 utterance 큐 비우기
+        mySession.on('signal:soundUpdate', (event) => {
+          let isSound = JSON.parse(event.data).isSound;
+          if (
+            !isSound &&
+            event.from.connectionId == event.target.connection.connectionId
+          ) {
+            speechSynthesis.cancel();
+          }
+        });
 
-        // mySession.on('publisherStopSpeaking', (event) => {
-        //   this.setState({speaker: 'speaker'});
-        //   console.log('User ' + event.connection.connectionId + ' stop speaking');
-        // });
         const root = document.getElementById('log_list');
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
@@ -783,16 +799,16 @@ class VideoComponent extends Component {
             console.log(error);
             console.warn(
               'No connection to OpenVidu Server. This may be a certificate error at ' +
-              OPENVIDU_SERVER_URL
+                OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                OPENVIDU_SERVER_URL +
-                '"\n\nClick OK to navigate and accept it. ' +
-                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                OPENVIDU_SERVER_URL +
-                '"'
+                  OPENVIDU_SERVER_URL +
+                  '"\n\nClick OK to navigate and accept it. ' +
+                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                  OPENVIDU_SERVER_URL +
+                  '"'
               )
             ) {
               window.location.assign(
@@ -810,9 +826,9 @@ class VideoComponent extends Component {
       axios
         .post(
           OPENVIDU_SERVER_URL +
-          '/openvidu/api/sessions/' +
-          sessionId +
-          '/connection',
+            '/openvidu/api/sessions/' +
+            sessionId +
+            '/connection',
           data,
           {
             headers: {
