@@ -27,25 +27,30 @@ const Guest = () => {
     <div className="guest_page">
       <div className="main_logo">
         <Link to="/">
-          <img
-            src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
-            alt="logo"
-          />
+          <img src="asset/img/logo.png" alt="logo" className="logo_img" />
         </Link>
       </div>
-      <form className="guest_form">
-        <div>이름을 입력해주세요.</div>
-        <input
-          type="text"
-          name="guest"
-          // placeholder="이름을 입력해주세요."
-          ref={guestNameInputRef}
-          defaultValue={localStorage.getItem('guestName')}
+      <div className="nickname">
+        <img
+          src="asset/img/main/astronaut.png"
+          alt="우주인"
+          className="astronaut_big_img"
         />
-        <button type="submit" onClick={submit}>
-          확인
-        </button>
-      </form>
+        <form className="guest_form">
+          <h1 className="title">이름을 입력해주세요.</h1>
+          <input
+            type="text"
+            name="guest"
+            // placeholder="이름을 입력해주세요."
+            ref={guestNameInputRef}
+            defaultValue={localStorage.getItem('guestName')}
+            className="nickname_input"
+          />
+          <button type="submit" onClick={submit} className="confirm">
+            확인
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

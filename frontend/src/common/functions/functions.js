@@ -7,13 +7,9 @@ export const transform = (data, type = 'list') => {
   const h = date.getHours();
   const m = date.getMinutes();
   const s = date.getSeconds();
-
-  // 로그 페이지에 들어갈 date 형식
   if (type === 'chat') {
     return `${Y}.${M}.${D}.${h}:${m}:${s}`;
   }
-
-  // 그 외 페이지에 들어갈 date 형식
   return `${Y}년 ${M}월 ${D}일`;
 };
 

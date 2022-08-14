@@ -1,41 +1,75 @@
 @import 'common/style/all.scss';
 
+.page_container {
+  position: relative;
+}
+
 .history_detail {
-  .history_detail_header {
-    width: 100%;
-    color: red;
-    border: 1px dotted purple;
-    @include flex(row, space-between, center);
-  }
-  span {
-    // border: 1px solid black; 테스트할라고 border 넣었는데, 충돌날까봐 주석으로 지웠어요...
-  }
-  .content {
+  &_header {
     background-color: $themeFourth;
+    border-radius: 15px;
+    color: black;
+    height: 50px;
+    width: 1214px;
+    // margin: auto;
+    line-height: 50px;
+    margin-top: 35px;
+    padding: 0 10px;
+    :nth-child(3n + 2) {
+      padding-right: 200px;
+    }
+  }
+  &_content {
+    background-color: $themeFourth;
+    border-radius: 20px;
+    color: black;
+    height: 500px;
+    width: 1214px;
+    margin: auto;
+    white-space: pre-line;
     min-height: 500px;
-    width: 1385px;
+    overflow: auto;
+    padding: 10px 30px;
   }
-  .outline {
-    @include flex(row, space-between, center);
-    width: 100%;
-    p:nth-child(1) {
-      width: 30%;
-    }
-    p:nth-child(2) {
-      width: 30%;
-    }
-    p:nth-child(3) {
-      width: 40%;
-    }
+
+  &_answer {
+    background-color: $themeFourth;
+    border-radius: 20px;
+    color: black;
+    height: 150px;
+    width: 1214px;
+    margin: auto;
+    margin-bottom: 80px;
+    white-space: pre-line;
+    min-height: 150px;
+    overflow: auto;
+    padding: 10px 30px;
   }
-  .log {
+
+  .line {
+    @include line_vertical(#808080, 2px);
   }
   button,
   a {
     @include blue_button;
-  }
-  a {
     @include text_vertical;
-    margin-left: auto;
+    margin: 0;
   }
+}
+
+.gray {
+  color: #808080;
+}
+
+.button_container {
+  width: 1214px;
+  align-items: flex-end;
+}
+
+.chat_name {
+  font-size: large;
+}
+
+.chat_time {
+  font-size: medium;
 }

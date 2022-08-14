@@ -1,19 +1,24 @@
 @import 'common/style/all.scss';
 
-.share_page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.share_wrap {
+  @include background_setting('../../asset/img/background/share.png');
 }
-
 .share {
-  @include box(468px, 753px);
+  @include box(50vh, 50vw);
   @include text_vertical;
-  button {
-    display: inline-block;
+  position: relative;
+  justify-content: space-evenly;
+  .title {
+    font-size: 2.3rem;
   }
-  a {
+  .next {
     @include blue_button;
-    @include text_vertical;
+  }
+  .rocket {
+    position: absolute;
+    width: 170px;
+    top: -50px;
+    left: -55px;
+    transform: rotate(45deg);
   }
 }

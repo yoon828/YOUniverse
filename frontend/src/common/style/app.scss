@@ -22,16 +22,75 @@ a {
 
 // 문의 및 히스토리 페이지 컨테이너
 .page_container {
-  @include box(863px, 1561px);
+  @include box(auto, 80%);
   @include flex(column, flex-start, center);
+  position: relative;
+  padding: 20px;
+  margin: 0 auto;
   .title {
     color: $themeSecond;
-    font-size: 50px; // 페이지 제목 사이즈
+    font-size: $listHeader; // 페이지 제목 사이즈
   }
-  padding: 3rem 8rem;
+  // padding: 3rem 8rem;
 }
 
 .button_container {
+  width: 100%;
   display: flex;
   justify-content: end;
+}
+
+.main_header {
+  display: flex;
+  padding: 30px;
+  &_logo {
+    margin-right: 30px;
+  }
+  &_menu {
+    display: flex;
+    align-items: center;
+    a,
+    button {
+      padding: 0 30px;
+      color: $themeFourth;
+    }
+  }
+}
+
+.login_kakao {
+  margin: 24px;
+  background-color: $themeThird;
+  text-align: center;
+  &_div {
+    display: flex;
+    flex-direction: row;
+    color: black;
+    width: 360px;
+    height: 30px;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 45px;
+    }
+  }
+}
+
+.w100 {
+  width: 100%;
+}
+
+.astronaut {
+  position: absolute;
+  right: -120px;
+  &_img {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.App {
+  @include background_setting('../../asset/img/background/other.png');
+  display: flex;
+  flex-direction: column;
 }

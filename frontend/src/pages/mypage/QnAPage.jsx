@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from 'redux/auth';
+import { myMainHeader } from 'redux/mainHeader';
 
 import { registerQnA } from 'api/qna';
 import { isTokenExpired } from 'common/functions/functions';
@@ -14,7 +15,9 @@ const QnA = () => {
   const qnaContent = useRef(null);
   const history = useHistory();
   const { uuid } = useSelector((state) => state.user.value);
-  const { dispatch } = useDispatch();
+  const dispatch = useDispatch();
+
+  dispatch(myMainHeader(true));
 
   const clearQnA = () => {
     clearInterval(qnaTitle.current);
@@ -73,33 +76,42 @@ const QnA = () => {
   }, []);
 
   return (
-    <div className="qna_page page_container">
-      <h1 className="title" aria-label="일대일 문의하기">
-        1:1 문의하기
-      </h1>
-      <div>
-        <form onSubmit={(event) => handleSubmit(event)}>
-          <input
-            ref={qnaTitle}
-            type="text"
-            placeholder="문의 제목을 입력해주세요"
-            required
+    <>
+      <div className="qna_page page_container">
+        <h1 className="title" aria-label="일대일 문의하기">
+          1:1 문의하기
+        </h1>
+        <div className="w100">
+          <form onSubmit={(event) => handleSubmit(event)}>
+            <input
+              ref={qnaTitle}
+              type="text"
+              placeholder="문의 제목을 입력해주세요"
+              required
+            />
+            <textarea
+              ref={qnaContent}
+              rows="6"
+              placeholder="문의 내용을 입력해주세요"
+              required
+            />
+            <div className="button_container">
+              <button type="submit">등록</button>
+              <button type="button" onClick={() => handleCancle()}>
+                취소
+              </button>
+            </div>
+          </form>
+        </div>
+        <div className="astronaut">
+          <img
+            className="astronaut_img"
+            src="/asset/img/mypage/profile/profile_4.png"
+            alt="우주인"
           />
-          <textarea
-            ref={qnaContent}
-            rows="15"
-            placeholder="문의 내용을 입력해주세요"
-            required
-          />
-          <div className="button_container">
-            <button type="submit">등록</button>
-            <button type="button" onClick={() => handleCancle()}>
-              취소
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

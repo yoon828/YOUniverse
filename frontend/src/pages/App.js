@@ -60,18 +60,15 @@ const App = () => {
         <header className="main_header">
           <div className="main_header_logo">
             <Link to="/">
-              <img
-                src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
-                alt="logo"
-              />
+              <img src="asset/img/logo_header.png" alt="logo" />
             </Link>
           </div>
           <div className="main_header_menu">
             <div>
-              <Link to="/share">쉐어룸</Link>
+              <Link to="/room">SPACE 생성</Link>
             </div>
             <div>
-              <Link to="/quest">1:1문의하기</Link>
+              <Link to="/quest">1:1문의</Link>
             </div>
             <div>
               <MyPageModule />
