@@ -45,35 +45,41 @@ const QnADetail = () => {
   }, []);
 
   return (
-    <>
-      <div className="qna_detail page_container">
-        <div className="button_container">
-          <button onClick={() => handleDelete()}>삭제</button>
+    <div className="qna_detail page_container">
+      <div className="qna_detail_header">
+        <div className="qna_detail_header_item">
+          <span className="gray">제목</span>
+          <span className="detail_content">{qna.title}</span>
         </div>
-        <div className="qna_detail_header">
-          <span className="qna_detail_header gray">제목</span>
-          <span>{qna.title}</span>
+        <div className="qna_detail_header_item">
           <span className="line" />
-          <span>{transform(qna.question_date)}</span>
+          <span className="detail_content">{transform(qna.question_date)}</span>
+        </div>
+        <div className="qna_detail_header_item">
           <span className="line" />
-          <span>{qna.isAnswered ? '답변완료' : '답변대기'}</span>
+          <span className="detail_content">
+            {qna.isAnswered ? '답변완료' : '답변대기'}
+          </span>
         </div>
-        <div className="qna_detail_content">
-          <p>{qna.content}</p>
-        </div>
-        <div className="qna_detail_answer">
-          {!!qna.isAnswered ? (
-            <>
-              <p className="gray">관리자 {transform(qna.answer_date)}</p>
-              <p>{qna.answer}</p>
-            </>
-          ) : (
-            <p>답변이 등록되기 전입니다.</p>
-          )}
-        </div>
-        <div className="button_container">
-          <Link to="/question">목록</Link>
-        </div>
+      </div>
+      <div className="qna_detail_content">{qna.content}</div>
+      <div className="qna_detail_answer">
+        {!!qna.isAnswered ? (
+          <>
+            <p className="gray admin_answer">
+              관리자 {transform(qna.answer_date)}
+            </p>
+            <p>{qna.answer}</p>
+          </>
+        ) : (
+          <p>답변이 등록되기 전입니다.</p>
+        )}
+      </div>
+      <div className="button_container">
+        <button onClick={() => handleDelete()} className="btn_mg">
+          삭제
+        </button>
+        <Link to="/question">목록</Link>
       </div>
       <div className="astronaut">
         <img
@@ -82,7 +88,7 @@ const QnADetail = () => {
           alt="우주인"
         />
       </div>
-    </>
+    </div>
   );
 };
 

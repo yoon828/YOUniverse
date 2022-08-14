@@ -7,5 +7,6 @@
     @include box(468px, 352px);
     @include text_vertical;
     min-width: 352px;
+    font-size: 2rem;
   }
 }

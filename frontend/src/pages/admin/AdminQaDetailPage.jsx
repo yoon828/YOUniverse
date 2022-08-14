@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { useParams, useHistory, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { myMainHeader } from 'redux/mainHeader';
 
 import { getQnA } from 'api/qna';
 import { postQaAnswer, putQaAnswer, deleteQaAnswer } from 'api/admin';
@@ -14,8 +15,10 @@ const QnADetail = () => {
   const [mode, setMode] = useState(0); //0이면 답변 대기, 1이면 답변 완료, 2면 수정 모드
   const { questionId } = useParams();
   const answer = useRef();
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(myMainHeader(true));
     getQADetail();
   }, []);
 

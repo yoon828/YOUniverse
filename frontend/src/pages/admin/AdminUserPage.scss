@@ -3,6 +3,11 @@
 .admin_user {
   @include box(auto, 90vw);
   padding: 30px;
+  margin: 80px;
+  h1 {
+    font-size: 2rem;
+    padding: 10px;
+  }
 
   .user_list {
     width: 100%;

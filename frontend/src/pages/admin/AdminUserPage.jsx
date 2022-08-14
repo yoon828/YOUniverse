@@ -23,9 +23,9 @@ const AdminUserPage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const dispatch = useDispatch();
-  dispatch(myMainHeader(false));
 
   useEffect(() => {
+    dispatch(myMainHeader(true));
     getUsers();
   }, []);
 

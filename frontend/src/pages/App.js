@@ -66,7 +66,7 @@ const App = () => {
         <header className="main_header">
           <div className="main_header_logo">
             <Link to="/">
-              <img src="asset/img/logo_header.png" alt="logo" />
+              <img src="/asset/img/logo_header.png" alt="logo" />
             </Link>
           </div>
           <div className="main_header_menu">

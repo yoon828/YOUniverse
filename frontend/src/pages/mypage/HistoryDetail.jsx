@@ -51,14 +51,22 @@ const HistoryDetail = () => {
         <h2 className="title">{historyItem.roomName}</h2>
       </div>
       <div className="history_detail_header">
-        <span className="history_detail_header gray">방 주인</span>
-        <span>{historyItem.hostName}</span>
-        <span className="line" />
-        <span className="history_detail_header gray">참여자</span>
-        <span>{historyItem.participants?.slice(1)}</span>
-        <span className="line" />
-        <span className="history_detail_header gray">모임 일시</span>
-        <span>{transform(historyItem.date)}</span>
+        <div className="history_detail_header_item item_host">
+          <span className="history_detail_header gray">방 주인</span>
+          <span className="detail_content">{historyItem.hostName}</span>
+        </div>
+        <div className="history_detail_header_item item_partipants">
+          <span className="line" />
+          <span className="history_detail_header gray">참여자</span>
+          <span className="detail_content">
+            {historyItem.participants?.slice(1)}
+          </span>
+        </div>
+        <div className="history_detail_header_item item_date">
+          <span className="line" />
+          <span className="history_detail_header gray">모임 일시</span>
+          <span className="detail_content">{transform(historyItem.date)}</span>
+        </div>
       </div>
       <div className="history_detail_content">
         <p>

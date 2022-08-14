@@ -25,9 +25,9 @@ const AdminQaPage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(6);
 
   const dispatch = useDispatch();
-  dispatch(myMainHeader(false));
 
   useEffect(() => {
+    dispatch(myMainHeader(true));
     getQA();
   }, []);
 
