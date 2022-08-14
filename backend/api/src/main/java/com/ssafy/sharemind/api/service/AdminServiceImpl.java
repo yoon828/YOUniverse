@@ -91,9 +91,9 @@ public class AdminServiceImpl implements AdminService {
         return list;
     }
 
-    public void deleteAnswer(AnswerDeleteDto answerDeleteDto) {
-        QnA fQnA = qnARepository.findById(answerDeleteDto.getId()).orElseThrow(NotFindQuestionException::new);
-        User user = userRepository.findByUuid(answerDeleteDto.getUuid()).orElseThrow(NotFindUuidException::new);
+    public void deleteAnswer(long  id) {
+        QnA fQnA = qnARepository.findById(id).orElseThrow(NotFindQuestionException::new);
+        User user = userRepository.findByUuid(fQnA.getUuid()).orElseThrow(NotFindUuidException::new);
         QnA qnA = QnA.builder().title(fQnA.getTitle())
                 .id(fQnA.getId())
                 .answerDate(null)
@@ -122,8 +122,8 @@ public class AdminServiceImpl implements AdminService {
 
 
     public boolean checkAdmin(String uuid){
-        String adminUuid = adminRepository.findByUuid(uuid);
-        if(adminUuid != null){
+        Admin admin = adminRepository.findByUuid(uuid);
+        if(admin != null){
             return true;
         }
         return false;

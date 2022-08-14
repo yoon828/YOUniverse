@@ -51,10 +51,10 @@ public class AdminController {
         return new Response<>(true, " 회원을 탈퇴시켰습니다.", true);
     }
 
-    @DeleteMapping("/answer")
-    public Response<?> deleteAnswer(@RequestBody AnswerDeleteDto answerDeleteDto){
-        adminService.deleteAnswer(answerDeleteDto);
-        return new Response<>(true, answerDeleteDto.getId() + " 답변을 삭제시켰습니다.", true);
+    @DeleteMapping("/answer/{id}")
+    public Response<?> deleteAnswer(@PathVariable long  id){
+        adminService.deleteAnswer(id);
+        return new Response<>(true, id + " 답변을 삭제시켰습니다.", true);
 
     }
 
