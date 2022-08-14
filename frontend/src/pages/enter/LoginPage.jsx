@@ -2,14 +2,20 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './LoginPage.scss';
 import { KAKAO_AUTH_URL } from 'api/oauth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { myMainHeader } from 'redux/mainHeader';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   useEffect(() => {
     dispatch(myMainHeader(false));
+    if (isLoggedIn) {
+      history.push('/');
+    }
   }, []);
 
   localStorage.setItem('hostId', 'no');

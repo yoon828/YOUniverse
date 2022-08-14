@@ -12,9 +12,7 @@ const Share = () => {
     dispatch(myMainHeader(false));
   }, []);
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
-  console.log(storeSessionId);
   const storeName = useSelector((state) => state.user.value.name);
-  console.log(storeName);
   return (
     <div className="share_wrap">
       <div className="main_logo">

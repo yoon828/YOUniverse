@@ -93,36 +93,79 @@ const App = () => {
         </header>
       )}
       <Switch>
-        <PrivateRoute exact path="/" component={MainPage} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/oauth/callback" component={CallBack} />
-        <Route exact path="/invite" component={Invite} />
-        <Route exact path="/guest" component={Guest} />
-        <Route exact path="/room" component={Room} />
-        <PrivateRoute exact path="/admin" component={AdminPage} />
-        <PrivateRoute exact path="/admin/users" component={AdminUserPage} />
+        <PrivateRoute exact path="/" component={MainPage} restricted={false} />
+        <Route exact path="/login" component={Login} restricted={true} />
+        <Route
+          exact
+          path="/oauth/callback"
+          component={CallBack}
+          restricted={false}
+        />
+        <Route exact path="/invite" component={Invite} restricted={false} />
+        <Route exact path="/guest" component={Guest} restricted={false} />
+        <Route exact path="/room" component={Room} restricted={false} />
+        <PrivateRoute
+          exact
+          path="/admin"
+          component={AdminPage}
+          restricted={false}
+        />
+        <PrivateRoute
+          exact
+          path="/admin/users"
+          component={AdminUserPage}
+          restricted={false}
+        />
         <PrivateRoute
           exact
           path="/admin/qa/:questionId"
           component={AdminQaDetailPage}
+          restricted={false}
         />
-        <PrivateRoute exact path="/admin/qa" component={AdminQaPage} />
-        <PrivateRoute exact path="/share" component={Share} />
+        <PrivateRoute
+          exact
+          path="/admin/qa"
+          component={AdminQaPage}
+          restricted={false}
+        />
+        <PrivateRoute
+          exact
+          path="/share"
+          component={Share}
+          restricted={false}
+        />
         <PrivateRoute
           exact
           path="/history/:historyId"
           component={HistoryDetail}
+          restricted={false}
         />
-        <PrivateRoute exact path="/history" component={HistoryList} />
+        <PrivateRoute
+          exact
+          path="/history"
+          component={HistoryList}
+          restricted={false}
+        />
         <PrivateRoute
           exact
           path="/question/:questionId"
           component={QnADetail}
+          restricted={false}
         />
-        <PrivateRoute exact path="/question" component={QnAList} />
-        <PrivateRoute exact path="/quest" component={QnA} />
-        <PrivateRoute exact path="/:uuid" component={MyPage} />
-        <Route path="/*" component={NotFound} />
+        <PrivateRoute
+          exact
+          path="/question"
+          component={QnAList}
+          restricted={false}
+        />
+        <PrivateRoute exact path="/quest" component={QnA} restricted={false} />
+        <PrivateRoute
+          exact
+          path="/:uuid"
+          component={MyPage}
+          restricted={false}
+        />
+        <Route path="/*" component={NotFound} restricted={false} />
       </Switch>
     </div>
   );
