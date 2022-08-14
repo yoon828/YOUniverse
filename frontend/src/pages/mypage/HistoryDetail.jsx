@@ -47,43 +47,50 @@ const HistoryDetail = () => {
 
   return (
     <div className="page_container history_detail">
-      <div className="history_detail_header">
+      <div className="history_detail_title">
         <h2 className="title">{historyItem.roomName}</h2>
       </div>
-      <div className="content">
-        <div className="outline">
-          <p>
-            <span>방주인</span>
-            <span>{historyItem.hostName}</span>
-          </p>
-          <p>
-            <span>참여자</span>
-            <span>{historyItem.participants?.slice(1)}</span>
-          </p>
-          <p>
-            <span>일시</span>
-            <span>{transform(historyItem.date)}</span>
-          </p>
-        </div>
-        <div className="log">
-          로그:{' '}
+      <div className="history_detail_header">
+        <span className="history_detail_header gray">방 주인</span>
+        <span>{historyItem.hostName}</span>
+        <span className="line" />
+        <span className="history_detail_header gray">참여자</span>
+        <span>{historyItem.participants?.slice(1)}</span>
+        <span className="line" />
+        <span className="history_detail_header gray">모임 일시</span>
+        <span>{transform(historyItem.date)}</span>
+      </div>
+      <div className="history_detail_content">
+        <p>
           {log ? (
             log.map((chat, index) => {
               return (
-                <div key={index}>
-                  <span>{chat.name}</span>
-                  <span>{transform(chat.chatTime, 'chat')}</span>
+                <p key={index}>
+                  <p>
+                    <span className="chat_name">{chat.name}</span>{' '}
+                    <span className="chat_time gray">
+                      {transform(chat.chatTime, 'chat')}
+                    </span>
+                  </p>
                   <p>{chat.content}</p>
-                </div>
+                </p>
               );
             })
           ) : (
             <p>저장된 로그 내용이 없습니다.</p>
           )}
-        </div>
+        </p>
       </div>
-      {/* <button onClick={addLog}>로그임시등록</button> */}
-      <Link to="/history">목록</Link>
+      <div className="button_container">
+        <Link to="/history">목록</Link>
+      </div>
+      <div className="astronaut">
+        <img
+          className="astronaut_img"
+          src="/asset/img/mypage/profile/profile_4.png"
+          alt="우주인"
+        />
+      </div>
     </div>
   );
 };

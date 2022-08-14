@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ShareModule from 'modules/ShareModule';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,25 +8,31 @@ import './SharePage.scss';
 
 const Share = () => {
   const dispatch = useDispatch();
-  dispatch(myMainHeader(false));
+  useEffect(() => {
+    dispatch(myMainHeader(false));
+  }, []);
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
   console.log(storeSessionId);
   const storeName = useSelector((state) => state.user.value.name);
   console.log(storeName);
   return (
-    <div className="share_page">
+    <div className="share_wrap">
       <div className="main_logo">
         <Link to="/">
-          <img
-            src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
-            alt="logo"
-          />
+          <img src="asset/img/logo.png" alt="logo" className="logo_img" />
         </Link>
       </div>
       <div className="share">
-        <h1>공유하기</h1>
+        <h1 className="title">공유하기</h1>
         <ShareModule />
-        <Link to={`/room?id=${storeSessionId}&name=${storeName}`}>다음</Link>
+        <Link
+          to={`/room?id=${storeSessionId}&name=${storeName}`}
+          className="next"
+        >
+          다음
+        </Link>
+        {/* <img src="asset/img/main/rocket.png" alt="로켓" className="rocket" /> */}
+        <img src="asset/img/main/rocket.gif" alt="로켓" className="rocket" />
       </div>
     </div>
   );

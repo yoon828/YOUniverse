@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { KAKAO_AUTH_URL } from 'api/oauth';
 import { useDispatch } from 'react-redux';
@@ -11,8 +11,13 @@ const Invite = () => {
   const url = new URLSearchParams(search);
   const hostId = url.get('id');
   const hostName = url.get('name');
+  localStorage.setItem('hostId', hostId);
+  localStorage.setItem('hostName', hostName);
+  sessionStorage.setItem('isInvited', 'yes');
 
-  dispatch(myMainHeader(false));
+  useEffect(() => {
+    dispatch(myMainHeader(false));
+  }, []);
   return (
     <div className="invite_page">
       <div className="main_logo">
@@ -25,9 +30,12 @@ const Invite = () => {
       </div>
       <div className="invite_box">
         <div className="invite_box_text">{hostName}님의 Space</div>
-        <div className="invite_kakao">
-          <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
-        </div>
+        <a href={KAKAO_AUTH_URL} className="login_kakao">
+          <div className="login_kakao_div">
+            <img src="/asset/img/main/kakao_log.png" alt="카카오로그인" />
+            카카오로 로그인하기
+          </div>
+        </a>
         <div>
           <Link to={`/guest?id=${hostId}&name=${hostName}`}>게스트로 참가</Link>
         </div>

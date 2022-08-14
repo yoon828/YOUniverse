@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from 'redux/auth';
 import { resetUser, insertUser } from 'redux/user';
+import { myMainHeader } from 'redux/mainHeader';
 
 import { deleteUser, getUser } from 'api/user';
 import { isTokenExpired } from 'common/functions/functions';
@@ -17,6 +18,8 @@ const MyPage = () => {
   const { name, email, uuid, qnAList, shareRoomHistoryList } = useSelector(
     (state) => state.user.value
   );
+  const [profileImg, setProfileImg] = useState('');
+  dispatch(myMainHeader(true));
 
   // 회원 탈퇴 함수
   const onDeleteUser = () => {

@@ -1,14 +1,19 @@
 @import 'common/style/all.scss';
 
 .history_detail {
-  .history_detail_header {
-    width: 100%;
-    color: red;
-    border: 1px dotted purple;
-    @include flex(row, space-between, center);
-  }
-  span {
-    // border: 1px solid black; 테스트할라고 border 넣었는데, 충돌날까봐 주석으로 지웠어요...
+  &_header {
+    background-color: $themeFourth;
+    border-radius: 15px;
+    color: black;
+    height: 50px;
+    width: 1214px;
+    // margin: auto;
+    line-height: 50px;
+    margin-top: 35px;
+    padding: 0 10px;
+    :nth-child(3n + 2) {
+      padding-right: 200px;
+    }
   }
   .content {
     background-color: $themeFourth;

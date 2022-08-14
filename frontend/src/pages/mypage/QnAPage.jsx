@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from 'redux/auth';
+import { myMainHeader } from 'redux/mainHeader';
 
 import { registerQnA } from 'api/qna';
 import { isTokenExpired } from 'common/functions/functions';
@@ -14,7 +15,9 @@ const QnA = () => {
   const qnaContent = useRef(null);
   const history = useHistory();
   const { uuid } = useSelector((state) => state.user.value);
-  const { dispatch } = useDispatch();
+  const dispatch = useDispatch();
+
+  dispatch(myMainHeader(true));
 
   const clearQnA = () => {
     clearInterval(qnaTitle.current);

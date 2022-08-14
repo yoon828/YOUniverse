@@ -13,9 +13,8 @@ const Guest = () => {
 
   const dispatch = useDispatch();
 
-  dispatch(myMainHeader(false));
-
   useEffect(() => {
+    dispatch(myMainHeader(false));
     guestNameInputRef.current.focus();
   }, []);
 
