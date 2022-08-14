@@ -1,5 +1,9 @@
 @import 'common/style/all.scss';
 
+.page_container {
+  position: relative;
+}
+
 @mixin input($width) {
   background-color: $themeFourth;
   display: block;
@@ -7,6 +11,7 @@
   margin: 0.5rem 0rem;
   padding: 1rem;
   color: black;
+  border-radius: 20px;
 }
 
 input:focus,
@@ -14,10 +19,14 @@ textarea:focus {
   outline: 3px solid $themeSecond;
 }
 
+.qna_page > .title {
+  margin: 1rem 0;
+}
+
 .qna_page {
   input,
   textarea {
-    @include input(1214px);
+    @include input(100%);
   }
   button {
     @include blue_button;
