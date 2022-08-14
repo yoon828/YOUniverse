@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -91,9 +92,9 @@ public class AdminServiceImpl implements AdminService {
         return list;
     }
 
-    public void deleteAnswer(AnswerDeleteDto answerDeleteDto) {
-        QnA fQnA = qnARepository.findById(answerDeleteDto.getId()).orElseThrow(NotFindQuestionException::new);
-        User user = userRepository.findByUuid(answerDeleteDto.getUuid()).orElseThrow(NotFindUuidException::new);
+    public void deleteAnswer(long  id) {
+        QnA fQnA = qnARepository.findById(id).orElseThrow(NotFindQuestionException::new);
+        User user = userRepository.findByUuid(fQnA.getUser().getUuid()).orElseThrow(NotFindUuidException::new);
         QnA qnA = QnA.builder().title(fQnA.getTitle())
                 .id(fQnA.getId())
                 .answerDate(null)
@@ -117,13 +118,18 @@ public class AdminServiceImpl implements AdminService {
 
     public void addAdmin(String uuid){
         Admin admin = Admin.builder().uuid(uuid).build();
+
         adminRepository.save(admin);
     }
 
 
     public boolean checkAdmin(String uuid){
-        adminRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
-        return true;
+        Optional<Admin> admin = adminRepository.findByUuid(uuid);
+        if(admin.isPresent()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
