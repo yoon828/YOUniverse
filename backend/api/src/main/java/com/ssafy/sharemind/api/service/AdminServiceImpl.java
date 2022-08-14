@@ -93,7 +93,7 @@ public class AdminServiceImpl implements AdminService {
 
     public void deleteAnswer(long  id) {
         QnA fQnA = qnARepository.findById(id).orElseThrow(NotFindQuestionException::new);
-        User user = userRepository.findByUuid(fQnA.getUuid()).orElseThrow(NotFindUuidException::new);
+        User user = userRepository.findByUuid(fQnA.getUser().getUuid()).orElseThrow(NotFindUuidException::new);
         QnA qnA = QnA.builder().title(fQnA.getTitle())
                 .id(fQnA.getId())
                 .answerDate(null)
@@ -117,12 +117,13 @@ public class AdminServiceImpl implements AdminService {
 
     public void addAdmin(String uuid){
         Admin admin = Admin.builder().uuid(uuid).build();
+
         adminRepository.save(admin);
     }
 
 
     public boolean checkAdmin(String uuid){
-        Admin admin = adminRepository.findByUuid(uuid);
+        Optional<Admin> admin = adminRepository.findByUuid(uuid);
         if(admin != null){
             return true;
         }
