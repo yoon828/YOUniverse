@@ -11,10 +11,10 @@ const AdminPage = () => {
   return (
     <div className="admin_page">
       <Link to="/admin/users" className="admin_menu">
-        회원관리
+        회원 관리
       </Link>
       <Link to="/admin/qa" className="admin_menu">
-        문의관리
+        문의 관리
       </Link>
     </div>
   );
