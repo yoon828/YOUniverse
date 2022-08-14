@@ -122,8 +122,11 @@ public class AdminServiceImpl implements AdminService {
 
 
     public boolean checkAdmin(String uuid){
-        adminRepository.findByUuid(uuid).orElseThrow(NotFindUuidException::new);
-        return true;
+        String adminUuid = adminRepository.findByUuid(uuid);
+        if(adminUuid != null){
+            return true;
+        }
+        return false;
     }
 
 }
