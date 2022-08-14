@@ -125,10 +125,11 @@ public class AdminServiceImpl implements AdminService {
 
     public boolean checkAdmin(String uuid){
         Optional<Admin> admin = adminRepository.findByUuid(uuid);
-        if(admin != null){
+        if(admin.isPresent()){
             return true;
+        }else{
+            return false;
         }
-        return false;
     }
 
 }
