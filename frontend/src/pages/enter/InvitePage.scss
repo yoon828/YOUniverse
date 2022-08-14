@@ -3,7 +3,7 @@
 .invite_box {
   position: relative;
   @include space_evenly;
-  @include box(420px, 720px);
+  @include box(50%, 50%);
   @include text_vertical;
   &_text {
     font-size: 60px;

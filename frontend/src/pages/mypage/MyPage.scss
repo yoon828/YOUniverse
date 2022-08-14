@@ -77,7 +77,7 @@
     a,
     .no_list {
       display: block;
-      padding: 5px 1rem 5px;
+      padding: 10px 1rem;
       @include flex(row, space-between, center);
     }
   }

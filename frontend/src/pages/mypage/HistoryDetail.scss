@@ -5,31 +5,52 @@
 }
 
 .history_detail {
+  &_title {
+    margin: 15px;
+  }
   &_header {
+    display: flex;
+    justify-content: space-between;
     background-color: $themeFourth;
     border-radius: 15px;
     color: black;
     height: 50px;
-    width: 1214px;
+    width: 90%;
     // margin: auto;
     line-height: 50px;
-    margin-top: 35px;
+    margin-bottom: 20px;
     padding: 0 10px;
-    :nth-child(3n + 2) {
-      padding-right: 200px;
+    // :nth-child(3n + 2) {
+    //   padding-right: 200px;
+    // }
+    &_item {
+      display: flex;
+      .detail_content {
+        width: 100%;
+      }
+    }
+    .item {
+      &_host {
+        flex: 2;
+      }
+      &_partipants {
+        flex: 3;
+      }
+      &_date {
+        flex: 2;
+      }
     }
   }
   &_content {
     background-color: $themeFourth;
     border-radius: 20px;
     color: black;
-    height: 500px;
-    width: 1214px;
-    margin: auto;
+    width: 90%;
+    margin: 10px auto;
     white-space: pre-line;
     min-height: 500px;
     overflow: auto;
-    padding: 10px 30px;
+    padding: 30px;
   }
 
   &_answer {
@@ -59,11 +80,6 @@
 
 .gray {
   color: #808080;
-}
-
-.button_container {
-  width: 1214px;
-  align-items: flex-end;
 }
 
 .chat_name {
