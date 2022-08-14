@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { myMainHeader } from 'redux/mainHeader';
 
@@ -25,7 +25,6 @@ const QnADetail = () => {
   const getQADetail = () => {
     getQnA(questionId)
       .then(({ data }) => {
-        console.log(data.data);
         setQnA(data.data);
         if (data.data.isAnswered) {
           setMode(1);
@@ -37,7 +36,6 @@ const QnADetail = () => {
   };
 
   const postAnswer = () => {
-    console.log(qna);
     postQaAnswer({ id: qna.id, answer: answer.current.value, uuid: qna.uuid })
       .then(({ data }) => {
         if (data.success === true) {
@@ -70,7 +68,6 @@ const QnADetail = () => {
     if (window.confirm('답변을 삭제하시겠습니까?')) {
       deleteQaAnswer(qna.id)
         .then(({ data }) => {
-          console.log(data);
           if (data.success === true) {
             alert('답변을 삭제했습니다');
             getQADetail();
@@ -88,16 +85,22 @@ const QnADetail = () => {
   return (
     <div className="qna_detail page_container">
       <div className="qna_detail_header">
-        <span className="qna_detail_header gray">제목</span>
-        <span>{qna.title}</span>
-        <span className="line" />
-        <span>{transform(qna.question_date)}</span>
-        <span className="line" />
-        <span>{qna.isAnswered ? '답변완료' : '답변대기'}</span>
+        <div className="qna_detail_header_item">
+          <span className="gray">제목</span>
+          <span className="detail_content">{qna.title}</span>
+        </div>
+        <div className="qna_detail_header_item">
+          <span className="line" />
+          <span className="detail_content">{transform(qna.question_date)}</span>
+        </div>
+        <div className="qna_detail_header_item">
+          <span className="line" />
+          <span className="detail_content">
+            {qna.isAnswered ? '답변완료' : '답변대기'}
+          </span>
+        </div>
       </div>
-      <div className="qna_detail_content">
-        <p>{qna.content}</p>
-      </div>
+      <div className="qna_detail_content">{qna.content}</div>
       <div className="qna_detail_answer">
         {mode === 0 ? (
           <div>
@@ -109,8 +112,12 @@ const QnADetail = () => {
                 required
               />
             </form>
-            <div className="button_container">
-              <button type="button" onClick={() => postAnswer()}>
+            <div className="dis_flex">
+              <button
+                className="answer_btn"
+                type="button"
+                onClick={() => postAnswer()}
+              >
                 등록
               </button>
             </div>
@@ -118,14 +125,24 @@ const QnADetail = () => {
         ) : mode === 1 ? (
           <div>
             <div>
-              <p className="gray">관리자 {transform(qna.answer_date)}</p>
+              <p className="gray admin_answer">
+                관리자 {transform(qna.answer_date)}
+              </p>
               <p>{qna.answer}</p>
             </div>
-            <div>
-              <button type="button" onClick={() => setMode(2)}>
+            <div className="dis_flex">
+              <button
+                className="answer_btn"
+                type="button"
+                onClick={() => setMode(2)}
+              >
                 수정
               </button>
-              <button type="button" onClick={() => deleteQaAnswerApi()}>
+              <button
+                className="answer_btn"
+                type="button"
+                onClick={() => deleteQaAnswerApi()}
+              >
                 삭제
               </button>
             </div>
@@ -140,8 +157,12 @@ const QnADetail = () => {
                 defaultValue={qna.answer}
               />
             </form>
-            <div className="button_container">
-              <button type="button" onClick={() => putQaAnswerApi()}>
+            <div className="dis_flex">
+              <button
+                className="answer_btn"
+                type="button"
+                onClick={() => putQaAnswerApi()}
+              >
                 수정하기
               </button>
             </div>

@@ -61,12 +61,13 @@ a {
   margin: 24px;
   background-color: $themeThird;
   text-align: center;
+  border-radius: 10px;
   &_div {
     display: flex;
     flex-direction: row;
     color: black;
     width: 360px;
-    height: 30px;
+    height: 50px;
     padding: 10px;
     align-items: center;
     justify-content: center;
