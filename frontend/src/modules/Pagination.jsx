@@ -7,19 +7,19 @@ import 'pages/mypage/QnAList.scss';
 
 const Page = ({ type, data, headers, items }) => {
   const [page, setPage] = useState(1);
-  const units = 8;
+  const [units, setUnits] = useState(5);
 
   const handlePageChange = (page) => {
     setPage(page);
   };
 
-  // const itemChange = (e) => {
-  //   setUnits(Number(e.target.value));
-  // };
+  const itemChange = (e) => {
+    setUnits(Number(e.target.value));
+  };
 
-  // useEffect(() => {
-  //   setPage(1);
-  // }, [units]);
+  useEffect(() => {
+    setPage(1);
+  }, [units]);
   /*
   디버깅 용
   console.log(units * (page - 1), units * (page - 1) + units);
@@ -30,11 +30,11 @@ const Page = ({ type, data, headers, items }) => {
   }
   return (
     <>
-      {/* <select name="units" onChange={itemChange}>
+      <select name="units" onChange={itemChange}>
         <option value="5">5개</option>
         <option value="7">7개</option>
         <option value="10">10개</option>
-      </select> */}
+      </select>
       <p className="item_header">
         {headers.map((header, index) => {
           return <span key={index}>{header}</span>;
@@ -61,7 +61,7 @@ const Page = ({ type, data, headers, items }) => {
         lastPageText="❯❯"
         activePage={page}
         itemsCountPerPage={units}
-        totalItemsCount={data.length}
+        totalItemsCount={data.length - 1}
         pageRangeDisplayed={5}
         onChange={handlePageChange}
       />

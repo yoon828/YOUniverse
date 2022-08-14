@@ -22,7 +22,10 @@ const Invite = () => {
     <div className="invite_page">
       <div className="main_logo">
         <Link to="/">
-          <img src="asset/img/logo.png" alt="logo" className="logo_img" />
+          <img
+            src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
+            alt="logo"
+          />
         </Link>
       </div>
       <div className="invite_box">
@@ -36,7 +39,6 @@ const Invite = () => {
         <div>
           <Link to={`/guest?id=${hostId}&name=${hostName}`}>게스트로 참가</Link>
         </div>
-        <img src="asset/img/main/meteor.png" alt="로켓" className="meteor" />
       </div>
     </div>
   );

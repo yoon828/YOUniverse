@@ -3,16 +3,11 @@
 // 마이페이지 전체 영역
 .my_page {
   @include space-evenly;
-  width: 95%;
-  height: 100%;
-  margin: 0 auto 20px;
 }
 
 // 프로필 영역
 .profile {
-  flex: 2;
-  margin-right: 10px;
-  @include box(100%, 20%);
+  @include box(863px, 501px);
   @include flex(column, space-around, center);
 
   > div {
@@ -25,39 +20,29 @@
 
   img {
     background-color: $themeSecond;
-    width: 70%;
+    width: 300px;
     border-radius: 50%;
     object-fit: scale-down;
-    margin: 30px 0 50px;
+    margin: 5px;
   }
   p {
     margin: 3px;
   }
   > button {
     @include blue_button;
-    margin-bottom: 80px;
   }
 }
 
 // 히스토리, 문의 내역 영역
 .info {
-  flex: 6;
-  @include box(100%, 20%);
+  @include box(863px, 1232px);
   @include flex(column, space-around, center);
-  padding: 30px 25px;
-  &_history {
-    margin-bottom: 10px;
-    height: 50%;
-  }
-  &_qa {
-    display: flex;
-    flex-direction: column;
-    height: 50%;
-  }
 }
 
 // 각 영역
 .item {
+  width: 1040px;
+
   > div {
     // 영역별 타이틀과 '더보기'
     @include flex(row, space-between, flex-end);
@@ -65,7 +50,7 @@
 
     > :nth-child(1) {
       // 타이틀
-      font-size: 1.2rem;
+      font-size: 30px;
     }
   }
 
@@ -73,9 +58,7 @@
     // 영역별 최신 5개
     background-color: $themeFourth;
     padding: 0.5rem;
-    border-radius: 20px;
-    a,
-    .no_list {
+    a {
       display: block;
       padding: 5px 1rem 5px;
       @include flex(row, space-between, center);

@@ -1,4 +1,5 @@
 @import 'common/style/all.scss';
 
-.qna_list {
+.not {
+  @include text_vertical;
 }

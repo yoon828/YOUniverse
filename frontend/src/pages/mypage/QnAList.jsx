@@ -30,24 +30,15 @@ const QnAList = () => {
   }, []);
 
   return (
-    <>
-      <div className="qna_list page_container">
-        <h1 className="title">1:1 문의내역</h1>
-        <Page
-          type="/question"
-          headers={['문의 제목', '문의 일시', '진행 상황']}
-          data={qnaList}
-          items={['title', 'question_date', 'isAnswered']}
-        />
-      </div>
-      <div className="astronaut">
-        <img
-          className="astronaut_img"
-          src="/asset/img/mypage/profile/profile_4.png"
-          alt="우주인"
-        />
-      </div>
-    </>
+    <div className="qna_list page_container">
+      <h1 className="title">1:1 문의내역</h1>
+      <Page
+        type="/question"
+        headers={['문의 제목', '문의 일시', '진행 상황']}
+        data={qnaList}
+        items={['title', 'question_date', 'isAnswered']}
+      />
+    </div>
   );
 };
 export default QnAList;

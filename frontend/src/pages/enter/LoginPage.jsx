@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './LoginPage.scss';
 import { KAKAO_AUTH_URL } from 'api/oauth';
+
 import { useDispatch } from 'react-redux';
 import { myMainHeader } from 'redux/mainHeader';
 
@@ -20,21 +21,17 @@ const Login = () => {
     <div className="login_page">
       <div className="main_logo">
         <Link to="/">
-          <img src="asset/img/logo.png" alt="logo" className="logo_img" />
+          <img
+            src="https://blog.kakaocdn.net/dn/be0xab/btrHTW8GtRk/LDOhwqWEBUDFkVh1S5aNv0/img.png"
+            alt="logo"
+          />
         </Link>
       </div>
       <div className="login_box">
-        <div className="login_box_text">
-          또 다른 세상, <br /> YOUniverse
+        <div className="login_box_text">지금 너, 나, 우리</div>
+        <div className="login_kakao">
+          <a href={KAKAO_AUTH_URL}>카카오 로그인</a>
         </div>
-        <a href={KAKAO_AUTH_URL} className="login_kakao">
-          <div className="login_kakao_div">
-            <img src="/asset/img/main/kakao_log.png" alt="카카오로그인" />
-            카카오로 로그인하기
-          </div>
-        </a>
-        {/* <img src="/asset/img/main/saturn.png" alt="행성" className="saturn" /> */}
-        <img src="/asset/img/main/planet.gif" alt="행성" className="saturn" />
       </div>
     </div>
   );

@@ -1,11 +1,8 @@
 // 색깔
 $themeFirst: #f6f6f6;
-$themeSecond: #243a73;
-$themeThird: #fee500;
+$themeSecond: #211b72;
+$themeThird: #ffeb00;
 $themeFourth: #e9e9e9;
-
-// 폰트 사이즈
-$listHeader: 1.5rem;
 
 // 흰 박스 남색 글씨(높이, 너비)
 @mixin box($height, $width) {
@@ -14,6 +11,7 @@ $listHeader: 1.5rem;
   color: $themeSecond;
   height: $height;
   width: $width;
+  margin: auto;
 }
 
 // flex - space_evenly
@@ -40,13 +38,9 @@ $listHeader: 1.5rem;
 @mixin blue_button {
   background-color: $themeSecond;
   color: $themeFirst;
-  height: 50px;
-  width: 180px;
-  margin: 10px;
-  border-radius: 15px;
-  font-size: 30px;
-  text-align: center;
-  line-height: normal;
+  height: 63px;
+  width: 183px;
+  margin: 3px;
 }
 
 // 플렉스 설정
@@ -59,17 +53,4 @@ $listHeader: 1.5rem;
 
 @mixin list_item {
   background-color: $themeFourth;
-}
-
-// 배경 설정
-@mixin background_setting($url) {
-  height: 100vh;
-  background-size: cover;
-  // background-repeat: round;
-  background-image: url($url);
-}
-
-// 세로선
-@mixin line_vertical($color, $weight) {
-  border-left: $weight solid $color;
 }

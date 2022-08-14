@@ -4,21 +4,13 @@
   @include background_setting('../../asset/img/background/share.png');
 }
 .share {
-  @include box(50vh, 50vw);
+  @include box(468px, 753px);
   @include text_vertical;
-  position: relative;
-  justify-content: space-evenly;
-  .title {
-    font-size: 2.3rem;
+  button {
+    display: inline-block;
   }
-  .next {
+  a {
     @include blue_button;
-  }
-  .rocket {
-    position: absolute;
-    width: 170px;
-    top: -50px;
-    left: -55px;
-    transform: rotate(45deg);
+    @include text_vertical;
   }
 }

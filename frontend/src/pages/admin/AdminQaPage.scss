@@ -1,0 +1,12 @@
+@import 'common/style/all.scss';
+
+.admin_user {
+  @include box(auto, 90vw);
+  padding: 30px;
+
+  .btn_div {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

@@ -30,24 +30,15 @@ const HistoryList = () => {
   }, []);
 
   return (
-    <>
-      <div className="history_list page_container">
-        <h1 className="title">히스토리 내역</h1>
-        <Page
-          type="/history"
-          headers={['모임 제목', '모임 일시', '방주인']}
-          data={historyList}
-          items={['roomName', 'date', 'hostName']}
-        />
-      </div>
-      <div className="astronaut">
-        <img
-          className="astronaut_img"
-          src="/asset/img/mypage/profile/profile_4.png"
-          alt="우주인"
-        />
-      </div>
-    </>
+    <div className="history_list page_container">
+      <h1 className="title">히스토리 내역</h1>
+      <Page
+        type="/history"
+        headers={['모임 제목', '모임 일시', '방주인']}
+        data={historyList}
+        items={['roomName', 'date', 'hostName']}
+      />
+    </div>
   );
 };
 export default HistoryList;
