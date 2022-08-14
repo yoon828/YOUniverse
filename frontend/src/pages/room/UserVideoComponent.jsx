@@ -5,7 +5,7 @@ import '../room/VideoComponent.scss';
 
 const UserVideoComponent = (props) => {
   const [nickname, setNickname] = useState('');
-  const icons = ['diamond', 'heart', 'round', 'square', 'star', 'triangle'];
+  const icons = ['cloud', 'moon', 'planet', 'rocket', 'star', 'ufo'];
 
   useEffect(() => {
     setNickname(
@@ -24,7 +24,7 @@ const UserVideoComponent = (props) => {
           <div className="stream-text">
             <img
               width={20}
-              src={`/asset/img/${icons[props.icon]}.png`}
+              src={`/asset/img/room/icon/${icons[props.icon]}.png`}
               alt={icons[props.icon]}
             />
             <span>{nickname}</span>

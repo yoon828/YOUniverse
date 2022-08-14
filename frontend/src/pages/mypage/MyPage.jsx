@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -41,6 +41,17 @@ const MyPage = () => {
     }
   };
 
+  const randomProfile = () => {
+    const randomIndex = Math.floor(Math.random() * 9) + 1;
+    console.log(randomIndex);
+    const randomImage = `/asset/img/mypage/profile/profile_${
+      // Math.floor(Math.random() * 9) + 1
+      randomIndex
+    }.png`;
+    console.log(randomImage);
+    return randomImage;
+  };
+
   // 히스토리 테스트용 임의 등록 함수
   // const addHistory = () => {
   //   const content = {
@@ -56,6 +67,7 @@ const MyPage = () => {
   // };
 
   useEffect(() => {
+    setProfileImg(randomProfile());
     getUser()
       .then(({ data }) => {
         console.log(data);
@@ -75,20 +87,17 @@ const MyPage = () => {
     <div className="my_page">
       <div className="profile">
         <div>
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/1203/1203317.png"
-            alt=""
-          />
-          <p>{name}님의 마이페이지</p>
+          <img src={profileImg} alt="" />
+          <p>{name}</p>
           <p>{email}</p>
         </div>
         <button onClick={onDeleteUser}>회원탈퇴</button>
       </div>
 
       <div className="info">
-        <div className="item">
+        <div className="info_history item w100">
           <div>
-            <h2>쉐어룸 히스토리</h2>
+            <h2>SPACE 히스토리</h2>
             {/* <button onClick={addHistory}>히스토리 임의 등록</button> */}
             <Link to="/history">더보기</Link>
           </div>
@@ -98,10 +107,14 @@ const MyPage = () => {
               data={shareRoomHistoryList}
               items={['date', 'roomName', 'hostName']}
             />
-          ) : null}
+          ) : (
+            <ul>
+              <span className="no_list">히스토리가 없습니다.</span>
+            </ul>
+          )}
         </div>
 
-        <div className="item">
+        <div className="info_qa item w100">
           <div>
             <h2>1:1 문의내역</h2>
             <Link to="/question">더보기</Link>
@@ -113,7 +126,13 @@ const MyPage = () => {
               data={qnAList}
               items={['question_date', 'title', 'isAnswered']}
             />
-          ) : null}
+          ) : (
+            <div>
+              <ul>
+                <span className="no_list">문의 내역이 없습니다.</span>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>
