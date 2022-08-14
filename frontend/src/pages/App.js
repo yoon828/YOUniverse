@@ -20,6 +20,12 @@ import Room from './room/RoomPage';
 import QnA from './mypage/QnAPage';
 import QnAList from './mypage/QnAList';
 import QnADetail from './mypage/QnADetail';
+import AdminPage from './admin/AdminPage';
+import AdminUserPage from './admin/AdminUserPage';
+import AdminQaPage from './admin/AdminQaPage';
+import AdminQaDetailPage from './admin/AdminQaDetailPage';
+import NotFound from './NotFoundPage';
+
 import { getUser } from 'api/user';
 import PrivateRoute from 'routes/PrivateRoute';
 import { isTokenExpired } from 'common/functions/functions';
@@ -88,18 +94,35 @@ const App = () => {
       )}
       <Switch>
         <PrivateRoute exact path="/" component={MainPage} />
-        <Route path="/login" component={Login} />
-        <Route path="/oauth/callback" component={CallBack} />
-        <Route path="/invite" component={Invite} />
-        <Route path="/guest" component={Guest} />
-        <Route path="/room" component={Room} />
-        <PrivateRoute path="/share" component={Share} />
-        <PrivateRoute path="/history/:historyId" component={HistoryDetail} />
-        <PrivateRoute path="/history" component={HistoryList} />
-        <PrivateRoute path="/question/:questionId" component={QnADetail} />
-        <PrivateRoute path="/question" component={QnAList} />
-        <PrivateRoute path="/quest" component={QnA} />
-        <PrivateRoute path="/:uuid" component={MyPage} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/oauth/callback" component={CallBack} />
+        <Route exact path="/invite" component={Invite} />
+        <Route exact path="/guest" component={Guest} />
+        <Route exact path="/room" component={Room} />
+        <PrivateRoute exact path="/admin" component={AdminPage} />
+        <PrivateRoute exact path="/admin/users" component={AdminUserPage} />
+        <PrivateRoute
+          exact
+          path="/admin/qa/:questionId"
+          component={AdminQaDetailPage}
+        />
+        <PrivateRoute exact path="/admin/qa" component={AdminQaPage} />
+        <PrivateRoute exact path="/share" component={Share} />
+        <PrivateRoute
+          exact
+          path="/history/:historyId"
+          component={HistoryDetail}
+        />
+        <PrivateRoute exact path="/history" component={HistoryList} />
+        <PrivateRoute
+          exact
+          path="/question/:questionId"
+          component={QnADetail}
+        />
+        <PrivateRoute exact path="/question" component={QnAList} />
+        <PrivateRoute exact path="/quest" component={QnA} />
+        <PrivateRoute exact path="/:uuid" component={MyPage} />
+        <Route path="/*" component={NotFound} />
       </Switch>
     </div>
   );
