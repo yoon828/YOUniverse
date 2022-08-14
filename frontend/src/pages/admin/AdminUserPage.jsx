@@ -19,7 +19,6 @@ import {
 
 const AdminUserPage = () => {
   const [users, setUsers] = useState([]);
-  const [ready, setReady] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -30,23 +29,21 @@ const AdminUserPage = () => {
     getUsers();
   }, []);
 
-  const getUsers = () => {
-    const test = getUserList()
-      .then(({ data }) => {
-        if (data.success === true) {
-          // let _users = [...data.data];
-          // data.data.map(async (user, idx) => {
-          //   const { data } = await getAdmin(user.uuid);
-          //   _users[idx].isAdmin = data.data;
-          // });
-          // console.log(_users);
-          // setUsers(_users);
-          setUsers(data.data);
-          setReady(true);
-        }
-      })
-      .catch((err) => console.log(err));
-    return test;
+  const getUsers = async () => {
+    const { data } = await getUserList();
+
+    if (data.success) {
+      let _users = [...data.data];
+
+      await Promise.all(
+        data.data.map(async (user, idx) => {
+          const admin = await getAdmin(user.uuid);
+          user.isAdmin = admin.data.data;
+          _users[idx].isAdmin = admin.data.data;
+        })
+      );
+    }
+    setUsers(data.data);
   };
 
   //회원 탈퇴
@@ -83,91 +80,82 @@ const AdminUserPage = () => {
     setPage(newPage);
   };
 
-  const checkAdmin = async (uuid) => {
-    console.log(uuid);
-    const { data } = await getAdmin(uuid);
-    console.log(data.data);
-    return data.data;
-  };
-
-  if (ready) {
-    return (
-      <div className="admin_user">
-        <h1>회원 목록</h1>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>이름</TableCell>
-                <TableCell>이메일</TableCell>
-                <TableCell>sessionId</TableCell>
-                <TableCell>삭제</TableCell>
-                <TableCell>관리자</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {(rowsPerPage > 0
-                ? users.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : users
-              ).map((user, idx) => {
-                return (
-                  <TableRow key={idx}>
-                    <TableCell>{user.uuid}</TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.sessionId}</TableCell>
-                    <TableCell>
+  return (
+    <div className="admin_user">
+      <h1>회원 목록</h1>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>이름</TableCell>
+              <TableCell>이메일</TableCell>
+              <TableCell>sessionId</TableCell>
+              <TableCell>삭제</TableCell>
+              <TableCell>관리자</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {(rowsPerPage > 0
+              ? users.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
+              : users
+            ).map((user, idx) => {
+              return (
+                <TableRow key={idx}>
+                  <TableCell>{user.uuid}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.sessionId}</TableCell>
+                  <TableCell>
+                    <button
+                      className="btn"
+                      onClick={() => deleteUserApi(user.uuid)}
+                    >
+                      삭제
+                    </button>
+                  </TableCell>
+                  <TableCell>
+                    {user.isAdmin ? (
+                      <button className="btn btn_admin" disabled>
+                        완료
+                      </button>
+                    ) : (
                       <button
                         className="btn"
-                        onClick={() => deleteUserApi(user.uuid)}
+                        onClick={() => postAdminApi(user.uuid)}
                       >
-                        삭제
+                        등록
                       </button>
-                    </TableCell>
-                    <TableCell>
-                      {checkAdmin(user.uuid) ? (
-                        <button className="btn_admin btn" disabled>
-                          완료
-                        </button>
-                      ) : (
-                        <button
-                          className="btn"
-                          onClick={() => postAdminApi(user.uuid)}
-                        >
-                          등록
-                        </button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[5]}
-                  count={users.length}
-                  rowsPerPage={5}
-                  page={page}
-                  onPageChange={handleChangePage}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5]}
+                count={users.length}
+                rowsPerPage={5}
+                page={page}
+                onPageChange={handleChangePage}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
 
-        <div className="btn_div">
-          <Link to="/admin" className="btn">
-            관리자 메인페이지로
-          </Link>
-        </div>
+      <div className="btn_div">
+        <Link to="/admin" className="btn">
+          관리자 메인페이지로
+        </Link>
       </div>
-    );
-  } else return null;
+    </div>
+  );
 };
 
 export default AdminUserPage;

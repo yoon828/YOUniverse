@@ -34,7 +34,6 @@ const AdminQaPage = () => {
   const getQA = () => {
     getQAList()
       .then(({ data }) => {
-        console.log(data);
         setQaList(data.data);
       })
       .catch((err) => console.log(err));
