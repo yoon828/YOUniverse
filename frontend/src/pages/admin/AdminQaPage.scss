@@ -1,7 +1,7 @@
 @import 'common/style/all.scss';
 
 .admin_user {
-  @include box(80vh, 90vw);
+  @include box(auto, 90vw);
   padding: 30px;
 
   .btn_div {

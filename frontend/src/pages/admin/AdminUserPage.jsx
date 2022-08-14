@@ -26,22 +26,25 @@ const AdminUserPage = () => {
   dispatch(myMainHeader(false));
 
   useEffect(() => {
-    getUsers();
+    console.log(getUsers());
   }, []);
 
   const getUsers = () => {
     getUserList()
       .then(({ data }) => {
-        // console.log(data.data);
-        // let test = [];
-        // for (let i = 0; i < 10; i++) {
-        //   for (let j = 0; j < data.data.length; j++) {
-        //     test.push(data.data[j]);
-        //   }
-        // }
+        let _users = [...data.data];
+        console.log(data.data);
+        data.data.map((user, idx) => {
+          let flag = getAdminApi(user.uuid);
+          console.log(flag);
+          _users[idx].isAdmin = flag;
+        });
+        console.log(_users);
         setUsers(data.data);
+        return true;
       })
       .catch((err) => console.log(err));
+    return false;
   };
 
   //회원 탈퇴
@@ -75,12 +78,20 @@ const AdminUserPage = () => {
   };
   //관리자 확인
   const getAdminApi = (uuid) => {
-    // getAdmin(uuid)
-    //   .then(({ data }) => {
-    //     if (data.success === true) return true;
-    //     else return false;
-    //   })
-    //   .catch((err) => console.log(err + '에러가 발생했습니다.'));
+    // console.log(uuid);
+    getAdmin(uuid)
+      .then(({ data }) => {
+        console.log(data.success);
+        return data.success;
+        // if (data.success === true) {
+        //   console.log(uuid + '관리자임');
+        //   return true;
+        // } else {
+        //   console.log(uuid + '관리자 아님');
+        //   return false;
+        // }
+      })
+      .catch((err) => console.log(err + '에러가 발생했습니다.'));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -94,6 +105,7 @@ const AdminUserPage = () => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>ID</TableCell>
               <TableCell>이름</TableCell>
               <TableCell>이메일</TableCell>
               <TableCell>sessionId</TableCell>
@@ -111,6 +123,7 @@ const AdminUserPage = () => {
             ).map((user, idx) => {
               return (
                 <TableRow key={idx}>
+                  <TableCell>{user.uuid}</TableCell>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.sessionId}</TableCell>
@@ -123,10 +136,11 @@ const AdminUserPage = () => {
                     </button>
                   </TableCell>
                   <TableCell>
-                    {getAdminApi(user.uuid) ? (
+                    {/* {getAdminApi(user.uuid) ? (
                       <button
                         className="btn_admin"
                         onClick={() => postAdminApi(user.uuid)}
+                        disabled
                       >
                         완료
                       </button>
@@ -137,7 +151,7 @@ const AdminUserPage = () => {
                       >
                         등록
                       </button>
-                    )}
+                    )} */}
                   </TableCell>
                 </TableRow>
               );
