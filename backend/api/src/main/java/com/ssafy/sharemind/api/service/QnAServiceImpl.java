@@ -85,7 +85,8 @@ public class QnAServiceImpl implements QnAService {
                 .content(qnA.getContent())
                 .question_date(qnA.getQuestionDate())
                 .isAnswered(qnA.getIsAnswered())
-                .uuid(tokenProvider.getUserUuid(accessToken))
+//                .uuid(tokenProvider.getUserUuid(accessToken))
+                .uuid(qnA.getUser().getUuid())
                 .build();
     }
 
