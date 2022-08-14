@@ -56,8 +56,9 @@ jwt:
   refresh-token-validity-in-seconds: 86400
 
 front:
-#  url: http://localhost:8080/test
+  #  url: http://localhost:8080/test
   url: https://cjswltjr.shop/oauth/callback
+  #url: http://localhost:3000/oauth/callback
 
 
 logging:
