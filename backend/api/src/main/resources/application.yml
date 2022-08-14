@@ -57,6 +57,7 @@ jwt:
 
 front:
 #  url: http://localhost:8080/test
+#  url: https://cjswltjr.shop/oauth/callback
   url: http://localhost:3000/oauth/callback
 
 
