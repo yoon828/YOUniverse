@@ -54,3 +54,15 @@ $themeFourth: #e9e9e9;
 @mixin list_item {
   background-color: $themeFourth;
 }
+// 배경 설정
+@mixin background_setting($url) {
+  height: 100vh;
+  background-size: cover;
+  // background-repeat: round;
+  background-image: url($url);
+}
+
+// 세로선
+@mixin line_vertical($color, $weight) {
+  border-left: $weight solid $color;
+}
