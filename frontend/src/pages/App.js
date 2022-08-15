@@ -74,7 +74,7 @@ const App = () => {
               <Link to="/room">SPACE 생성</Link>
             </div>
             <div>
-              <Link to="/quest">1:1문의</Link>
+              <Link to="/quest">1대1 문의</Link>
             </div>
             <div>
               <MyPageModule />
