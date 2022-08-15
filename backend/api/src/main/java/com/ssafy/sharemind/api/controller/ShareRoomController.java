@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/history")
+@RequestMapping("/api/back/history")
 public class ShareRoomController {
 
     private final ShareRoomService shareRoomService;

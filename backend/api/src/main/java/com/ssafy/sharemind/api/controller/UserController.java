@@ -8,7 +8,7 @@ import com.ssafy.sharemind.common.model.Response;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/back/user")
 public class UserController {
 
     private final UserService userService;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/qna")
+@RequestMapping("/api/back/qna")
 public class QnAController {
 
     private final QnAService qnAService;
