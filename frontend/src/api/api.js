@@ -6,7 +6,7 @@ import {
 } from 'common/functions/functions';
 
 // const baseURL = 'http://i7c204.p.ssafy.io:8080';
-const baseURL = 'https://i7c204.p.ssafy.io:8080/api/back';
+const baseURL = 'http://i7c204.p.ssafy.io:8080/api/back';
 
 // 기본 api
 export const api = axios.create({
