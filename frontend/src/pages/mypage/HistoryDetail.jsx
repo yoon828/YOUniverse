@@ -69,11 +69,11 @@ const HistoryDetail = () => {
         </div>
       </div>
       <div className="history_detail_content">
-        <p>
+        <div>
           {log ? (
             log.map((chat, index) => {
               return (
-                <p key={index}>
+                <div key={index}>
                   <p>
                     <span className="chat_name">{chat.name}</span>{' '}
                     <span className="chat_time gray">
@@ -81,13 +81,13 @@ const HistoryDetail = () => {
                     </span>
                   </p>
                   <p>{chat.content}</p>
-                </p>
+                </div>
               );
             })
           ) : (
             <p>저장된 로그 내용이 없습니다.</p>
           )}
-        </p>
+        </div>
       </div>
       <div className="button_container">
         <Link to="/history">목록</Link>
