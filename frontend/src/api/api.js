@@ -5,7 +5,7 @@ import {
   setAccessToken
 } from 'common/functions/functions';
 
-export const baseURL = 'https://i7c204.p.ssafy.io';
+export const baseURL = 'http://i7c204.p.ssafy.io:8080';
 export const backPath = '/api/back';
 
 // 기본 api
