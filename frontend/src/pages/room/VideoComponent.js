@@ -335,6 +335,7 @@ class VideoComponent extends Component {
         //   console.log('User ' + event.connection.connectionId + ' stop speaking');
         // });
         const root = document.getElementById('log_list');
+        const log_body = document.getElementsByClassName('log_body')[0];
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
           let idx = this.getIdx(event.from.connectionId);
@@ -349,13 +350,14 @@ class VideoComponent extends Component {
             time: json.time
           });
           this.props.setLogList(list);
+          log_body.scrollTop = log_body.scrollHeight;
 
           //자막 내용 변경
           if (this.state.isCC) {
             let subtitle = document.getElementById(
               `subtitle_${event.from.connectionId}`
             );
-            subtitle.innerText = json.comment;
+            subtitle.innerText = `: ${json.comment}`;
 
             //자막이 7초뒤에 사라지도록
             setTimeout(() => {
@@ -393,6 +395,7 @@ class VideoComponent extends Component {
             time: json.time
           });
           this.props.setLogList(list);
+          log_body.scrollTop = log_body.scrollHeight;
         });
 
         mySession.on('signal:sttEnd', (event) => {
@@ -411,12 +414,13 @@ class VideoComponent extends Component {
           list[idx].comment = json.comment;
 
           this.props.setLogList(list);
+          log_body.scrollTop = log_body.scrollHeight;
 
           //자막 변경
           let subtitle = document.getElementById(
             `subtitle_${event.from.connectionId}`
           );
-          subtitle.innerText = json.comment;
+          subtitle.innerText = `: ${json.comment}`;
           setTimeout(() => {
             subtitle.innerText = '';
           }, 7000);
@@ -481,8 +485,10 @@ class VideoComponent extends Component {
     let participant = '';
     this.state.subscribers.map((el, idx) => {
       let name = JSON.parse(el.stream.connection.data).clientData;
-      participant += `,${name}`;
+      participant += `${name}, `;
     });
+    participant.substring(0, participant.length - 2);
+    console.log(participant);
     if (window.confirm('방을 나가시겠습니까?')) {
       let roomName = window.prompt('방 제목을 입력해주세요');
       let isLogSave = false;
@@ -524,7 +530,6 @@ class VideoComponent extends Component {
 
     console.log(mySession);
     if (mySession) {
-      console.log('나가기');
       mySession.disconnect();
     }
 
@@ -533,8 +538,8 @@ class VideoComponent extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: 'SessionA',
-      myUserName: 'Participant' + Math.floor(Math.random() * 100),
+      mySessionId: undefined, //세션 이름 (방이름)
+      myUserName: undefined,
       mainStreamManager: undefined,
       publisher: undefined
     });
@@ -600,7 +605,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                쉐어룸({this.countUser()}
+                Space({this.countUser()}
                 명)
               </h1>
               {/* <h1

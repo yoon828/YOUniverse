@@ -1,9 +1,9 @@
 @import 'common/style/all.scss';
 
 .admin_user {
-  @include box(auto, 90vw);
+  @include box(auto, 90%);
   padding: 30px;
-  margin: 80px;
+  margin: 0 80px;
   h1 {
     font-size: 2rem;
     padding: 10px;

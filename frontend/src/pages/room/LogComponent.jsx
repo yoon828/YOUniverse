@@ -34,6 +34,7 @@ const LogComponent = (props) => {
           {props.logList.map((log, idx) => (
             <li key={idx}>
               <img
+                className="log_img"
                 width={20}
                 src={`/asset/img/room/icon/${icons[log.icon]}.png`}
                 alt={`${icons[log.icon]}`}
