@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LogComponent from './LogComponent';
 import VideoComponent from './VideoComponent';
 import ShareModule from 'modules/ShareModule';
@@ -6,6 +6,7 @@ import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import './RoomPage.scss';
 
+import { myMainHeader } from 'redux/mainHeader';
 import { toggleModal } from 'redux/share';
 
 const RoomPage = () => {
@@ -24,6 +25,10 @@ const RoomPage = () => {
     ? userName
     : localStorage.getItem('guestName');
   console.log(storeName);
+
+  useEffect(() => {
+    dispatch(myMainHeader(false));
+  }, []);
   return (
     <div id="main">
       {shareModal ? (

@@ -94,4 +94,11 @@ a {
   @include background_setting('../../asset/img/background/other.png');
   display: flex;
   flex-direction: column;
+  min-width: 1250px;
+}
+
+.log_img {
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
 }

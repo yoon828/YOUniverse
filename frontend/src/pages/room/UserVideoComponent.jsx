@@ -23,6 +23,7 @@ const UserVideoComponent = (props) => {
           />
           <div className="stream-text">
             <img
+              className="log_img"
               width={20}
               src={`/asset/img/room/icon/${icons[props.icon]}.png`}
               alt={icons[props.icon]}
