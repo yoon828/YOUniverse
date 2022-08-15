@@ -5,7 +5,8 @@ import {
   setAccessToken
 } from 'common/functions/functions';
 
-export const baseURL = 'https://i7c204.p.ssafy.io';
+// export const baseURL = 'https://i7c204.p.ssafy.io';
+export const baseURL = 'https://cjswltjr.shop';
 export const backPath = '/api/back';
 
 // 기본 api
