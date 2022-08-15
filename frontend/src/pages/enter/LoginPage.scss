@@ -1,7 +1,7 @@
 @import 'common/style/all.scss';
 
 .login_box {
-  @include box(420px, 720px);
+  @include box(45%, 50%);
   @include text_vertical;
   position: relative;
   // min-width: 352px;
@@ -9,8 +9,6 @@
     font-size: 60px;
   }
 }
-
-
 
 .login_page {
   height: 100vh;

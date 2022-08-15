@@ -6,9 +6,7 @@ const ShareModule = () => {
   const { name } = useSelector((state) => state.user.value);
   const API_KEY = 'e09419333dd810c5a8fcc8db0d0c8aea';
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
-  console.log(storeSessionId);
   const storeName = useSelector((state) => state.user.value.name);
-  console.log(storeName);
   const url = `http://cjswltjr.shop:3000/invite?id=${storeSessionId}&name=${storeName}`;
 
   const onCopyUrl = () => {

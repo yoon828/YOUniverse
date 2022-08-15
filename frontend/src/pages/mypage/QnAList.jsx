@@ -32,7 +32,7 @@ const QnAList = () => {
   return (
     <>
       <div className="qna_list page_container">
-        <h1 className="title">1:1 문의내역</h1>
+        <h1>1:1 문의내역</h1>
         <Page
           type="/question"
           headers={['문의 제목', '문의 일시', '진행 상황']}
