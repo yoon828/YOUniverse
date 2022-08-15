@@ -20,7 +20,7 @@ export const api = axios.create({
 
 // 로그 전용 api
 export const logApi = axios.create({
-  baseURL: 'http://cjswltjr.shop:8000',
+  baseURL: 'https://cjswltjr.shop:8000',
   headers: {
     Authorization: `Bearer ${getAccessToken()}`
   }
