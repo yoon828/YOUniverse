@@ -49,10 +49,10 @@ const LogComponent = (props) => {
       </div>
       <div className="log_footer">
         <button className="font_btn" id="minus" onClick={() => changeFont(-3)}>
-          가
+          <div className="blind">글씨 크기 축소</div>가
         </button>
         <button className="font_btn" id="plus" onClick={() => changeFont(3)}>
-          가
+          <div className="blind">글씨 크기 확대</div>가
         </button>
       </div>
     </div>

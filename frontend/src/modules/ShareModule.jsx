@@ -42,7 +42,7 @@ const ShareModule = () => {
     <>
       <button className="invite login_kakao" onClick={onShareKakaoClick}>
         <div className="login_kakao_div">
-          <img src="/asset/img/main/kakao_log.png" alt="카카오로그인" />
+          <img src="/asset/img/main/kakao_log.png" alt="" />
           카카오 친구 초대하기
         </div>
       </button>

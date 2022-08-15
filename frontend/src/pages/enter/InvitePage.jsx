@@ -29,7 +29,7 @@ const Invite = () => {
         <div className="invite_box_text">{hostName}님의 Space</div>
         <a href={KAKAO_AUTH_URL} className="login_kakao">
           <div className="login_kakao_div">
-            <img src="/asset/img/main/kakao_log.png" alt="카카오로그인" />
+            <img src="/asset/img/main/kakao_log.png" alt="" />
             카카오로 로그인하기
           </div>
         </a>

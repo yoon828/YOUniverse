@@ -600,7 +600,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                쉐어룸({this.countUser()}
+                SPACE({this.countUser()}
                 명)
               </h1>
               {/* <h1
@@ -622,7 +622,7 @@ class VideoComponent extends Component {
                         ? '/asset/img/room/cc_on.png'
                         : '/asset/img/room/cc_off.png'
                     }
-                    alt="cc"
+                    alt="자막 보여주기"
                     width={50}
                   />
                 </button>
@@ -637,7 +637,7 @@ class VideoComponent extends Component {
                         ? '/asset/img/room/sound_on.png'
                         : '/asset/img/room/sound_off.png'
                     }
-                    alt="sound"
+                    alt="읽어주기"
                     width={50}
                   />
                 </button>
@@ -652,7 +652,7 @@ class VideoComponent extends Component {
                         ? '/asset/img/room/mouth_on.png'
                         : '/asset/img/room/mouth_off.png'
                     }
-                    alt="mouth"
+                    alt="입모양 확대"
                     width={50}
                   />
                 </button>
@@ -698,6 +698,7 @@ class VideoComponent extends Component {
                   className="round-button"
                   alt="mute"
                 >
+                  <div className="blind">소리 끄기</div>
                   {this.state.isMute ? <MicOff /> : <Mic />}
                 </button>
                 <button
@@ -705,13 +706,15 @@ class VideoComponent extends Component {
                   className="round-button"
                   alt="nocam"
                 >
+                  <div className="blind">화면 끄기</div>
                   {this.state.isNocam ? <VideocamOff /> : <Videocam />}
                 </button>
                 <button
                   onClick={this.exitRoom}
                   className="round-button"
-                  alt="exit"
+                  // alt="exit"
                 >
+                  <div className="blind">나가기</div>
                   <Logout />
                 </button>
               </div>
@@ -733,6 +736,7 @@ class VideoComponent extends Component {
                 alt="공유하기"
                 onClick={() => this.props.dispatch(toggleModal())}
               >
+                <div className="blind">공유하기</div>
                 <Share />
               </button>
             </div>
