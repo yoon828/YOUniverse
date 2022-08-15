@@ -5,13 +5,16 @@ import {
   setAccessToken
 } from 'common/functions/functions';
 
-export const baseURL = 'https://i7c204.p.ssafy.io:8443';
+export const baseURL = 'https://i7c204.p.ssafy.io';
 export const backPath = '/api/back';
 
 // 기본 api
 export const api = axios.create({
   baseURL: baseURL + backPath,
-  headers: { Authorization: `Bearer ${getAccessToken()}` }
+  headers: {
+    Authorization: `Bearer ${getAccessToken()}`,
+    'Content-Type': 'application/json'
+  }
 });
 
 // 로그 전용 api
