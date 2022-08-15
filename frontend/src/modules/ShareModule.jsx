@@ -7,7 +7,7 @@ const ShareModule = () => {
   const API_KEY = 'e09419333dd810c5a8fcc8db0d0c8aea';
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
   const storeName = useSelector((state) => state.user.value.name);
-  const url = `http://cjswltjr.shop:3000/invite?id=${storeSessionId}&name=${storeName}`;
+  const url = `https://cjswltjr.shop/invite?id=${storeSessionId}&name=${storeName}`;
 
   const onCopyUrl = () => {
     const textarea = document.createElement('textarea');
