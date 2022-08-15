@@ -21,4 +21,5 @@ jwt:
 
 history:
 #  url: http://localhost:8080/history
-  url: http://cjswltjr.shop:8080/api/back/history
+#  url: http://cjswltjr.shop:8080/api/back/history
+  url: https://cjswltjr.shop/api/back/history
