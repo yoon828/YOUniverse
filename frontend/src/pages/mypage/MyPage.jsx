@@ -19,7 +19,6 @@ const MyPage = () => {
     (state) => state.user.value
   );
   const [profileImg, setProfileImg] = useState('');
-  dispatch(myMainHeader(true));
 
   // 회원 탈퇴 함수
   const onDeleteUser = () => {
@@ -67,6 +66,7 @@ const MyPage = () => {
   // };
 
   useEffect(() => {
+    dispatch(myMainHeader(true));
     setProfileImg(randomProfile());
     getUser()
       .then(({ data }) => {
