@@ -5,12 +5,12 @@ import {
   setAccessToken
 } from 'common/functions/functions';
 
-// const baseURL = 'http://i7c204.p.ssafy.io:8080';
-const baseURL = 'http://i7c204.p.ssafy.io:8080/api/back';
+export const baseURL = 'http://i7c204.p.ssafy.io:8080';
+export const backPath = '/api/back';
 
 // 기본 api
 export const api = axios.create({
-  baseURL: baseURL,
+  baseURL: baseURL + backPath,
   headers: { Authorization: `Bearer ${getAccessToken()}` }
 });
 
@@ -44,7 +44,7 @@ api.interceptors.response.use(
     // A) 토큰 만료 이슈인 경우
     if (error.response.data?.message.includes('만료')) {
       console.log('accessToken 만료 관련 문제');
-
+      console.log(getAccessToken());
       // a) 갱신 요청
       const { data, status } = await axios.get(
         baseURL + `/token/reissuance/${getRefreshToken()}`,
