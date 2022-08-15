@@ -18,9 +18,16 @@ export const api = axios.create({
   }
 });
 
-// 로그 전용 api
+// 로그 전용 api 테스트로 주석처리
+// export const logApi = axios.create({
+//   baseURL: 'https://cjswltjr.shop:8000',
+//   headers: {
+//     Authorization: `Bearer ${getAccessToken()}`
+//   }
+// });
+
 export const logApi = axios.create({
-  baseURL: 'https://cjswltjr.shop:8000',
+  baseURL: 'https://cjswltjr.shop',
   headers: {
     Authorization: `Bearer ${getAccessToken()}`
   }
