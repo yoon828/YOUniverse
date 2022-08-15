@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LogComponent from './LogComponent';
 import VideoComponent from './VideoComponent';
 import ShareModule from 'modules/ShareModule';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import './RoomPage.scss';
 
@@ -10,13 +10,15 @@ import { toggleModal } from 'redux/share';
 
 const RoomPage = () => {
   const history = useHistory();
+  const params = useLocation();
+  const storeSessionId = params.search.split('=')[1].split('&')[0];
+
   const { shareModal } = useSelector((state) => state.share.value);
   const [logList, setLogList] = useState([]);
   const dispatch = useDispatch();
 
   // 스토어 값 가져오기 - 서희
-  const storeSessionId = useSelector((state) => state.user.value.sessionId);
-  console.log(storeSessionId);
+  // const storeSessionId = useSelector((state) => state.user.value.sessionId);
   const userName = useSelector((state) => state.user.value.name);
   const storeName = useSelector((state) => state.user.value.name)
     ? userName

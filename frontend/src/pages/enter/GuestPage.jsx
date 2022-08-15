@@ -20,7 +20,11 @@ const Guest = () => {
 
   const submit = () => {
     localStorage.setItem('guestName', guestNameInputRef.current.value);
-    history.replace('/room/');
+    history.replace(
+      `/room?id=${localStorage.getItem('hostId')}&name=${localStorage.getItem(
+        'hostName'
+      )}`
+    );
   };
 
   return (
