@@ -69,11 +69,11 @@ const HistoryDetail = () => {
         </div>
       </div>
       <div className="history_detail_content">
-        <div>
+        <div className="chat">
           {log ? (
             log.map((chat, index) => {
               return (
-                <div key={index}>
+                <div key={index} className="chat_item">
                   <p>
                     <span className="chat_name">{chat.name}</span>{' '}
                     <span className="chat_time gray">

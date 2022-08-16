@@ -51,6 +51,12 @@
     min-height: 500px;
     overflow: auto;
     padding: 30px;
+    .chat {
+      overflow-y: auto;
+      &_item {
+        margin-bottom: 20px;
+      }
+    }
   }
 
   &_answer {
