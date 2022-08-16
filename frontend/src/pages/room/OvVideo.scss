@@ -5,12 +5,12 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 90px;
     overflow: hidden;
     video {
       position: absolute;
-      transform: scale(10);
+      transform: scale(8);
     }
   }
 }
@@ -20,5 +20,5 @@
 }
 
 .not-speaking {
-  border: 0
+  border: 0;
 }

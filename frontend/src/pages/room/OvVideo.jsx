@@ -66,8 +66,8 @@ const OpenViduVideoComponent = (props) => {
 
         const dets = detections?.landmarks.getMouth();
         if (dets && videoRef2.current) {
-          videoRef2.current.style.left = 280 - dets[0].x + 'px';
-          videoRef2.current.style.top = 220 - dets[0].y + 'px';
+          videoRef2.current.style.left = 300 - dets[0].x * 1.1 + 'px';
+          videoRef2.current.style.top = 180 - dets[0].y + 'px';
         }
       }
     }, 100);
@@ -76,7 +76,7 @@ const OpenViduVideoComponent = (props) => {
   return (
     <div
       id="ov"
-      style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
+      // style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
     >
       <video
         autoPlay={true}
