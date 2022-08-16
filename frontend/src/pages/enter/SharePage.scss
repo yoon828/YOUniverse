@@ -10,10 +10,11 @@
   justify-content: space-evenly;
   margin: auto;
   .title {
-    font-size: 2.3rem;
+    font-size: 60px;
   }
   .next {
     @include blue_button;
+    font-size: 20px;
   }
   .rocket {
     position: absolute;
