@@ -376,9 +376,9 @@ class VideoComponent extends Component {
             subtitle.innerText = `: ${json.comment}`;
 
             //자막이 7초뒤에 사라지도록
-            setTimeout(() => {
-              subtitle.innerText = '';
-            }, 7000);
+            // setTimeout(() => {
+            //   subtitle.innerText = '';
+            // }, 7000);
           }
 
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
@@ -419,7 +419,6 @@ class VideoComponent extends Component {
           let video = document.getElementsByClassName(
             event.from.connectionId
           )[0];
-          console.log(video);
           video.classList.remove('speaking');
 
           let json = JSON.parse(event.data);
@@ -437,9 +436,9 @@ class VideoComponent extends Component {
             `subtitle_${event.from.connectionId}`
           );
           subtitle.innerText = `: ${json.comment}`;
-          setTimeout(() => {
-            subtitle.innerText = '';
-          }, 7000);
+          // setTimeout(() => {
+          //   subtitle.innerText = '';
+          // }, 7000);
         });
 
         // --- 4) Connect to the session with a valid user token ---
@@ -716,7 +715,7 @@ class VideoComponent extends Component {
               <div id="feature">
                 <button
                   onClick={this.handleMute}
-                  className="round-button"
+                  className="round-button p-10"
                   alt="mute"
                 >
                   <div className="blind">소리 끄기</div>
@@ -724,7 +723,7 @@ class VideoComponent extends Component {
                 </button>
                 <button
                   onClick={this.handleCam}
-                  className="round-button"
+                  className="round-button p-10"
                   alt="nocam"
                 >
                   <div className="blind">화면 끄기</div>
@@ -732,7 +731,7 @@ class VideoComponent extends Component {
                 </button>
                 <button
                   onClick={this.exitRoom}
-                  className="round-button"
+                  className="round-button p-10"
                   // alt="exit"
                 >
                   <div className="blind">나가기</div>

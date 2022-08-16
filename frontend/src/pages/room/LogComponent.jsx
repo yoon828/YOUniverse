@@ -23,7 +23,7 @@ const LogComponent = (props) => {
     if (size < 10) size = 10;
     if (size > 40) size = 40;
     setFontSize(size);
-    setLogFontSize(size);
+    // setLogFontSize(size);
   };
 
   return (
@@ -39,9 +39,9 @@ const LogComponent = (props) => {
                 src={`/asset/img/room/icon/${icons[log.icon]}.png`}
                 alt={`${icons[log.icon]}`}
               />
-              <span className="log_item">
+              <div className="log_item" style={{ fontSize: `${fontSize}px` }}>
                 {log.name} : {log.comment}
-              </span>
+              </div>
               <br />
               <span>{log.chatTime}</span>
             </li>

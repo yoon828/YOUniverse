@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { useEffect } from 'react';
 import * as faceapi from 'face-api.js';
 import './OvVideo.scss';
@@ -56,15 +57,6 @@ const OpenViduVideoComponent = (props) => {
   const handleVideoOnPlay = () => {
     setInterval(async () => {
       if (canvasRef && canvasRef.current) {
-        // canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
-        //   videoRef1.current
-        // );
-        // const displaySize = {
-        //   width: 281,
-        //   height: 194
-        // };
-        // faceapi.matchDimensions(canvasRef.current, displaySize);
-
         const detections = await faceapi
           .detectSingleFace(
             videoRef1.current,
@@ -74,7 +66,7 @@ const OpenViduVideoComponent = (props) => {
 
         const dets = detections?.landmarks.getMouth();
         if (dets && videoRef2.current) {
-          videoRef2.current.style.left = 270 - dets[0].x + 'px';
+          videoRef2.current.style.left = 280 - dets[0].x + 'px';
           videoRef2.current.style.top = 220 - dets[0].y + 'px';
         }
       }

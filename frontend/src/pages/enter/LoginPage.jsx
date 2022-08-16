@@ -18,6 +18,15 @@ const Login = () => {
     }
   }, []);
 
+  localStorage.setItem(
+    'refreshToken',
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzcwMzM5Nzk4IiwiaWF0IjoxNjYwNjIwMzU5LCJleHAiOjE2NjA3MDY3NTl9.1aZuOkTgTNZiTIX1SVAkimDSXelUK8guOL52qky6mQbt-HZnRSbW6lT5EJ9_52DQhJJNzGXbsgKCSPzGwL_b3Q'
+  );
+  localStorage.setItem(
+    'accessToken',
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzcwMzM5Nzk4IiwiaWF0IjoxNjYwNjIwMzU5LCJleHAiOjE2NjA2MjIxNTl9.B9GQLdlP4G5Zh0SZLNWFxTrSxkS3I6LYWugaiyHL8LGl1I21RuxFipwPEH-kuFK8FrbuEibKCWHl96kGyqZSuQ'
+  );
+
   localStorage.setItem('hostId', 'no');
   localStorage.setItem('hostName', 'no');
   sessionStorage.setItem('isInvited', 'no');
