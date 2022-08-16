@@ -21,7 +21,7 @@ const UserVideoComponent = (props) => {
             streamManager={props.streamManager}
             speaker={props.speaker}
           />
-          <div className="stream-text">
+          <div className="stream-text no-out">
             <img
               className="log_img"
               width={20}

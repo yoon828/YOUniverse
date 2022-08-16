@@ -33,12 +33,12 @@
     width: 40%;
     max-width: 850px;
   }
-  .stream-text {
-    display: flex;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+}
+.no-out {
+  display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .caseB {
@@ -54,6 +54,7 @@ video {
 
 .stream {
   padding: 0 30px;
+  margin-bottom: 10px;
 }
 
 #session-footer {
