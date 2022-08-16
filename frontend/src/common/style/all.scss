@@ -63,7 +63,7 @@ $listHeader: 1.2rem;
 
 // 배경 설정
 @mixin background_setting($url) {
-  height: 100%;
+  height: 100vh;
   background-size: cover;
   // background-repeat: round;
   background-image: url($url);
