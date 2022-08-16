@@ -376,9 +376,9 @@ class VideoComponent extends Component {
             subtitle.innerText = `: ${json.comment}`;
 
             //자막이 7초뒤에 사라지도록
-            // setTimeout(() => {
-            //   subtitle.innerText = '';
-            // }, 7000);
+            setTimeout(() => {
+              subtitle.innerText = '';
+            }, 7000);
           }
 
           //음성서비스가 켜져있고, 본인이 아니라면 음성 제공
@@ -436,9 +436,9 @@ class VideoComponent extends Component {
             `subtitle_${event.from.connectionId}`
           );
           subtitle.innerText = `: ${json.comment}`;
-          // setTimeout(() => {
-          //   subtitle.innerText = '';
-          // }, 7000);
+          setTimeout(() => {
+            subtitle.innerText = '';
+          }, 7000);
         });
 
         // --- 4) Connect to the session with a valid user token ---
