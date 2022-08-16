@@ -5,6 +5,7 @@
 }
 
 .history_detail {
+  height: 80%;
   &_title {
     margin: 15px;
   }
@@ -53,7 +54,6 @@
     padding: 30px;
     .chat {
       overflow-y: auto;
-      height: 45%;
       &_item {
         margin-bottom: 20px;
       }
