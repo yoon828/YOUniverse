@@ -71,7 +71,7 @@ const App = () => {
           </div>
           <div className="main_header_menu">
             <div>
-              <Link to="/room">SPACE 생성</Link>
+              <Link to="/share">SPACE 생성</Link>
             </div>
             <div>
               <Link to="/quest">1대1 문의</Link>
