@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
@@ -45,7 +46,6 @@ const Guest = () => {
           <input
             type="text"
             name="guest"
-            // placeholder="이름을 입력해주세요."
             ref={guestNameInputRef}
             defaultValue={localStorage.getItem('guestName')}
             className="nickname_input"

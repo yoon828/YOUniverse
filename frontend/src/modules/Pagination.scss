@@ -48,20 +48,6 @@ ul.pagination li.active {
   }
 }
 
-// .page-selection {
-//   width: 48px;
-//   height: 30px;
-//   color: $themeSecond;
-// }
-
-// select {
-//   display: block;
-//   border: 2.5px solid black;
-//   border-radius: 3px;
-//   cursor: pointer;
-//   margin-left: auto;
-// }
-
 .pagination_item {
   @include list_item;
   a {
@@ -84,7 +70,6 @@ ul.pagination li.active {
   padding: 10px 15px 10px;
   background-color: $themeFirst;
   color: $themeSecond;
-  // border-bottom: solid 1px $themeSecond;
 }
 
 .item_header {

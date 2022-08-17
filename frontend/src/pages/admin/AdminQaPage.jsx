@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { myMainHeader } from 'redux/mainHeader';
@@ -22,7 +23,7 @@ import {
 const AdminQaPage = () => {
   const [qaList, setQaList] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(6);
+  const [rowsPerPage] = useState(6);
 
   const dispatch = useDispatch();
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -21,7 +22,7 @@ const CallBackPage = () => {
     }
   }, [url, dispatch]);
 
-  if (sessionStorage.getItem('isInvited') == 'yes') {
+  if (sessionStorage.getItem('isInvited') === 'yes') {
     history.replace(
       `/room?id=${localStorage.getItem('hostId')}&name=${localStorage.getItem(
         'hostName'

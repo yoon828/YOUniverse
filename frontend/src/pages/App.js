@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 
 import { Route, Link, Switch } from 'react-router-dom';
@@ -62,7 +63,7 @@ const App = () => {
         });
     }
     checkAdmin();
-  }, [isLoggedIn, dispatch, uuid]);
+  }, []);
 
   const checkAdmin = async () => {
     if (uuid) {

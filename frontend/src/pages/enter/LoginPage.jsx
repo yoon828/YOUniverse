@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './LoginPage.scss';
@@ -17,15 +18,6 @@ const Login = () => {
       history.push('/');
     }
   }, []);
-
-  localStorage.setItem(
-    'refreshToken',
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzcwMzM5Nzk4IiwiaWF0IjoxNjYwNzAwNTAyLCJleHAiOjE2NjA3ODY5MDJ9.nXFb15gESAK0cZU-lYwZ-n-TYPLt1IQnCrqYLTmPKI9IMqXCfsyF7TBiMHo2JchwfE-UHWaIMLPGzgLZoQ-I2w'
-  );
-  localStorage.setItem(
-    'accessToken',
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzcwMzM5Nzk4IiwiaWF0IjoxNjYwNzAwNTAyLCJleHAiOjE2NjA3MDIzMDJ9.XL9VErN8xpG6D7ZiEj01ZrpUBAsbjNiefn39ktxTHJ5FwiR_j_5y35IIGKelBssaV32t10Puy63aVCZa7aCtNw'
-  );
 
   localStorage.setItem('hostId', 'no');
   localStorage.setItem('hostName', 'no');

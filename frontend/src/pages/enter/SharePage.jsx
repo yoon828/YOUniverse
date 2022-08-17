@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import ShareModule from 'modules/ShareModule';
 import { Link } from 'react-router-dom';
@@ -11,6 +12,7 @@ const Share = () => {
   useEffect(() => {
     dispatch(myMainHeader(false));
   }, []);
+
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
   const storeName = useSelector((state) => state.user.value.name);
   return (

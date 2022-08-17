@@ -17,7 +17,8 @@ const Invite = () => {
 
   useEffect(() => {
     dispatch(myMainHeader(false));
-  }, []);
+  }, [dispatch]);
+
   return (
     <div className="invite_page">
       <div className="main_logo">

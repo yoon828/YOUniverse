@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { getUserList, deleteUser, postAdmin, getAdmin } from 'api/admin';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -20,13 +21,14 @@ import {
 const AdminUserPage = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage] = useState(5);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(myMainHeader(true));
     getUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getUsers = async () => {

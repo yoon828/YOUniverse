@@ -42,7 +42,7 @@ const QnADetail = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [questionId]);
 
   return (
     <div className="qna_detail page_container">

@@ -62,34 +62,3 @@
     right: 40px;
   }
 }
-
-// @mixin inner_text_vertical {
-//   display: flex;
-//   align-items: center;
-//   flex-direction: column;
-//   justify-content: center;
-// }
-
-// @mixin font($style, $size, $weight) {
-//   font-style: #{$style};
-//   font-size: $size;
-//   font-weight: $weight;
-// }
-
-// @mixin space_evenly {
-
-// }
-
-// .box {
-//   @include box(700px, 1500px);
-// }
-
-// // 개별 - 메인 페이지
-// .main_page_link {
-//   @include space_evenly;
-//   > a {
-//     @include box(468px, 352px);
-//     @include inner_text_vertical;
-//     @include font(normal, 64px, 400);
-//   }
-// }

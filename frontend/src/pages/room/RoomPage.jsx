@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import LogComponent from './LogComponent';
 import VideoComponent from './VideoComponent';
 import ShareModule from 'modules/ShareModule';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import './RoomPage.scss';
 
@@ -19,16 +19,15 @@ const RoomPage = () => {
   const dispatch = useDispatch();
 
   // 스토어 값 가져오기 - 서희
-  // const storeSessionId = useSelector((state) => state.user.value.sessionId);
   const userName = useSelector((state) => state.user.value.name);
   const storeName = useSelector((state) => state.user.value.name)
     ? userName
     : localStorage.getItem('guestName');
-  console.log(storeName);
 
   useEffect(() => {
     dispatch(myMainHeader(false));
-  }, []);
+  }, [dispatch]);
+
   return (
     <div id="main">
       {shareModal ? (

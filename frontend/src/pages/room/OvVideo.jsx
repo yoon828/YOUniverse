@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/destructuring-assignment */
 import React, { useEffect } from 'react';
 import * as faceapi from 'face-api.js';
 import './OvVideo.scss';
-import { connect, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
 const MODEL_URL = '/models';
@@ -19,6 +20,7 @@ const OpenViduVideoComponent = (props) => {
   const videoRef2 = React.createRef();
   const canvasRef = React.createRef();
   const bigMouth = useSelector((state) => state.feature.value.bigMouth);
+  // eslint-disable-next-line no-unused-vars
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
@@ -74,23 +76,16 @@ const OpenViduVideoComponent = (props) => {
   };
 
   return (
-    <div
-      id="ov"
-      // style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
-    >
+    <div id="ov">
       <video
         autoPlay={true}
         ref={videoRef1}
-        // onPlay={!bigMouth ? handleVideoOnPlay : null}
-        // className={`${isSpeaking ? '' : 'not-'}speaking`}
         className={props.streamManager.stream.connection.connectionId}
       />
       <canvas ref={canvasRef} style={{ position: 'absolute' }} />
-      {/* {bigMouth ? ( */}
       <div className="mouth">
         <video autoPlay={true} ref={videoRef2} />
       </div>
-      {/* ) : null} */}
     </div>
   );
 };

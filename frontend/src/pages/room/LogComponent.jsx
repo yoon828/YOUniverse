@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from 'react';
 import './LogComponent.scss';
 
@@ -7,9 +8,8 @@ const LogComponent = (props) => {
   const icons = ['cloud', 'moon', 'planet', 'rocket', 'star', 'ufo'];
 
   useEffect(() => {
-    console.log(props);
     setLogFontSize(fontSize);
-  }, []);
+  }, [fontSize]);
 
   const setLogFontSize = (size) => {
     const logs = document.querySelectorAll('.log_item');
@@ -18,12 +18,10 @@ const LogComponent = (props) => {
     }
   };
   const changeFont = (change) => {
-    console.log(change);
     let size = fontSize + change;
     if (size < 10) size = 10;
     if (size > 40) size = 40;
     setFontSize(size);
-    // setLogFontSize(size);
   };
 
   return (

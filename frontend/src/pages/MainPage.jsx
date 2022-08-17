@@ -11,7 +11,7 @@ const MainPage = () => {
 
   useEffect(() => {
     dispatch(myMainHeader(false));
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="main">

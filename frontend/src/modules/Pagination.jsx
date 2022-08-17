@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Item } from 'modules/ListModule';
 import Pagination from 'react-js-pagination';
@@ -12,18 +12,6 @@ const Page = ({ type, data, headers, items }) => {
   const handlePageChange = (page) => {
     setPage(page);
   };
-
-  // const itemChange = (e) => {
-  //   setUnits(Number(e.target.value));
-  // };
-
-  // useEffect(() => {
-  //   setPage(1);
-  // }, [units]);
-  /*
-  디버깅 용
-  console.log(units * (page - 1), units * (page - 1) + units);
-  */
 
   if (!data) {
     return null;

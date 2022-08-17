@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react/no-unused-state */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
@@ -18,7 +20,6 @@ import { toggleMouth } from '../../redux/feature';
 import { toggleModal } from '../../redux/share';
 import { postHistory } from 'api/room';
 
-// const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_API_URL;
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
@@ -37,10 +38,6 @@ recognition.maxAlternatives = 100000;
 class VideoComponent extends Component {
   constructor(props) {
     super(props);
-    // console.log('여기 밑에 확인해보기');
-    // console.log(props);
-    // console.log(props.storeSessionId);
-    // console.log(props.storeName);
     this.state = {
       mySessionId: props.storeSessionId, //세션 이름 (방이름)
       myUserName: props.storeName, //사용자 이름
@@ -54,9 +51,7 @@ class VideoComponent extends Component {
       isSound: true, //음성서비스 on/off 확인
       inputComment: '', //채팅내용
 
-      isCC: true, //자막 on/off 확인
-
-      icons: ['cloud', 'moon', 'planet', 'rocket', 'star', 'ufo'] //앞에 도형으로 사용자 식별
+      isCC: true //자막 on/off 확인
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -126,8 +121,6 @@ class VideoComponent extends Component {
           flag = false;
           // 여기다가 서버로 닉네임 + interimTranscript 보내기
           // 닉네임으로 한다면 같은 세션 안의 사람들의 닉네임이 모두 달라야함.
-        } else {
-          // interimTranscript += transcript;
         }
       }
 
@@ -142,11 +135,9 @@ class VideoComponent extends Component {
   componentWillUnmount() {
     recognition.stop();
     window.removeEventListener('beforeunload', this.onbeforeunload);
-    // this.onbeforeunload();
   }
 
   onbeforeunload(event) {
-    // window.location.reload();
     this.leaveSession();
   }
 
@@ -319,13 +310,6 @@ class VideoComponent extends Component {
           this.setState({
             subscribers: subscribers
           });
-          // console.log(subscribers);
-          // if (subscribers?.length >= 5) {
-          //   alert('인원 초과!');
-          //   console.log('6명 이상');
-          //   this.leaveSession();
-          //   this.props.props.push('/');
-          // }
         });
 
         // On every Stream destroyed...
@@ -344,13 +328,12 @@ class VideoComponent extends Component {
           let isSound = JSON.parse(event.data).isSound;
           if (
             !isSound &&
-            event.from.connectionId == event.target.connection.connectionId
+            event.from.connectionId === event.target.connection.connectionId
           ) {
             speechSynthesis.cancel();
           }
         });
 
-        const root = document.getElementById('log_list');
         const log_body = document.getElementsByClassName('log_body')[0];
         //chat settings
         mySession.on('signal:ttsChat', (event) => {
@@ -393,7 +376,6 @@ class VideoComponent extends Component {
           }
         });
         mySession.on('signal:sttStart', (event) => {
-          // this.setState({ speaker: event.from.connectionId });
           let video = document.getElementsByClassName(
             event.from.connectionId
           )[0];
@@ -500,12 +482,14 @@ class VideoComponent extends Component {
     let participant = '';
     this.state.subscribers.map((el, idx) => {
       let name = JSON.parse(el.stream.connection.data).clientData;
-      participant += `${name}, `;
+      participant += `${name} `;
     });
-    participant.substring(0, participant.length - 2);
-    console.log(participant);
     if (window.confirm('방을 나가시겠습니까?')) {
       let roomName = window.prompt('방 제목을 입력해주세요');
+      if (roomName === '') {
+        window.alert('방 제목을 입력해주세요!');
+        return;
+      }
       let isLogSave = false;
       if (window.confirm('로그를 저장하시겠습니까?')) isLogSave = true;
       let data = {
@@ -558,9 +542,6 @@ class VideoComponent extends Component {
       mainStreamManager: undefined,
       publisher: undefined
     });
-
-    //나가기 버튼 누르면 main페이지로 이동
-    // this.props.history.push('/');
   }
 
   //엔터키 이벤트
@@ -611,9 +592,6 @@ class VideoComponent extends Component {
   }
 
   render() {
-    //const mySessionId = this.state.mySessionId;
-    const myUserName = this.state.myUserName;
-
     return (
       <div className="container">
         {this.state.session !== undefined ? (
@@ -623,12 +601,6 @@ class VideoComponent extends Component {
                 Space({this.countUser()}
                 명)
               </h1>
-              {/* <h1
-                id="session-title"
-                onClick={() => console.log(this.state.session)}
-              >
-                시간
-              </h1> */}
 
               <div id="feature">
                 <button
@@ -729,11 +701,7 @@ class VideoComponent extends Component {
                   <div className="blind">화면 끄기</div>
                   {this.state.isNocam ? <VideocamOff /> : <Videocam />}
                 </button>
-                <button
-                  onClick={this.exitRoom}
-                  className="round-button p-10"
-                  // alt="exit"
-                >
+                <button onClick={this.exitRoom} className="round-button p-10">
                   <div className="blind">나가기</div>
                   <Logout />
                 </button>
