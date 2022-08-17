@@ -4,10 +4,12 @@ import './ShareModule.scss';
 
 const ShareModule = () => {
   const { name } = useSelector((state) => state.user.value);
-  const API_KEY = 'e09419333dd810c5a8fcc8db0d0c8aea';
+  // const API_KEY = 'e09419333dd810c5a8fcc8db0d0c8aea';
+  const API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
   const storeSessionId = useSelector((state) => state.user.value.sessionId);
   const storeName = useSelector((state) => state.user.value.name);
-  const url = `https://cjswltjr.shop/invite?id=${storeSessionId}&name=${storeName}`;
+  // const url = `https://cjswltjr.shop/invite?id=${storeSessionId}&name=${storeName}`;
+  const url = `${process.env.REACT_APP_API_URL}/invite?id=${storeSessionId}&name=${storeName}`;
 
   const onCopyUrl = () => {
     const textarea = document.createElement('textarea');
@@ -19,6 +21,7 @@ const ShareModule = () => {
   };
 
   const shareKakaoLink = (host, link) => {
+    console.log(link);
     window.Kakao.Share.sendCustom({
       templateId: 80123,
       templateArgs: {

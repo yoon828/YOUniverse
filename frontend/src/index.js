@@ -5,11 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import 'common/style/Reset.scss';
 import './common/style/index.scss';
 import App from './pages/App.js';
-// import registerServiceWorker from './pages/room/registerServiceWorker';
 import store from './redux/store';
-
-// import registerServiceWorker from './registerServiceWorker';
-// import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -21,8 +17,6 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// registerServiceWorker();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

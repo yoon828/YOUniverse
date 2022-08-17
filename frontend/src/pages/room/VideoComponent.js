@@ -18,9 +18,10 @@ import { toggleMouth } from '../../redux/feature';
 import { toggleModal } from '../../redux/share';
 import { postHistory } from 'api/room';
 
-// const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
-const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
+// const OPENVIDU_SERVER_URL = 'https://cjswltjr.shop';
+const OPENVIDU_SERVER_URL = process.env.REACT_APP_API_URL;
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
+
 const recognition = new window.webkitSpeechRecognition();
 // true면 음절을 연속적으로 인식하나 false면 한 음절만 기록함
 recognition.interimResults = true;
@@ -97,7 +98,6 @@ class VideoComponent extends Component {
           })
           .then(() => {
             console.log('Comment successfully sent');
-            //여기서 데이터 보내면 될 듯
           })
           .catch((error) => {
             console.error(error);

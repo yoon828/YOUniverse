@@ -5,8 +5,8 @@ import {
   setAccessToken
 } from 'common/functions/functions';
 
-// export const baseURL = 'https://i7c204.p.ssafy.io';
-export const baseURL = 'https://cjswltjr.shop';
+// export const baseURL = 'https://cjswltjr.shop';
+export const baseURL = process.env.REACT_APP_API_URL;
 export const backPath = '/api/back';
 
 // 기본 api
@@ -18,16 +18,8 @@ export const api = axios.create({
   }
 });
 
-// 로그 전용 api 테스트로 주석처리
-// export const logApi = axios.create({
-//   baseURL: 'https://cjswltjr.shop:8000',
-//   headers: {
-//     Authorization: `Bearer ${getAccessToken()}`
-//   }
-// });
-
 export const logApi = axios.create({
-  baseURL: 'https://cjswltjr.shop',
+  baseURL: baseURL,
   headers: {
     Authorization: `Bearer ${getAccessToken()}`
   }

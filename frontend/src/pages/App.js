@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Route, Link, Switch } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -30,9 +30,12 @@ import { getUser } from 'api/user';
 import PrivateRoute from 'routes/PrivateRoute';
 import { isTokenExpired } from 'common/functions/functions';
 
+import { getAdmin } from 'api/admin';
+
 import '../common/style/app.scss';
 
 const App = () => {
+  const [isAdmin, setisAdmin] = useState(false);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const uuid = useSelector((state) => state.user.value.uuid);
   const dispatch = useDispatch();
@@ -58,7 +61,19 @@ const App = () => {
           }
         });
     }
+    checkAdmin();
   }, [isLoggedIn, dispatch, uuid]);
+
+  const checkAdmin = async () => {
+    if (uuid) {
+      await getAdmin(uuid)
+        .then(({ data }) => {
+          setisAdmin(data.data);
+          console.log(data);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   return (
     <div className="App">
@@ -79,6 +94,11 @@ const App = () => {
             <div>
               <MyPageModule />
             </div>
+            {isAdmin ? (
+              <div>
+                <Link to="/admin">관리자페이지</Link>
+              </div>
+            ) : null}
             {localStorage.getItem('accessToken') && (
               <div>
                 <LogoutModule />
