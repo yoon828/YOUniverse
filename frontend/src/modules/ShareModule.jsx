@@ -19,7 +19,6 @@ const ShareModule = () => {
   };
 
   const shareKakaoLink = (host, link) => {
-    console.log(link);
     window.Kakao.Share.sendCustom({
       templateId: 80123,
       templateArgs: {

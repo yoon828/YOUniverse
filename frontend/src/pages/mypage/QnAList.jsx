@@ -17,11 +17,9 @@ const QnAList = () => {
   useEffect(() => {
     getQnAList()
       .then(({ data }) => {
-        console.log(data.data);
         setQnAList(data.data);
       })
       .catch(({ response }) => {
-        console.log(response.data.message);
         if (isTokenExpired(response.data.message)) {
           dispatch(logout());
         } else {

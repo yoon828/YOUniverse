@@ -27,7 +27,6 @@ export const logApi = axios.create({
 // api 요청 인터셉터
 api.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${getAccessToken()}`;
-  console.log('SET_API_HEADERS:', config);
   return config;
 });
 
@@ -35,18 +34,14 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   // 성공 응답일 때,
   (response) => {
-    console.log(response);
     return response;
   },
 
   // 실패 응답일 때,
   async (error) => {
-    console.log('ERROR형태보기', error);
 
     // A) 토큰 만료 이슈인 경우
     if (error.response.data?.message.includes('만료')) {
-      console.log('accessToken 만료 관련 문제');
-      console.log(getAccessToken());
       // a) 갱신 요청
       const { data, status } = await axios.get(
         baseURL + `/token/reissuance/${getRefreshToken()}`,
@@ -56,10 +51,8 @@ api.interceptors.response.use(
           }
         }
       );
-      console.log('과연', status);
       if (status === 201) {
         setAccessToken(data.accessToken);
-        console.log('리프레쉬 갱신완료');
 
         // 헤더 변경 후 다시 쏘기
         const originalRequest = error.config;
@@ -84,17 +77,14 @@ logApi.interceptors.request.use((config) => {
 logApi.interceptors.response.use(
   // 성공 응답일 때,
   (response) => {
-    console.log(response);
     return response;
   },
 
   // 실패 응답일 때,
   async (error) => {
-    console.log('로그 API ERROR형태보기', error);
 
     // A) 토큰 만료 이슈인 경우
     if (error.response.data?.message.includes('만료')) {
-      console.log('accessToken 만료 관련 문제');
 
       // a) 갱신 요청
       const { data, status } = await axios.get(
@@ -108,7 +98,6 @@ logApi.interceptors.response.use(
 
       if (status === 201) {
         setAccessToken(data.accessToken);
-        console.log('리프레쉬 갱신완료');
 
         // 헤더 변경 후 다시 쏘기
         const originalRequest = error.config;

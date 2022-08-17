@@ -39,12 +39,10 @@ const QnA = () => {
       registerQnA(payload)
         .then(({ data }) => {
           alert('문의글이 등록되었습니다.');
-          console.log(`/question/${data.data.id}`);
           history.push(`/question/${data.data.id}`);
           clearQnA();
         })
         .catch(({ response }) => {
-          console.log(response.data.message);
           if (isTokenExpired(response.data.message)) {
             dispatch(logout());
           } else {

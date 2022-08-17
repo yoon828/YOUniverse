@@ -9,7 +9,6 @@ const LogoutModule = () => {
   const deleteUser = () => {
     logoutUser()
       .then(({ data }) => {
-        console.log(data);
         dispatch(logout());
         dispatch(resetUser());
       })

@@ -31,7 +31,6 @@ const MyPage = () => {
           dispatch(resetUser());
         })
         .catch(({ response }) => {
-          console.log(response.data.message);
           if (isTokenExpired(response.data.message)) {
             dispatch(logout());
           } else {
@@ -43,9 +42,7 @@ const MyPage = () => {
 
   const randomProfile = () => {
     const randomIndex = Math.floor(Math.random() * 9) + 1;
-    console.log(randomIndex);
     const randomImage = `/asset/img/mypage/profile/profile_${randomIndex}.png`;
-    console.log(randomImage);
     return randomImage;
   };
 
@@ -54,11 +51,9 @@ const MyPage = () => {
     setProfileImg(randomProfile());
     getUser()
       .then(({ data }) => {
-        console.log(data);
         dispatch(insertUser(data.data));
       })
       .catch(({ response }) => {
-        console.log(response.data.message);
         if (isTokenExpired(response.data.message)) {
           dispatch(logout());
         } else {

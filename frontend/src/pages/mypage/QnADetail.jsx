@@ -19,11 +19,9 @@ const QnADetail = () => {
     if (window.confirm('해당 문의를 정말 삭제하시겠습니까?')) {
       deleteQnA(questionId)
         .then(({ data }) => {
-          console.log(data);
           history.replace('/question');
         })
         .catch(({ response }) => {
-          console.log(response.data.message);
           if (isTokenExpired(response.data.message)) {
             dispatch(logout());
           } else {
@@ -37,7 +35,6 @@ const QnADetail = () => {
     getQnA(questionId)
       .then(({ data }) => {
         setQnA(data.data);
-        console.log(data.data);
       })
       .catch((err) => {
         console.log(err);

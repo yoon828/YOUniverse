@@ -92,7 +92,7 @@ class VideoComponent extends Component {
             type: 'sttStart'
           })
           .then(() => {
-            console.log('Comment successfully sent');
+            // console.log('Comment successfully sent');
           })
           .catch((error) => {
             console.error(error);
@@ -113,7 +113,7 @@ class VideoComponent extends Component {
               type: 'sttEnd'
             })
             .then(() => {
-              console.log('Comment successfully sent');
+              // console.log('Comment successfully sent');
             })
             .catch((error) => {
               console.error(error);
@@ -205,7 +205,7 @@ class VideoComponent extends Component {
         type: 'soundUpdate'
       })
       .then(() => {
-        console.log('Sound service successfully updated');
+        // console.log('Sound service successfully updated');
       })
       .catch((error) => {
         console.error(error);
@@ -242,7 +242,6 @@ class VideoComponent extends Component {
 
   //채팅 남기기
   comment() {
-    console.log(this.state.session);
     this.state.session
       .signal({
         data: JSON.stringify({
@@ -339,7 +338,6 @@ class VideoComponent extends Component {
         mySession.on('signal:ttsChat', (event) => {
           let idx = this.getIdx(event.from.connectionId);
           if (idx === undefined) idx = 5;
-          console.log(this.props);
           let json = JSON.parse(event.data);
           let list = [...this.props.logList];
           list.push({
@@ -510,10 +508,8 @@ class VideoComponent extends Component {
         data.sessionId = sessionId;
         data.chats = chats;
       }
-      console.log(data);
       postHistory(data)
         .then(({ data }) => {
-          console.log(data);
           alert(data.message);
           if (!data.success) return;
           this.leaveSession();
@@ -527,7 +523,6 @@ class VideoComponent extends Component {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;
 
-    console.log(mySession);
     if (mySession) {
       mySession.disconnect();
     }
@@ -547,7 +542,6 @@ class VideoComponent extends Component {
   //엔터키 이벤트
   handleKeyUp = (e) => {
     if (e.key === 'Enter' && e.nativeEvent.isComposing === false) {
-      console.log(this.state.inputComment);
       this.comment();
       e.target.value = '';
     }
@@ -764,7 +758,7 @@ class VideoComponent extends Component {
           }
         })
         .then((response) => {
-          console.log('CREATE SESION', response);
+          // console.log('CREATE SESION', response);
           resolve(response.data.id);
         })
         .catch((response) => {
@@ -815,7 +809,6 @@ class VideoComponent extends Component {
           }
         )
         .then((response) => {
-          console.log('TOKEN', response);
           resolve(response.data.token);
         })
         .catch((error) => reject(error));

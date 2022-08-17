@@ -19,7 +19,6 @@ const HistoryDetail = () => {
   const fetchLog = (logId) => {
     getLog(logId)
       .then(({ data }) => {
-        console.log(data.data.chats);
         setLog(data.data.chats);
       })
       .catch((error) => {
@@ -37,7 +36,6 @@ const HistoryDetail = () => {
       })
       // 조회 실패
       .catch(({ response }) => {
-        console.log(response.data.message);
         if (isTokenExpired(response.data.message)) {
           dispatch(logout());
         } else {

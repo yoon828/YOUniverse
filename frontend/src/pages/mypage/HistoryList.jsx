@@ -17,11 +17,9 @@ const HistoryList = () => {
   useEffect(() => {
     getHistoryList()
       .then(({ data }) => {
-        console.log(data.data);
         setHistoryList(data.data);
       })
       .catch(({ response }) => {
-        console.log(response.data.message);
         if (isTokenExpired(response.data.message)) {
           dispatch(logout());
         } else {
