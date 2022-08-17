@@ -5,7 +5,6 @@ import {
   setAccessToken
 } from 'common/functions/functions';
 
-// export const baseURL = 'https://cjswltjr.shop';
 export const baseURL = process.env.REACT_APP_API_URL;
 export const backPath = '/api/back';
 
