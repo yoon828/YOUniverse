@@ -67,7 +67,6 @@
 
 ### [openVidu](https://openvidu.io/)
 
-![image-20210828152009951](README.assets/image-20210828152009951.png)
 
 > OpenVidu is a platform to facilitate the addition of video calls in your web or mobile application. It provides a complete stack of technologies very easy to integrate in your application. Our main goal is to allow developers to add real-time communications to their apps very fast and with low impact in their code.
 
@@ -101,6 +100,9 @@ YOUniverse에서는 web Speeck API를 사용해서 TTS(Text To Speech)와 STT(Sp
 
 <br/>
 <br/>
+
+
+
 ## 3. 서비스 아키텍처
 
 서비스 아키텍처 사진 넣기
