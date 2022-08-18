@@ -6,6 +6,7 @@ import {
 } from 'common/functions/functions';
 
 export const baseURL = process.env.REACT_APP_API_URL;
+console.log(baseURL);
 export const backPath = '/api/back';
 
 // 기본 api
