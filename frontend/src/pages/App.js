@@ -47,10 +47,8 @@ const App = () => {
 
   useEffect(() => {
     if (isLoggedIn && !uuid) {
-      console.log('정보받으러 가기');
       getUser()
         .then(({ data }) => {
-          console.log(data.data);
           dispatch(insertUser(data.data));
         })
         .catch(({ response }) => {
