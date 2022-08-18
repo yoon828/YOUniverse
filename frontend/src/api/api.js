@@ -39,7 +39,6 @@ api.interceptors.response.use(
 
   // 실패 응답일 때,
   async (error) => {
-
     // A) 토큰 만료 이슈인 경우
     if (error.response.data?.message.includes('만료')) {
       // a) 갱신 요청
@@ -82,10 +81,8 @@ logApi.interceptors.response.use(
 
   // 실패 응답일 때,
   async (error) => {
-
     // A) 토큰 만료 이슈인 경우
     if (error.response.data?.message.includes('만료')) {
-
       // a) 갱신 요청
       const { data, status } = await axios.get(
         baseURL + `/token/reissuance/${getRefreshToken()}`,
