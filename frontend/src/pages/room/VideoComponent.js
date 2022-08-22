@@ -624,7 +624,7 @@ class VideoComponent extends Component {
                         ? '/asset/img/room/sound_on.png'
                         : '/asset/img/room/sound_off.png'
                     }
-                    alt={this.state.isCC ? '읽어주기 중단' : '읽어주기'}
+                    alt={this.state.isSound ? '읽어주기 중단' : '읽어주기'}
                     width={50}
                   />
                 </button>
@@ -639,7 +639,9 @@ class VideoComponent extends Component {
                         ? '/asset/img/room/mouth_on.png'
                         : '/asset/img/room/mouth_off.png'
                     }
-                    alt={this.state.isCC ? '입 모양 확대' : '입 모양 확대 중단'}
+                    alt={
+                      this.props.bigMouth ? '입 모양 확대' : '입 모양 확대 중단'
+                    }
                     width={50}
                   />
                 </button>
@@ -686,12 +688,12 @@ class VideoComponent extends Component {
                   alt="mute"
                 >
                   {/* <div className="blind">소리 끄기</div> */}
-                  {this.state.isMute ? <MicOff /> : <Mic />}
                   {this.state.isMute ? (
                     <div className="blind">소리 끄기</div>
                   ) : (
                     <div className="blind">소리 켜기</div>
                   )}
+                  {this.state.isMute ? <MicOff /> : <Mic />}
                 </button>
                 <button
                   onClick={this.handleCam}
@@ -699,12 +701,12 @@ class VideoComponent extends Component {
                   alt="nocam"
                 >
                   {/* <div className="blind">화면 끄기</div> */}
-                  {this.state.isNocam ? <VideocamOff /> : <Videocam />}
-                  {this.state.isMute ? (
+                  {this.state.isNocam ? (
                     <div className="blind">화면 끄기</div>
                   ) : (
                     <div className="blind">화면 켜기</div>
                   )}
+                  {this.state.isNocam ? <VideocamOff /> : <Videocam />}
                 </button>
                 <button onClick={this.exitRoom} className="round-button p-10">
                   <div className="blind">나가기</div>
