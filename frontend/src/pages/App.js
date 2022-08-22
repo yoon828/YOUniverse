@@ -61,7 +61,7 @@ const App = () => {
         });
     }
     checkAdmin();
-  }, []);
+  }, [isLoggedIn, dispatch, uuid]);
 
   const checkAdmin = async () => {
     if (uuid) {
