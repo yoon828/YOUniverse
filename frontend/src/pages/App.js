@@ -80,7 +80,7 @@ const App = () => {
         <header className="main_header">
           <div className="main_header_logo">
             <Link to="/">
-              <img src="/asset/img/logo_header.png" alt="logo" />
+              <img src="/asset/img/logo_header.png" alt="메인 페이지로 이동" />
             </Link>
           </div>
           <div className="main_header_menu">
