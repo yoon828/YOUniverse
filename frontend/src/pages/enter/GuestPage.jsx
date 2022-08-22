@@ -32,7 +32,11 @@ const Guest = () => {
     <div className="guest_page">
       <div className="main_logo">
         <Link to="/">
-          <img src="asset/img/logo.png" alt="logo" className="logo_img" />
+          <img
+            src="asset/img/logo.png"
+            alt="유니버스 메인 페이지로 이동합니다. 스페이스 입장을 원하시면 tab을 눌러 이름을 입력해주세요."
+            className="logo_img"
+          />
         </Link>
       </div>
       <div className="nickname">
