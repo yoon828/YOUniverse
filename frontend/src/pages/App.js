@@ -46,7 +46,7 @@ const App = () => {
   );
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && !!localStorage.getItem('guestName')) {
       localStorage.removeItem('guestName');
     }
     if (isLoggedIn && !uuid) {
