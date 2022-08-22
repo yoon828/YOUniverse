@@ -689,9 +689,9 @@ class VideoComponent extends Component {
                 >
                   {/* <div className="blind">소리 끄기</div> */}
                   {this.state.isMute ? (
-                    <div className="blind">소리 끄기</div>
-                  ) : (
                     <div className="blind">소리 켜기</div>
+                  ) : (
+                    <div className="blind">소리 끄기</div>
                   )}
                   {this.state.isMute ? <MicOff /> : <Mic />}
                 </button>
@@ -701,10 +701,11 @@ class VideoComponent extends Component {
                   alt="nocam"
                 >
                   {/* <div className="blind">화면 끄기</div> */}
+
                   {this.state.isNocam ? (
-                    <div className="blind">화면 끄기</div>
-                  ) : (
                     <div className="blind">화면 켜기</div>
+                  ) : (
+                    <div className="blind">화면 끄기</div>
                   )}
                   {this.state.isNocam ? <VideocamOff /> : <Videocam />}
                 </button>
