@@ -640,7 +640,7 @@ class VideoComponent extends Component {
                         : '/asset/img/room/mouth_off.png'
                     }
                     alt={
-                      this.props.bigMouth ? '입 모양 확대' : '입 모양 확대 중단'
+                      this.props.bigMouth ? '입 모양 확대 중단' : '입 모양 확대'
                     }
                     width={50}
                   />
