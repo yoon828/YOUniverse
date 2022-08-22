@@ -599,7 +599,10 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {this.state.myUserName}님의 Space ({this.countUser()}
+                {localStorage.getItem('hostName') === 'no'
+                  ? this.state.myUserName
+                  : localStorage.getItem('hostName')}
+                님의 Space ({this.countUser()}
                 명)
               </h1>
 
