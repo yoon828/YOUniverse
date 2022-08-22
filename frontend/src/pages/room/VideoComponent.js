@@ -599,7 +599,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {this.myUserName()}님의 Space ({this.countUser()}
+                {this.myUserName}님의 Space ({this.countUser()}
                 명)
               </h1>
 
