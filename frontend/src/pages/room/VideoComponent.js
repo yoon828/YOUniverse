@@ -483,40 +483,46 @@ class VideoComponent extends Component {
       let name = JSON.parse(el.stream.connection.data).clientData;
       participant += `${name} `;
     });
-    if (window.confirm('방을 나가시겠습니까?')) {
-      let roomName = window.prompt('방 제목을 입력해주세요');
-      if (roomName === '') {
-        window.alert('방 제목을 입력해주세요!');
-        return;
-      }
-      let isLogSave = false;
-      if (window.confirm('로그를 저장하시겠습니까?')) isLogSave = true;
-      let data = {
-        hostName: this.state.myUserName,
-        participants: participant,
-        roomName: roomName,
-        createTime: createTime
-      };
-      if (isLogSave) {
-        let chats = [];
-        this.props.logList.map((log, idx) => {
-          chats.push({
-            chatTime: log.time,
-            name: log.name,
-            content: log.comment
+    if (!!localStorage.getItem('guestName')) {
+      if (window.confirm('방을 나가시겠습니까?')) {
+        let roomName = window.prompt('방 제목을 입력해주세요');
+        if (roomName === '') {
+          window.alert('방 제목을 입력해주세요!');
+          return;
+        }
+        let isLogSave = false;
+        if (window.confirm('로그를 저장하시겠습니까?')) isLogSave = true;
+        let data = {
+          hostName: this.state.myUserName,
+          participants: participant,
+          roomName: roomName,
+          createTime: createTime
+        };
+        if (isLogSave) {
+          let chats = [];
+          this.props.logList.map((log, idx) => {
+            chats.push({
+              chatTime: log.time,
+              name: log.name,
+              content: log.comment
+            });
           });
-        });
-        data.sessionId = sessionId;
-        data.chats = chats;
+          data.sessionId = sessionId;
+          data.chats = chats;
+        }
+        postHistory(data)
+          .then(({ data }) => {
+            alert(data.message);
+            if (!data.success) return;
+            this.leaveSession();
+            this.props.props.push('/');
+          })
+          .catch((err) => console.log(err));
       }
-      postHistory(data)
-        .then(({ data }) => {
-          alert(data.message);
-          if (!data.success) return;
-          this.leaveSession();
-          this.props.props.push('/');
-        })
-        .catch((err) => console.log(err));
+    } else {
+      if (window.confirm('방을 나가시겠습니까?')) {
+        window.location.href = 'https://cjswltjr.shop/login';
+      }
     }
   }
 
@@ -593,7 +599,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                Space({this.countUser()}
+                {this.myUserName()}님의 Space ({this.countUser()}
                 명)
               </h1>
 
