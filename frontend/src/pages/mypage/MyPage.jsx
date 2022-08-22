@@ -78,7 +78,7 @@ const MyPage = () => {
           <div>
             <h2>SPACE 히스토리</h2>
             {/* <button onClick={addHistory}>히스토리 임의 등록</button> */}
-            <Link to="/history">더보기</Link>
+            <Link to="/history">히스토리 더보기</Link>
           </div>
           {!_.isEmpty(shareRoomHistoryList) ? (
             <List
@@ -95,8 +95,8 @@ const MyPage = () => {
 
         <div className="info_qa item w100">
           <div>
-            <h2>1:1 문의내역</h2>
-            <Link to="/question">더보기</Link>
+            <h2>1대1 문의내역</h2>
+            <Link to="/question">문의내역 더보기</Link>
           </div>
 
           {!_.isEmpty(qnAList) ? (

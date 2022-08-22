@@ -19,7 +19,11 @@ const Share = () => {
     <div className="share_wrap">
       <div className="main_logo">
         <Link to="/">
-          <img src="asset/img/logo.png" alt="logo" className="logo_img" />
+          <img
+            src="asset/img/logo.png"
+            alt="공유하기 페이지입니다. 메인 페이지로 돌아가려면 엔터를 누르세요."
+            className="logo_img"
+          />
         </Link>
       </div>
       <div className="share">

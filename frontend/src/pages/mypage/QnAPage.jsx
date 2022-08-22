@@ -76,7 +76,7 @@ const QnA = () => {
   return (
     <div className="qna_page page_container">
       <h1 className="title" aria-label="일대일 문의하기">
-        1:1 문의하기
+        1대1 문의하기
       </h1>
       <div className="w100">
         <form onSubmit={(event) => handleSubmit(event)}>

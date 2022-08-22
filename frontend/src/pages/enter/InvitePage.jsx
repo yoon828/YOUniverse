@@ -23,7 +23,11 @@ const Invite = () => {
     <div className="invite_page">
       <div className="main_logo">
         <Link to="/">
-          <img src="asset/img/logo.png" alt="logo" className="logo_img" />
+          <img
+            src="asset/img/logo.png"
+            alt="초대 페이지입니다. tab키를 눌러 스페이스에 입장해주세요."
+            className="logo_img"
+          />
         </Link>
       </div>
       <div className="invite_box">
