@@ -609,7 +609,7 @@ class VideoComponent extends Component {
                         ? '/asset/img/room/cc_on.png'
                         : '/asset/img/room/cc_off.png'
                     }
-                    alt="자막 보여주기"
+                    alt={this.state.isCC ? '자막 끄기' : '자막 보여주기'}
                     width={50}
                   />
                 </button>
@@ -624,7 +624,7 @@ class VideoComponent extends Component {
                         ? '/asset/img/room/sound_on.png'
                         : '/asset/img/room/sound_off.png'
                     }
-                    alt="읽어주기"
+                    alt={this.state.isCC ? '읽어주기 중단' : '읽어주기'}
                     width={50}
                   />
                 </button>
@@ -639,7 +639,7 @@ class VideoComponent extends Component {
                         ? '/asset/img/room/mouth_on.png'
                         : '/asset/img/room/mouth_off.png'
                     }
-                    alt="입모양 확대"
+                    alt={this.state.isCC ? '입 모양 확대' : '입 모양 확대 중단'}
                     width={50}
                   />
                 </button>
@@ -685,16 +685,26 @@ class VideoComponent extends Component {
                   className="round-button p-10"
                   alt="mute"
                 >
-                  <div className="blind">소리 끄기</div>
+                  {/* <div className="blind">소리 끄기</div> */}
                   {this.state.isMute ? <MicOff /> : <Mic />}
+                  {this.state.isMute ? (
+                    <div className="blind">소리 끄기</div>
+                  ) : (
+                    <div className="blind">소리 켜기</div>
+                  )}
                 </button>
                 <button
                   onClick={this.handleCam}
                   className="round-button p-10"
                   alt="nocam"
                 >
-                  <div className="blind">화면 끄기</div>
+                  {/* <div className="blind">화면 끄기</div> */}
                   {this.state.isNocam ? <VideocamOff /> : <Videocam />}
+                  {this.state.isMute ? (
+                    <div className="blind">화면 끄기</div>
+                  ) : (
+                    <div className="blind">화면 켜기</div>
+                  )}
                 </button>
                 <button onClick={this.exitRoom} className="round-button p-10">
                   <div className="blind">나가기</div>
@@ -770,16 +780,16 @@ class VideoComponent extends Component {
             console.log(error);
             console.warn(
               'No connection to OpenVidu Server. This may be a certificate error at ' +
-              OPENVIDU_SERVER_URL
+                OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                OPENVIDU_SERVER_URL +
-                '"\n\nClick OK to navigate and accept it. ' +
-                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                OPENVIDU_SERVER_URL +
-                '"'
+                  OPENVIDU_SERVER_URL +
+                  '"\n\nClick OK to navigate and accept it. ' +
+                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                  OPENVIDU_SERVER_URL +
+                  '"'
               )
             ) {
               window.location.assign(
@@ -797,9 +807,9 @@ class VideoComponent extends Component {
       axios
         .post(
           OPENVIDU_SERVER_URL +
-          '/openvidu/api/sessions/' +
-          sessionId +
-          '/connection',
+            '/openvidu/api/sessions/' +
+            sessionId +
+            '/connection',
           data,
           {
             headers: {
