@@ -17,7 +17,11 @@ const MainPage = () => {
     <div className="main">
       <div className="main_logo">
         <Link to="/">
-          <img src="asset/img/logo.png" alt="logo" className="logo_img" />
+          <img
+            src="asset/img/logo.png"
+            alt="메인페이지 입니다."
+            className="logo_img"
+          />
         </Link>
       </div>
       <div className="main_page_box">
