@@ -521,7 +521,7 @@ class VideoComponent extends Component {
       }
     } else {
       if (window.confirm('방을 나가시겠습니까?')) {
-        window.location.href = 'https://cjswltjr.shop/login';
+        window.location.href = 'https://cjswltjr.shop/';
       }
     }
   }
@@ -599,7 +599,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {localStorage.getItem('hostName')}님의 Space ({this.countUser()}
+                {this.state.myUserName}님의 Space ({this.countUser()}
                 명)
               </h1>
 
