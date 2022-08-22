@@ -483,7 +483,7 @@ class VideoComponent extends Component {
       let name = JSON.parse(el.stream.connection.data).clientData;
       participant += `${name} `;
     });
-    if (!!localStorage.getItem('guestName')) {
+    if (!localStorage.getItem('guestName')) {
       if (window.confirm('방을 나가시겠습니까?')) {
         let roomName = window.prompt('방 제목을 입력해주세요');
         if (roomName === '') {
@@ -599,7 +599,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {this.myUserName}님의 Space ({this.countUser()}
+                {localStorage.getItem('hostName')}님의 Space ({this.countUser()}
                 명)
               </h1>
 
