@@ -21,17 +21,6 @@ import { toggleMouth } from '../../redux/feature';
 import { toggleModal } from '../../redux/share';
 import { postHistory } from 'api/room';
 
-const url = window.location.search;
-const urlName = decodeURI(url.split('=')[2]);
-
-console.log(urlName);
-
-// const urlUnicode = url.split('=')[2].split('&')[0];
-// const urlName = String.fromCharCode(parseInt(urlUnicode, 16));
-// console.log('윤민이가 제안해준 방법', urlUnicode);
-// console.log('윤민이가 제안해준 방법', urlName);
-// console.log('아아아아아아아아아아', urlName);
-
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_API_URL;
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
@@ -51,6 +40,7 @@ class VideoComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      urlName: '',
       mySessionId: props.storeSessionId, //세션 이름 (방이름)
       myUserName: props.storeName, //사용자 이름
       session: undefined,
@@ -88,6 +78,11 @@ class VideoComponent extends Component {
   }
 
   componentDidMount() {
+    const url = window.location.search;
+    this.setState({
+      urlName: decodeURI(url.split('=')[2])
+    });
+
     window.addEventListener('beforeunload', this.onbeforeunload);
     this.setCameraPermission();
     this.joinSession();
@@ -507,7 +502,7 @@ class VideoComponent extends Component {
     let sessionId = this.state.session.sessionId;
     let createTime = this.state.session.connection.creationTime;
     //방 주인
-    let hostName = urlName;
+    let hostName = this.state.urlName;
     let participants = [];
     participants.push(this.state.myUserName);
     this.state.subscribers.map((el, idx) => {
@@ -602,7 +597,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {urlName}
+                {this.state.urlName}
                 님의 Space ({this.countUser()}
                 명)
               </h1>
@@ -842,4 +837,5 @@ class VideoComponent extends Component {
 const mapStateToProps = (state) => ({
   bigMouth: state.feature.value.bigMouth
 });
+
 export default connect(mapStateToProps)(VideoComponent);
