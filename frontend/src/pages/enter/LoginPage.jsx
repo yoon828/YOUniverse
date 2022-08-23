@@ -44,7 +44,6 @@ const Login = () => {
             카카오로 로그인하기
           </div>
         </a>
-        {/* <img src="/asset/img/main/saturn.png" alt="행성" className="saturn" /> */}
         <img src="/asset/img/main/planet.gif" alt="행성" className="saturn" />
       </div>
     </div>

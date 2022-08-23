@@ -5,12 +5,12 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 100px;
-    height: 90px;
+    width: 30%;
+    height: 35%;
     overflow: hidden;
     video {
       position: absolute;
-      transform: scale(8);
+      transform: scale(10);
     }
   }
 }

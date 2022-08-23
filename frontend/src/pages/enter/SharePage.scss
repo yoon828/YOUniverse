@@ -7,12 +7,14 @@
   @include box(50%, 55%);
   @include text_vertical;
   position: relative;
-  justify-content: center;
+  justify-content: space-evenly;
   margin: auto;
+  padding: 15px 0;
   .title {
     font-size: 60px;
   }
   .next {
+    margin-top: 10px;
     @include blue_button;
   }
   .rocket {
