@@ -2,6 +2,8 @@
 
 .login_box {
   @include box(50%, 50%);
+  max-width: 830px;
+
   @include text_vertical;
   position: relative;
   &_text {
