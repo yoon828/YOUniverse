@@ -13,6 +13,8 @@
   flex: 2;
   margin-right: 10px;
   @include box(100%, 20%);
+  min-width: 350px;
+  max-width: 400px;
   @include flex(column, space-around, center);
 
   > div {
@@ -42,7 +44,8 @@
 // 히스토리, 문의 내역 영역
 .info {
   flex: 6;
-  @include box(100%, 20%);
+  @include box(100%, 80%);
+  max-width: 1350px;
   @include flex(column, space-around, center);
   padding: 30px 25px;
   &_history {

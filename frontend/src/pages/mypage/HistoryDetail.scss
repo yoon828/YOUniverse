@@ -24,6 +24,7 @@
       display: flex;
       .detail_content {
         width: 100%;
+        white-space: nowrap;
       }
     }
     .item {
@@ -34,6 +35,7 @@
         flex: 3;
       }
       &_date {
+        white-space: nowrap;
         flex: 2;
       }
     }
