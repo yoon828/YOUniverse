@@ -57,9 +57,7 @@ const HistoryDetail = () => {
         <div className="history_detail_header_item item_partipants">
           <span className="line" />
           <span className="history_detail_header gray">참여자</span>
-          <span className="detail_content">
-            {historyItem.participants?.slice(1)}
-          </span>
+          <span className="detail_content">{historyItem.participants}</span>
         </div>
         <div className="history_detail_header_item item_date">
           <span className="line" />
