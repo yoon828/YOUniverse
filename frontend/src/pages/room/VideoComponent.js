@@ -56,7 +56,6 @@ class VideoComponent extends Component {
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
-    this.switchCamera = this.switchCamera.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
@@ -75,6 +74,7 @@ class VideoComponent extends Component {
     this.getIdx = this.getIdx.bind(this);
 
     this.setCameraPermission = this.setCameraPermission.bind(this);
+    this.getHostName = this.getHostName.bind(this);
   }
 
   componentDidMount() {
@@ -496,6 +496,8 @@ class VideoComponent extends Component {
   exitRoom() {
     let sessionId = this.state.session.sessionId;
     let createTime = this.state.session.connection.creationTime;
+    //방 주인
+    let hostName = getHost;
     let participant = '';
     this.state.subscribers.map((el, idx) => {
       let name = JSON.parse(el.stream.connection.data).clientData;
@@ -572,43 +574,11 @@ class VideoComponent extends Component {
     }
   };
 
-  async switchCamera() {
-    try {
-      const devices = await this.OV.getDevices();
-      let videoDevices = devices.filter(
-        (device) => device.kind === 'videoinput'
-      );
-
-      if (videoDevices && videoDevices.length > 1) {
-        let newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
-        );
-
-        if (newVideoDevice.length > 0) {
-          // Creating a new publisher with specific videoSource
-          // In mobile devices the default and first camera is the front one
-          let newPublisher = this.OV.initPublisher(undefined, {
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: true,
-            publishVideo: true,
-            mirror: true
-          });
-
-          //newPublisher.once("accessAllowed", () => {
-          await this.state.session.unpublish(this.state.mainStreamManager);
-
-          await this.state.session.publish(newPublisher);
-          this.setState({
-            currentVideoDevice: newVideoDevice,
-            mainStreamManager: newPublisher,
-            publisher: newPublisher
-          });
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
+  getHostName = () => {
+    return localStorage.getItem('hostName') === 'no'
+      ? this.state.myUserName
+      : localStorage.getItem('hostName');
+  };
 
   render() {
     return (
@@ -617,9 +587,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {localStorage.getItem('hostName') === 'no'
-                  ? this.state.myUserName
-                  : localStorage.getItem('hostName')}
+                {getHostName()}
                 님의 Space ({this.countUser()}
                 명)
               </h1>
