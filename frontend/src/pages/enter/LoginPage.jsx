@@ -13,15 +13,14 @@ const Login = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   useEffect(() => {
+    localStorage.setItem('hostId', 'no');
+    localStorage.setItem('hostName', 'no');
+    sessionStorage.setItem('isInvited', 'no');
     dispatch(myMainHeader(false));
     if (isLoggedIn) {
       history.push('/');
     }
   }, []);
-
-  localStorage.setItem('hostId', 'no');
-  localStorage.setItem('hostName', 'no');
-  sessionStorage.setItem('isInvited', 'no');
 
   return (
     <div className="login_page">
