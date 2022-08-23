@@ -14,7 +14,8 @@ import {
   Videocam,
   VideocamOff,
   Logout,
-  Share
+  Share,
+  RestaurantRounded
 } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { toggleMouth } from '../../redux/feature';
@@ -73,10 +74,13 @@ class VideoComponent extends Component {
 
     this.handleCC = this.handleCC.bind(this);
     this.getIdx = this.getIdx.bind(this);
+
+    this.setCameraPermission = this.setCameraPermission.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.onbeforeunload);
+    this.setCameraPermission();
     this.joinSession();
 
     let flag = false;
@@ -140,6 +144,21 @@ class VideoComponent extends Component {
 
   onbeforeunload(event) {
     this.leaveSession();
+  }
+
+  setCameraPermission() {
+    navigator.permissions.query({ name: 'camera' }).then((result) => {
+      //카메라 권한 미승인
+      if (result.state === 'prompt') {
+        navigator.mediaDevices
+          .getUserMedia({ audio: true, video: true })
+          .then((stream) => {
+            window.location.reload();
+          });
+      } else {
+        return;
+      }
+    });
   }
 
   handleChangeSessionId(e) {
