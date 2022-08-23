@@ -8,6 +8,10 @@
   &_text {
     font-size: 60px;
   }
+  &_item {
+    margin-top: 35px;
+    @include text_vertical;
+  }
 }
 
 .invite_page {
@@ -23,6 +27,13 @@
   }
 }
 
+.guest_enter {
+  width: 360px;
+  height: 50px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid black;
+}
 .meteor {
   position: absolute;
   width: 170px;

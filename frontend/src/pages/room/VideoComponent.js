@@ -14,8 +14,7 @@ import {
   Videocam,
   VideocamOff,
   Logout,
-  Share,
-  RestaurantRounded
+  Share
 } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { toggleMouth } from '../../redux/feature';

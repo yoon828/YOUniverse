@@ -39,17 +39,17 @@ const ShareModule = () => {
   }, [API_KEY]);
 
   return (
-    <>
+    <div className="share_box">
       <button className="invite login_kakao" onClick={onShareKakaoClick}>
-        <div className="login_kakao_div">
+        <div className="login_kakao_div item_box">
           <img src="/asset/img/main/kakao_log.png" alt="" />
           카카오 친구 초대하기
         </div>
       </button>
       <button className="invite invite_link" onClick={onCopyUrl}>
-        링크복사
+        <div className="link_copy_div item_box">링크복사</div>
       </button>
-    </>
+    </div>
   );
 };
 

@@ -34,7 +34,12 @@ const RoomPage = () => {
         <div className="modal">
           <h1>공유하기</h1>
           <ShareModule />
-          <button onClick={() => dispatch(toggleModal())}>닫기</button>
+          <button
+            className="share_close"
+            onClick={() => dispatch(toggleModal())}
+          >
+            닫기
+          </button>
         </div>
       ) : null}
       <div id="main_left">
