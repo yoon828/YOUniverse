@@ -504,7 +504,7 @@ class VideoComponent extends Component {
     if (!localStorage.getItem('guestName')) {
       if (window.confirm('방을 나가시겠습니까?')) {
         let roomName = window.prompt('방 제목을 입력해주세요');
-        if (!!roomName) {
+        if (roomName === '') {
           window.alert('방 제목을 입력해주세요!');
           return;
         }
