@@ -497,12 +497,21 @@ class VideoComponent extends Component {
     let sessionId = this.state.session.sessionId;
     let createTime = this.state.session.connection.creationTime;
     //방 주인
-    // let hostName = getHost;
-    let participant = '';
+    let hostName = this.getHostName();
+    let participants = [];
+    participants.push(this.state.myUserName);
     this.state.subscribers.map((el, idx) => {
       let name = JSON.parse(el.stream.connection.data).clientData;
-      participant += `${name} `;
+      participants.push(name);
     });
+
+    let partiText = '';
+    participants.map((participant) => {
+      if (participant !== hostName) partiText += `${participant}, `;
+    });
+
+    partiText = partiText.substring(0, partiText.length - 2);
+
     if (!localStorage.getItem('guestName')) {
       if (window.confirm('방을 나가시겠습니까?')) {
         let roomName = window.prompt('방 제목을 입력해주세요');
@@ -510,11 +519,12 @@ class VideoComponent extends Component {
           window.alert('방 제목을 입력해주세요!');
           return;
         }
+        if (!roomName) return;
         let isLogSave = false;
         if (window.confirm('로그를 저장하시겠습니까?')) isLogSave = true;
         let data = {
-          hostName: this.state.myUserName,
-          participants: participant,
+          hostName: hostName,
+          participants: partiText,
           roomName: roomName,
           createTime: createTime
         };
@@ -532,7 +542,8 @@ class VideoComponent extends Component {
         }
         postHistory(data)
           .then(({ data }) => {
-            alert(data.message);
+            if (isLogSave) alert('Space와 로그를 저장했습니다.');
+            else alert('Space를 저장했습니다.');
             if (!data.success) return;
             this.leaveSession();
             this.props.props.push('/');
