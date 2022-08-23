@@ -26,6 +26,9 @@ const RoomPage = () => {
 
   useEffect(() => {
     dispatch(myMainHeader(false));
+    if (sessionStorage.getItem('isInvited') === 'no') {
+      localStorage.removeItem('hostName');
+    }
   }, [dispatch]);
 
   return (
