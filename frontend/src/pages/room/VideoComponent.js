@@ -508,6 +508,7 @@ class VideoComponent extends Component {
           window.alert('방 제목을 입력해주세요!');
           return;
         }
+        if (!roomName) return;
         let isLogSave = false;
         if (window.confirm('로그를 저장하시겠습니까?')) isLogSave = true;
         let data = {
@@ -530,7 +531,8 @@ class VideoComponent extends Component {
         }
         postHistory(data)
           .then(({ data }) => {
-            alert(data.message);
+            if (isLogSave) alert('Space와 로그를 저장했습니다.');
+            else alert('Space를 저장했습니다.');
             if (!data.success) return;
             this.leaveSession();
             this.props.props.push('/');
