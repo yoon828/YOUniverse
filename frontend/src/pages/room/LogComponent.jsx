@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './LogComponent.scss';
 
 const LogComponent = (props) => {
-  const [fontSize, setFontSize] = useState(15);
+  const [fontSize, setFontSize] = useState(25);
 
   const icons = ['cloud', 'moon', 'planet', 'rocket', 'star', 'ufo'];
 
@@ -33,11 +33,18 @@ const LogComponent = (props) => {
             <li key={idx}>
               <img
                 className="log_img"
-                width={20}
+                width={fontSize}
+                height={fontSize}
                 src={`/asset/img/room/icon/${icons[log.icon]}.png`}
                 alt={`${icons[log.icon]}`}
               />
-              <div className="log_item" style={{ fontSize: `${fontSize}px` }}>
+              <div
+                className="log_item"
+                style={{
+                  fontSize: `${fontSize}px`,
+                  lineHeight: `${fontSize + 3}px`
+                }}
+              >
                 {log.name} : {log.comment}
               </div>
               <br />
