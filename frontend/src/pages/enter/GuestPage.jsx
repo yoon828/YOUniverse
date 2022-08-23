@@ -53,6 +53,7 @@ const Guest = () => {
             ref={guestNameInputRef}
             defaultValue={localStorage.getItem('guestName')}
             className="nickname_input"
+            placeholder="이름을 입력해주세요"
           />
           <button type="submit" onClick={submit} className="confirm">
             확인
