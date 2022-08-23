@@ -46,13 +46,14 @@ const Guest = () => {
           className="astronaut_big_img"
         />
         <form className="guest_form">
-          <h1 className="title">이름을 입력해주세요.</h1>
+          <h1 className="title">Space 입장을 환영합니다</h1>
           <input
             type="text"
             name="guest"
             ref={guestNameInputRef}
             defaultValue={localStorage.getItem('guestName')}
             className="nickname_input"
+            placeholder="이름을 입력해주세요"
           />
           <button type="submit" onClick={submit} className="confirm">
             확인
