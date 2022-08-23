@@ -46,7 +46,7 @@ const Guest = () => {
           className="astronaut_big_img"
         />
         <form className="guest_form">
-          <h1 className="title">이름을 입력해주세요.</h1>
+          <h1 className="title">이름을 입력해주세요</h1>
           <input
             type="text"
             name="guest"
