@@ -21,6 +21,7 @@ import { toggleMouth } from '../../redux/feature';
 import { toggleModal } from '../../redux/share';
 import { postHistory } from 'api/room';
 
+const urlName = new URLSearchParams(window.location.search).get('name');
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_API_URL;
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
@@ -617,9 +618,10 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {localStorage.getItem('hostName') === 'no'
+                {/* {localStorage.getItem('hostName') === 'no'
                   ? this.state.myUserName
-                  : localStorage.getItem('hostName')}
+                  : localStorage.getItem('hostName')}{' '} */}
+                {urlName}
                 님의 Space ({this.countUser()}
                 명)
               </h1>

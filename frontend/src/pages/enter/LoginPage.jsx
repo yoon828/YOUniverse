@@ -19,15 +19,6 @@ const Login = () => {
     }
   }, []);
 
-  localStorage.setItem(
-    'accessToken',
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzcwMzM5Nzk4IiwiaWF0IjoxNjYxMjM4NTQyLCJleHAiOjE2NjEyNDAzNDJ9.HpSLkaeGSZeUht_-tuCrRUkxEz5EQKKJgiGCS1dAzEuOJFi1ThubzQWR4fdO3oU-mLiupYoYLFgpHbIA2HUKxA'
-  );
-  localStorage.setItem(
-    'refreshToken',
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzcwMzM5Nzk4IiwiaWF0IjoxNjYxMjEyMDg5LCJleHAiOjE2NjEyOTg0ODl9.HU450TzzeIep1cMBL7-JFOTo4TR4_-fq0_jRRQVng9gWuNM9lJq0jn9yWfej5pdVLPMlF8E4CWiYTm98GYGAlQ'
-  );
-
   localStorage.setItem('hostId', 'no');
   localStorage.setItem('hostName', 'no');
   sessionStorage.setItem('isInvited', 'no');
