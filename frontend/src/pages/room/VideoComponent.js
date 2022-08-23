@@ -21,7 +21,17 @@ import { toggleMouth } from '../../redux/feature';
 import { toggleModal } from '../../redux/share';
 import { postHistory } from 'api/room';
 
-const urlName = new URLSearchParams(window.location.search).get('name');
+const url = window.location.search;
+const urlName = decodeURI(url.split('=')[2]);
+
+console.log(urlName);
+
+// const urlUnicode = url.split('=')[2].split('&')[0];
+// const urlName = String.fromCharCode(parseInt(urlUnicode, 16));
+// console.log('윤민이가 제안해준 방법', urlUnicode);
+// console.log('윤민이가 제안해준 방법', urlName);
+// console.log('아아아아아아아아아아', urlName);
+
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_API_URL;
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
@@ -57,7 +67,6 @@ class VideoComponent extends Component {
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
-    this.switchCamera = this.switchCamera.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
@@ -497,11 +506,22 @@ class VideoComponent extends Component {
   exitRoom() {
     let sessionId = this.state.session.sessionId;
     let createTime = this.state.session.connection.creationTime;
-    let participant = '';
+    //방 주인
+    let hostName = urlName;
+    let participants = [];
+    participants.push(this.state.myUserName);
     this.state.subscribers.map((el, idx) => {
       let name = JSON.parse(el.stream.connection.data).clientData;
-      participant += `${name} `;
+      participants.push(name);
     });
+
+    let partiText = '';
+    participants.map((participant) => {
+      if (participant !== hostName) partiText += `${participant}, `;
+    });
+
+    partiText = partiText.substring(0, partiText.length - 2);
+
     if (!localStorage.getItem('guestName')) {
       if (window.confirm('방을 나가시겠습니까?')) {
         let roomName = window.prompt('방 제목을 입력해주세요');
@@ -509,11 +529,12 @@ class VideoComponent extends Component {
           window.alert('방 제목을 입력해주세요!');
           return;
         }
+        if (!roomName) return;
         let isLogSave = false;
         if (window.confirm('로그를 저장하시겠습니까?')) isLogSave = true;
         let data = {
-          hostName: this.state.myUserName,
-          participants: participant,
+          hostName: hostName,
+          participants: partiText,
           roomName: roomName,
           createTime: createTime
         };
@@ -531,7 +552,8 @@ class VideoComponent extends Component {
         }
         postHistory(data)
           .then(({ data }) => {
-            alert(data.message);
+            if (isLogSave) alert('Space와 로그를 저장했습니다.');
+            else alert('Space를 저장했습니다.');
             if (!data.success) return;
             this.leaveSession();
             this.props.props.push('/');
@@ -573,44 +595,6 @@ class VideoComponent extends Component {
     }
   };
 
-  async switchCamera() {
-    try {
-      const devices = await this.OV.getDevices();
-      let videoDevices = devices.filter(
-        (device) => device.kind === 'videoinput'
-      );
-
-      if (videoDevices && videoDevices.length > 1) {
-        let newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
-        );
-
-        if (newVideoDevice.length > 0) {
-          // Creating a new publisher with specific videoSource
-          // In mobile devices the default and first camera is the front one
-          let newPublisher = this.OV.initPublisher(undefined, {
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: true,
-            publishVideo: true,
-            mirror: true
-          });
-
-          //newPublisher.once("accessAllowed", () => {
-          await this.state.session.unpublish(this.state.mainStreamManager);
-
-          await this.state.session.publish(newPublisher);
-          this.setState({
-            currentVideoDevice: newVideoDevice,
-            mainStreamManager: newPublisher,
-            publisher: newPublisher
-          });
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
   render() {
     return (
       <div className="container">
@@ -618,9 +602,6 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {/* {localStorage.getItem('hostName') === 'no'
-                  ? this.state.myUserName
-                  : localStorage.getItem('hostName')}{' '} */}
                 {urlName}
                 님의 Space ({this.countUser()}
                 명)
