@@ -4,6 +4,8 @@
   position: relative;
   @include space_evenly;
   @include box(50%, 50%);
+  max-width: 830px;
+
   @include text_vertical;
   &_text {
     font-size: 60px;

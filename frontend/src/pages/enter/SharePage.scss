@@ -5,6 +5,8 @@
 }
 .share {
   @include box(50%, 55%);
+  max-width: 830px;
+
   @include text_vertical;
   position: relative;
   justify-content: space-evenly;
