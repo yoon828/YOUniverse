@@ -44,6 +44,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  align-items: center;
 }
 
 .caseB {
@@ -59,7 +60,7 @@ video {
 
 .stream {
   padding: 0 30px;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 }
 
 #session-footer {
