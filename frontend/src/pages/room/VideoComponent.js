@@ -700,7 +700,7 @@ class VideoComponent extends Component {
               ))}
             </div>
             <div id="session-footer">
-              <div id="feature">
+              <div id="basic">
                 <button
                   onClick={this.handleMute}
                   className="round-button p-10"
