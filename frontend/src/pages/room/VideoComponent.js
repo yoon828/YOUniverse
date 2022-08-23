@@ -497,7 +497,7 @@ class VideoComponent extends Component {
     let sessionId = this.state.session.sessionId;
     let createTime = this.state.session.connection.creationTime;
     //방 주인
-    let hostName = getHost;
+    // let hostName = getHost;
     let participant = '';
     this.state.subscribers.map((el, idx) => {
       let name = JSON.parse(el.stream.connection.data).clientData;
@@ -589,7 +589,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {getHostName()}
+                {this.getHostName()}
                 님의 Space ({this.countUser()}
                 명)
               </h1>
