@@ -52,7 +52,7 @@ const App = () => {
     if (isLoggedIn && !uuid) {
       getUser()
         .then(({ data }) => {
-          dispatch(insertUser(data.data));
+          dispatch(insertUser(data?.data));
         })
         .catch(({ response }) => {
           if (isTokenExpired(response.data.message)) {

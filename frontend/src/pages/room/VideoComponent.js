@@ -21,6 +21,17 @@ import { toggleMouth } from '../../redux/feature';
 import { toggleModal } from '../../redux/share';
 import { postHistory } from 'api/room';
 
+const url = window.location.search;
+const urlName = decodeURI(url.split('=')[2]);
+
+console.log(urlName);
+
+// const urlUnicode = url.split('=')[2].split('&')[0];
+// const urlName = String.fromCharCode(parseInt(urlUnicode, 16));
+// console.log('윤민이가 제안해준 방법', urlUnicode);
+// console.log('윤민이가 제안해준 방법', urlName);
+// console.log('아아아아아아아아아아', urlName);
+
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_API_URL;
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
@@ -74,7 +85,6 @@ class VideoComponent extends Component {
     this.getIdx = this.getIdx.bind(this);
 
     this.setCameraPermission = this.setCameraPermission.bind(this);
-    this.getHostName = this.getHostName.bind(this);
   }
 
   componentDidMount() {
@@ -497,7 +507,7 @@ class VideoComponent extends Component {
     let sessionId = this.state.session.sessionId;
     let createTime = this.state.session.connection.creationTime;
     //방 주인
-    let hostName = this.getHostName();
+    let hostName = urlName;
     let participants = [];
     participants.push(this.state.myUserName);
     this.state.subscribers.map((el, idx) => {
@@ -585,12 +595,6 @@ class VideoComponent extends Component {
     }
   };
 
-  getHostName = () => {
-    return localStorage.getItem('hostName') === 'no'
-      ? this.state.myUserName
-      : localStorage.getItem('hostName');
-  };
-
   render() {
     return (
       <div className="container">
@@ -598,7 +602,7 @@ class VideoComponent extends Component {
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">
-                {this.getHostName()}
+                {urlName}
                 님의 Space ({this.countUser()}
                 명)
               </h1>
