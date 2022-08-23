@@ -19,15 +19,6 @@ const Login = () => {
     }
   }, []);
 
-  localStorage.setItem(
-    'accessToken',
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzcwMzM5Nzk4IiwiaWF0IjoxNjYxMjEyMDg5LCJleHAiOjE2NjEyMTM4ODl9.NrXRE4tLqomIJWT35iDfEsH4XukpxzjrC-kwpfVFOMLB6IMKEozF76ip1USMq9aKr_pizkixp7p8RJeyKXX6aQ'
-  );
-  localStorage.setItem(
-    'refreshToken',
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzcwMzM5Nzk4IiwiaWF0IjoxNjYxMjEyMDg5LCJleHAiOjE2NjEyOTg0ODl9.HU450TzzeIep1cMBL7-JFOTo4TR4_-fq0_jRRQVng9gWuNM9lJq0jn9yWfej5pdVLPMlF8E4CWiYTm98GYGAlQ'
-  );
-
   localStorage.setItem('hostId', 'no');
   localStorage.setItem('hostName', 'no');
   sessionStorage.setItem('isInvited', 'no');
@@ -53,7 +44,6 @@ const Login = () => {
             카카오로 로그인하기
           </div>
         </a>
-        {/* <img src="/asset/img/main/saturn.png" alt="행성" className="saturn" /> */}
         <img src="/asset/img/main/planet.gif" alt="행성" className="saturn" />
       </div>
     </div>
