@@ -1,7 +1,7 @@
 @import 'common/style/all.scss';
 
 .main {
-  @include background_setting('../../asset/img/background/main.png');
+  @include background_setting('../../asset/img/background/invite.png');
 
   &_logo {
     display: flex;
