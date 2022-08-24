@@ -557,6 +557,7 @@ class VideoComponent extends Component {
       }
     } else {
       if (window.confirm('방을 나가시겠습니까?')) {
+        this.leaveSession();
         this.props.props.push('/');
       }
     }
