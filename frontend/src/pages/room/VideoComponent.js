@@ -557,7 +557,7 @@ class VideoComponent extends Component {
       }
     } else {
       if (window.confirm('방을 나가시겠습니까?')) {
-        window.location.href = 'https://cjswltjr.shop/';
+        this.props.props.push('/');
       }
     }
   }
