@@ -69,8 +69,8 @@
 <br/>
 
 
-### 🎞시연영상 🎞
-[🎞시연 영상 링크]()
+### 🎞UCC영상 🎞
+[🎞 UCC 영상 링크](https://youtu.be/Rli1n-n9His)
 
 <br/>
 <br/>
@@ -82,18 +82,29 @@
 
 또한 마이크로 대화가 불가능한 사람들은 화면 하단, 중앙에 위치한 입력 창을 통해 키보드로 `대화 입력`이 가능합니다.
 
+![TTS](/uploads/70d10273aa4f30dc2b968a0df82f4b47/TTS.gif)
 
 
 ### 음성을 텍스트로 변환
-청각 장애인을 위한 자막 서비스는 `STT API`를 활용하여 다른 사용자의 `음성` 입력을 `텍스트`로 모두 변환하여 보여줍니다
+청각 장애인을 위한 자막 서비스는 `STT API`를 활용하여 다른 사용자의 `음성` 입력을 `텍스트`로 모두 변환하여 보여줍니다 (음성 서비스이기 때문에 시연 영상을 참고해주세요🙂)
+
+![STT](/uploads/e7deef7a7a38bfec0f6506a9f2315e5e/STT.gif)
+
 
 
 ### 입모양 확대
 구어(음성언어)로 대화하는 청각장애인은 입 모양을 보아야 상대방이 말하고자 하는 그 메시지를 정확하게 이해할 수 있다고 합니다. 저희는 `FACE api`를 활용하여 입모양 확대 버튼을 눌렀을 때 다른 사람의 입을 `확대`해주었습니다.
 
-### 로그 기록
-실시간 대화 속도가 빨라 대화를 놓친 경우 또는 발화자 화면 하단에 제공되는 자막을 모두 읽지 못한 경우에는우측 파란색 박스의 `대화 로그`를 통해 내용을 다시 확인하여 소통을 이어갈 수 있습니다.
+![입모양-확대](/uploads/cadf467349234d3455f031180892b884/입모양-확대.gif)
 
+
+
+
+### 로그 기록 / 저장
+실시간 대화 속도가 빨라 대화를 놓친 경우 또는 발화자 화면 하단에 제공되는 자막을 모두 읽지 못한 경우에는우측 파란색 박스의 `대화 로그`를 통해 내용을 다시 확인하여 소통을 이어갈 수 있습니다.
+또한 로그인한 사용자는 방을 나갈 때 로그를 저장할 수 있으며, 언제든지 마이페이지에서 다시 볼 수 있습니다.
+
+![로그-저장](/uploads/f26c562b85f5291a9f925b07393772c7/로그-저장.gif)
 
 
 <br/><br/>
@@ -142,50 +153,57 @@
 # Ⅱ. 개발
 
 ## 1. 개발환경
+* OS
+    * Window 10
+* IDE
+    * IntelliJ 7.4.1
+    * Visual Studio Code 1.70.0
+    * UI/UX : Figma, Procreate
+* Database
+    * MySQL 8.0.29
+    * MongoDB 5.0.10
+    * Redis 7.0.4
+* Server
+    * AWS EC2(Ubuntu 20.04.4 LTS)
+* Backend
+    * Java 1.8
+    * Spring Boot 2.7.1
+    * Spring Data JPA 2.7.1
+    * Spring Security 5.7.1
+    * OpenVidu 2.22.0
 
+* Frontend
+    * HTML5, CSS3, JS(ES6)
+    * React 17.0.1
+    * Redux 4.2
+    * Node js 16.9.0
+    * Face-api.js 0.22.2
+    * Openvidu-browser 2.22.0
+    * Web Speech API
+* Deployment
+    * Docker 20.10.12
+    * Jenkins 2.346.2
+    * Nginx 1.21.6
 
 <br/><br/>
 ## 2. 기술 스택
 
-### WebRTC
+### [openVidu](https://openvidu.io/)  / WebRTC
 
-> WebRTC (Web Real-Time Communication)는 웹 브라우저 간에 플러그인의 도움 없이 서로 통신할 수 있도록 설계된 API이다. 
->
-> W3C에서 제시된 초안이며, 음성 통화, 영상 통화, P2P 파일 공유 등으로 활용될 수 있다.
-
-<br/>
-
-### [openVidu](https://openvidu.io/)
-
-
-> OpenVidu is a platform to facilitate the addition of video calls in your web or mobile application. It provides a complete stack of technologies very easy to integrate in your application. Our main goal is to allow developers to add real-time communications to their apps very fast and with low impact in their code.
-
-
-<!-- 
-WebRTC를 보다 간단하게 적용할 수 있고, 다양한 프레임워크와 호환성이 높은 openvidu를 사용하여 프로젝트를 진행했습니다. 사용 방법은 openvidu tutorail 또는, 프로젝트의 front 폴더 하위의 gameroom 등에서 확인 할 수 있습니다.
--->
-
-<br/>
-
-YOUniverse에서 openvidu를 사용해서 WebRTC를 구현합니다. 실시간으로 여러명과 소통이 가능하며, 링크를 통해 다른 사람들를 초대할 수 있습니다.
+- webRTC를 적용하기 위해 openVidu를 사용했습니다. 스페이스 생성하기 버튼을 누르면 사용자 고유의 세션 ID값으로 방이 생성됩니다.  방의 세션 ID가 담겨 있는 URL를 공유하여 다른 사용자들을 초대할 수 있습니다. 방에 들어온 사용자들은 실시간으로 소통이 가능하며, 다양한 기능들을 사용하여 원활하게 대화를 할 수 있습니다. 방 나가기 버튼을 누르면 세션에서 나가도록 구현했습니다.
 
 <br/>
 <br/>
 
 ### [face API](https://github.com/justadudewhohacks/face-api.js)
 
-> JavaScript face recognition API for the browser and nodejs implemented on top of tensorflow.js core
-
-
-YOUniverse에서는 face api에서 land mark를 기능을 사용합니다. 입 모양을 확대하기 위해서 face api에서 입의 위치를 가져오고, 그 위치를 기반으로 입 부분만 확대해서 보여주는 기능을 제공합니다.
+- YOUniverse는 face api에서 제공하는 land mark를 기능을 사용하여 입 부분 확대 기능을 구현합니다. face api에서 getMouth() 함수를 사용하여 입의 위치를 가져오고, 해당 위치를 기반으로 입 부분만 확대할 수 있도록 구현했습니다. 입 모양 확대 버튼 on/off 를 통해서 기능을 켜고, 끌 수 있습니다.
 
 <br/>
 
 ### [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
 
-> web Speech api 설명
-
-YOUniverse에서는 web Speeck API를 사용해서 TTS(Text To Speech)와 STT(Speech To Text)를 구현합니다. 마이크가 켜져있는 동안에 STT를 사용해서 사용자의 음성을 텍스트로 변환하고, 로그창에 기록합니다.
+- YOUniverse는 web Speeck API를 사용해서 TTS(Text To Speech)와 STT(Speech To Text)를 구현합니다. 마이크가 켜져있는 동안에 STT를 사용해서 사용자의 음성을 텍스트로 변환하고, 로그창에 기록합니다.
 또한 시각 장애인을 위해 TTS를 사용해서 텍스트를 음성으로 읽어주는 기능이 포함되어 있습니다.
 
 <br/>
@@ -216,24 +234,28 @@ YOUniverse에서는 web Speeck API를 사용해서 TTS(Text To Speech)와 STT(Sp
 
 
 ### Notion
-프로젝트에 필요한 일정관리, 발표준비, api 명세 등을 정리하고, 팀원들이 볼 수 있도록 했습니다.
+* 프로젝트에 필요한 일정관리, 발표준비, api 명세 등을 정리하고, 팀원들이 볼 수 있도록 했습니다.
 
 [노션 링크]
 
+<br/>
 
 ### Git Flow
 master 브랜치 하위에 dev 브랜치를 생성하고, frontend와 backend 브랜치를 각각 생성했습니다.
 각 기능별로 feature 브랜치를 생성하고, 완료된 기능은 frontend/backend 브랜치에 merge 했습니다.
 
-#### convention
-[🤝개발 컨벤션](https://www.notion.so/458ce39591f9401ebe02308e6cef270c)
-원활한 의사소통을 위해 convention을 정하여 커밋과 브랜치를 생성하였습니다.
+<br/>
+
+#### Convention
+
+원활한 의사소통을 위해 [🤝개발 컨벤션](https://www.notion.so/458ce39591f9401ebe02308e6cef270c)을 정하여 커밋과 브랜치를 생성하였습니다.
 
 <br/><br/>
 ## 2. 백로그
 개발을 시작하기 전, 전체적인 기능을 정리하기 위해 백로그를 작성했습니다. 
 백로그는 화면 단위별로 작성했으며, Jira 및 branch naming을 작성할 때 백로그를 참고하였습니다.
-![백로그](/uploads/6597aac4d4e8ae7a784bdedc9961fff5/백로그.gif)
+
+![백로그](/uploads/37cf613aab9d5368e66cf1d95df3a8b2/백로그.gif)
 
 <br/><br/>
 ## 3. 디자인
