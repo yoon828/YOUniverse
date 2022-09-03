@@ -1,0 +1,63 @@
+{
+  "name": "frontend_react",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.8.4",
+    "@reduxjs/toolkit": "^1.8.3",
+    "@tensorflow-models/blazeface": "^0.0.7",
+    "@tensorflow/tfjs-backend-webgl": "^3.19.0",
+    "@tensorflow/tfjs-converter": "^3.19.0",
+    "@tensorflow/tfjs-core": "^3.19.0",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-prettier": "^4.2.1",
+    "face-api.js": "^0.22.2",
+    "node-sass": "^7.0.1",
+    "openvidu-browser": "^2.22.0",
+    "prettier": "^2.7.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-js-pagination": "^3.0.3",
+    "react-redux": "^7.2.8",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "redux": "^4.2.0",
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^7.31.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  }
+}

@@ -1,0 +1,39 @@
+@import 'common/style/all.scss';
+.guest_page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include background_setting('../../asset/img/background/guest.png');
+
+  .nickname {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    .guest_form {
+      @include space_evenly;
+      @include text_vertical;
+      position: absolute;
+      top: 20vh;
+      .title {
+        font-size: 30px;
+        color: $themeFirst;
+      }
+      .nickname_input {
+        padding: 14px;
+        background: $themeFirst;
+        margin: 30px;
+        height: 50px;
+        width: 320px;
+        box-shadow: 4px 5px 14px #8785a2;
+      }
+      .confirm {
+        color: $themeFirst;
+      }
+    }
+  }
+}
+.astronaut_big_img {
+  width: 45%;
+  min-width: 570px;
+}

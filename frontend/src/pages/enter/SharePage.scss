@@ -1,0 +1,29 @@
+@import 'common/style/all.scss';
+
+.share_wrap {
+  @include background_setting('../../asset/img/background/share.png');
+}
+.share {
+  @include box(50%, 55%);
+  max-width: 830px;
+
+  @include text_vertical;
+  position: relative;
+  justify-content: space-evenly;
+  margin: auto;
+  padding: 15px 0;
+  .title {
+    font-size: 60px;
+  }
+  .next {
+    margin-top: 10px;
+    @include blue_button;
+  }
+  .rocket {
+    position: absolute;
+    width: 300px;
+    top: -115px;
+    left: -125px;
+    transform: rotate(45deg);
+  }
+}

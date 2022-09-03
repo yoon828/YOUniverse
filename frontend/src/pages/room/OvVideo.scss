@@ -1,0 +1,24 @@
+#ov {
+  position: relative;
+
+  .mouth {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 35%;
+    height: 40%;
+    overflow: hidden;
+    video {
+      position: absolute;
+      transform: scale(6);
+    }
+  }
+}
+
+.speaking {
+  border: 5px solid rgb(253, 45, 45);
+}
+
+.not-speaking {
+  border: 0;
+}

@@ -1,0 +1,50 @@
+.log {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f6f6f6;
+  height: 100%;
+  border-radius: 30px;
+  padding: 30px;
+  // overflow-y: auto;
+  position: relative;
+  h3 {
+    font-size: 40px;
+    margin: 15px 0 0;
+  }
+  &_body {
+    overflow-y: auto;
+    height: 80%;
+    width: 100%;
+    margin-top: 15px;
+    .log_item {
+      word-break: break-all;
+    }
+  }
+
+  &_footer {
+    position: absolute;
+    bottom: 30px;
+  }
+  li {
+    display: flex;
+    margin: 10px 0;
+  }
+}
+
+.font_btn {
+  width: 75px;
+  height: 75px;
+  border-radius: 40px;
+  border: 1px solid #d1d1d1;
+  box-shadow: 4px 5px 14px #8785a2;
+  margin: 10px;
+  cursor: pointer;
+}
+
+#minus {
+  font-size: 15px;
+}
+#plus {
+  font-size: 30px;
+}
