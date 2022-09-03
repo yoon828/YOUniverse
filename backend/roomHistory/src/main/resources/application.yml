@@ -1,0 +1,25 @@
+server:
+  port: 8000
+
+spring:
+  data:
+    mongodb:
+#      uri: mongodb://127.0.0.1:27017/share_mind
+      uri: mongodb://mongodb:27017/share_mind
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
+
+jwt:
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+
+history:
+#  url: http://localhost:8080/history
+#  url: http://cjswltjr.shop:8080/api/back/history
+  url: https://cjswltjr.shop/api/back/history
