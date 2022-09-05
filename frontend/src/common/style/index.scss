@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+// 문의하기
+button {
+  border: none;
+}
+button:hover {
+  cursor: pointer;
+}
+
+// 문의하기
+textarea {
+  resize: none;
+}
+
+// 폰트 설정
+@font-face {
+  font-family: 'Roka Mid';
+  font-style: normal;
+  src: url('../../asset/font/ROKAFMedium.woff');
+}
+
+@font-face {
+  font-family: 'Roka Bold';
+  font-style: bold;
+  src: url('../../asset/font/ROKAFBold.woff');
+}

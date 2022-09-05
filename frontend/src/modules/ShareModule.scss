@@ -1,0 +1,26 @@
+@import 'common/style/all.scss';
+
+.share_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.invite_kakao {
+  height: 60px;
+}
+
+.link_copy_div {
+  // background-color: $themeSecond;
+  // color: $themeFirst;
+  width: 360px;
+  height: 50px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #818181;
+}
+
+.item_box {
+  font-size: 25px;
+  @include text_vertical;
+}

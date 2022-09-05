@@ -1,0 +1,16 @@
+@import 'common/style/all.scss';
+
+.qna_detail_answer {
+  textarea {
+    width: 100%;
+    background-color: $themeFourth;
+  }
+  .dis_flex {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .answer_btn {
+    font-size: 1rem;
+    width: 100px;
+  }
+}

@@ -1,0 +1,43 @@
+@import 'common/style/all.scss';
+
+.admin_user {
+  @include box(auto, 90%);
+  padding: 30px;
+  margin: 0 80px;
+  h1 {
+    font-size: 2rem;
+    padding: 10px;
+  }
+
+  .user_list {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    th {
+      background-color: lightgray;
+    }
+    th,
+    tr,
+    td {
+      padding: 10px;
+      border: 1px solid black;
+    }
+  }
+
+  .btn_div {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn {
+    background-color: $themeSecond;
+    color: $themeFirst;
+    padding: 10px;
+    border-radius: 12px;
+    &_admin {
+      background-color: gray;
+      cursor: default;
+    }
+  }
+}

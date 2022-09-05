@@ -1,0 +1,74 @@
+// 색깔
+$themeFirst: #f6f6f6;
+$themeSecond: #243a73;
+$themeThird: #fee500;
+$themeFourth: #e9e9e9;
+
+// 폰트 사이즈
+$listHeader: 1.2rem;
+
+// 흰 박스 남색 글씨(높이, 너비)
+@mixin box($height, $width) {
+  background-color: $themeFirst;
+  border-radius: 60px;
+  color: $themeSecond;
+  height: $height;
+  width: $width;
+}
+
+// flex - space_evenly
+@mixin space_evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+// 텍스트 가운데 정렬
+@mixin text_vertical {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+// 폰트(사이즈, 굵기)
+@mixin font($size, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+}
+
+// 파란색 버튼
+@mixin blue_button {
+  background-color: $themeSecond;
+  color: $themeFirst;
+  height: 50px;
+  width: 180px;
+  margin: 10px;
+  border-radius: 15px;
+  font-size: 30px;
+  text-align: center;
+  line-height: normal;
+}
+
+// 플렉스 설정
+@mixin flex($direction, $justify, $align) {
+  display: flex;
+  flex-direction: #{$direction};
+  justify-content: #{$justify};
+  align-items: #{$align};
+}
+
+@mixin list_item {
+  background-color: $themeFourth;
+}
+
+// 배경 설정
+@mixin background_setting($url) {
+  height: 100vh;
+  background-size: cover;
+  background-image: url($url);
+}
+
+// 세로선
+@mixin line_vertical($color, $weight) {
+  border-left: $weight solid $color;
+}
