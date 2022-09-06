@@ -1,0 +1,102 @@
+@import 'all.scss';
+
+body {
+  background-color: $themeSecond;
+}
+
+a {
+  text-decoration: none;
+  :visited {
+    text-decoration: none;
+  }
+
+  :hover {
+    text-decoration: none;
+  }
+
+  :active {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+// 문의 및 히스토리 페이지 컨테이너
+.page_container {
+  @include box(auto, 80%);
+  @include flex(column, flex-start, center);
+  position: relative;
+  padding: 20px;
+  margin: 0 auto;
+  .title {
+    color: $themeSecond;
+    font-size: $listHeader; // 페이지 제목 사이즈
+  }
+}
+
+.button_container {
+  width: 90%;
+  display: flex;
+  justify-content: end;
+}
+
+.main_header {
+  display: flex;
+  padding: 30px;
+  &_logo {
+    margin-right: 30px;
+  }
+  &_menu {
+    display: flex;
+    align-items: center;
+    a,
+    button {
+      padding: 0 30px;
+      color: $themeFourth;
+    }
+  }
+}
+
+.login_kakao {
+  margin: 24px;
+  background-color: $themeThird;
+  text-align: center;
+  border-radius: 10px;
+  &_div {
+    display: flex;
+    flex-direction: row;
+    color: black;
+    width: 360px;
+    height: 50px;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    img {
+      width: 45px;
+    }
+  }
+}
+
+.w100 {
+  width: 100%;
+}
+
+.astronaut {
+  position: absolute;
+  right: -120px;
+  &_img {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.App {
+  @include background_setting('../../asset/img/background/other.png');
+  display: flex;
+  flex-direction: column;
+  min-width: 1250px;
+}
+
+.log_img {
+  margin-right: 5px;
+}

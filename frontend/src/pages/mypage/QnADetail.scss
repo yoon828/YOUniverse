@@ -1,0 +1,71 @@
+@import 'common/style/all.scss';
+
+.page_container {
+  position: relative;
+}
+
+.qna_detail {
+  &_header {
+    display: flex;
+    justify-content: space-between;
+    background-color: $themeFourth;
+    border-radius: 15px;
+    color: black;
+    height: 50px;
+    width: 90%;
+    line-height: 50px;
+    margin: 15px 0;
+    padding: 0 10px;
+
+    &_item {
+      .detail_content {
+        padding: 0 10px;
+      }
+    }
+  }
+  &_content {
+    background-color: $themeFourth;
+    border-radius: 20px;
+    color: black;
+    height: 300px;
+    width: 90%;
+    margin: 0 auto 20px;
+    white-space: pre-line;
+    min-height: 300px;
+    overflow: auto;
+    padding: 10px 30px;
+  }
+
+  &_answer {
+    background-color: $themeFourth;
+    border-radius: 20px;
+    color: black;
+    min-height: 150px;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 80px;
+    white-space: pre-line;
+    min-height: 150px;
+    overflow: auto;
+    padding: 10px 30px;
+    .admin_answer {
+      margin-bottom: 10px;
+    }
+  }
+
+  .line {
+    @include line_vertical(#808080, 2px);
+  }
+  button,
+  a {
+    @include blue_button;
+    @include text_vertical;
+  }
+}
+
+.gray {
+  color: #808080;
+}
+.btn_mg {
+  margin-right: 10px;
+}

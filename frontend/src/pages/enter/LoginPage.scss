@@ -1,0 +1,35 @@
+@import 'common/style/all.scss';
+
+.login_box {
+  @include box(50%, 50%);
+  max-width: 830px;
+
+  @include text_vertical;
+  position: relative;
+  &_text {
+    font-size: 60px;
+    margin-bottom: 30px;
+  }
+}
+
+.login_page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include background_setting('../../asset/img/background/login.png');
+}
+
+.main_logo {
+  padding: 65px 0;
+  .logo_img {
+    width: 600px;
+  }
+}
+
+.saturn {
+  position: absolute;
+  width: 170px;
+  top: -50px;
+  left: -55px;
+}
